@@ -6,6 +6,8 @@ class CommandHandler:
     def __init__(self):
         self.db = DatabaseHandler()
 
+
+
     def setup_commands(self):
         parser = argparse.ArgumentParser(description='Task Manager')
         subparser = parser.add_subparsers(dest="command",help="Available commands")
