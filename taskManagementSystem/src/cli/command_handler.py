@@ -19,6 +19,8 @@ class CommandHandler:
         list_parser = subparser.add_parser('list', help='List all tasks')
         list_parser.add_argument('--status', choices=['pending', 'completed'],
                                  help='Filter tasks by status')
+        list_parser.add_argument('--priority',type=int,choices=[1,2,3],help='Filter by priority')
+        list_parser.add_argument('--sort',choices=[1,2,3],help='Sort tasks by field')
 
         complete_parser = subparser.add_parser('complete', help='Mark a task as completed')
         complete_parser.add_argument('task_id', type=int, help='ID of the task to complete')
@@ -31,6 +33,8 @@ class CommandHandler:
         update_parser.add_argument('--title', help='New title')
         update_parser.add_argument('--description', help='New description')
         update_parser.add_argument('--priority', type=int, choices=[1, 2, 3])
+
+        stats_parser = subparser.add_parser('stats',help='Shows task statistics')
 
         return parser
 
