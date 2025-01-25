@@ -1,5 +1,5 @@
 import argparse
-from src.context.db_connection import DatabaseHandler
+from context.db_connection import DatabaseHandler
 
 
 class CommandHandler:
@@ -24,3 +24,19 @@ class CommandHandler:
         complete_parser.add_argument('task_id',type=int,help='ID of the task to complete')
 
         return parser
+
+    def handle_list_command(self, status=None):
+        tasks = self.db.get_all_tasks()
+        if not tasks:
+            print("No tasks found")
+            return
+
+        for task in tasks:
+            print(f"{task['ID']}")
+            print(f"{task['title']}")
+            print(f"{task['description']}")
+            print(f"{task['priority']}")
+            print(f"{task['status']}")
+            print("_"*30)
+
+
