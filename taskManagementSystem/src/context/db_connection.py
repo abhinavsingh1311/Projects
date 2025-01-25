@@ -22,7 +22,7 @@ class DatabaseHandler:
                        ''')
         self.conn.commit()
 
-    def get_all_tasks(self,status =None):
+    def get_all_tasks(self, status=None):
         cursor = self.conn.cursor()
 
         if status:
@@ -30,7 +30,7 @@ class DatabaseHandler:
             cursor.execute('''
             select id,title,description,priority,due_date,status,created_at from tasks
             where status = ?
-            ''',(status,))
+            ''', (status,))
 
         else:
             cursor.execute('''
@@ -44,15 +44,31 @@ class DatabaseHandler:
 
         for row in rows:
             task = {
-                'id' : row[0],
+                'id': row[0],
                 'title': row[1],
                 'description': row[2],
                 'priority': row[3],
-                'due_date':row[4],
+                'due_date': row[4],
                 'status': row[5],
-                'created_at':row[6]
+                'created_at': row[6]
             }
             tasks.append(task)
 
         return tasks
 
+    def add_task(self, title, description, priority):
+
+        cursor = self.conn.cursor()
+        cursor.execute("""
+        Insert into tasks(title,description,priority,status,created_at
+        Values(?,?,?,'pending',DATETIME('now'))
+        )""", (title, description, priority))
+        self.conn.commit()
+        return cursor.lastrowid
+
+    def update_task_status(self, task_id, status):
+        cursor = self.conn.cursor()
+        cursor.execute("""
+        UPDATE tasks SET status = ? where id = ? 
+        """, (task_id, status))
+        self.conn.commit()
