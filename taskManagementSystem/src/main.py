@@ -14,21 +14,28 @@ def main():
         parser.print_help()
         return
 
-    if args.command == "add":
-        task = Task(
-            title=args.title,
-            description=args.description,
-            priority=args.priority,
-            due_date=datetime.now()
-        )
-        print(f"Added task: {task.title}")
+    try:
+        if args.command == "add":
+            # task = Task(
+            #     title=args.title,
+            #     description=args.description,
+            #     priority=args.priority,
+            #     due_date=datetime.now()
+            # )
+            handler.handle_add_command(args)
 
-    elif args.command == "list":
-        print("Listing tasks...")
+            # print(f"Added task: {task.title}")
 
-    elif args.command == "complete":
+        elif args.command == "list":
+            handler.handle_list_command(args.status)
+            # print("Listing tasks...")
 
-        print(f"Marking task {args.task_id} as completed...")
+        elif args.command == "complete":
+            handler.handle_update_command(args)
+            print(f"Marking task {args.task_id} as completed...")
+
+    except Exception as e:
+        print(f"Error: {e}")
 
     # task = Task(
     #     title="Complete Python Project",
