@@ -34,6 +34,9 @@ def main():
             handler.handle_update_command(args)
             print(f"Marking task {args.task_id} as completed...")
 
+        elif args.command == "delete":
+            handler.handle_delete_command(args)
+
     except Exception as e:
         print(f"Error: {e}")
 

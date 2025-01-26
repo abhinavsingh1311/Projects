@@ -71,8 +71,26 @@ class DatabaseHandler:
             return None
 
     def update_task_status(self, task_id, status):
-        cursor = self.conn.cursor()
-        cursor.execute("""
-        UPDATE tasks SET status = ? where id = ? 
-        """, (task_id, status))
-        self.conn.commit()
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+            UPDATE tasks SET status = ? where id = ? 
+            """, (task_id, status))
+            self.conn.commit()
+        except sqlite3.Error as e:
+            print(f'Database error: {e}')
+            return None
+
+    def delete_task(self,task_id):
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute('''
+            Delete from tasks where id = ? 
+            ''',(task_id,))
+            self.conn.commit()
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+            return False
+
+

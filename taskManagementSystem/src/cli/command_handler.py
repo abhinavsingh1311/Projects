@@ -34,7 +34,13 @@ class CommandHandler:
         update_parser.add_argument('--description', help='New description')
         update_parser.add_argument('--priority', type=int, choices=[1, 2, 3])
 
+        search_parser = subparser.add_parser('search',help='Search for tasks')
+        search_parser.add_argument('keyword',help='Search keyword')
+
         stats_parser = subparser.add_parser('stats',help='Shows task statistics')
+
+        export_parser = subparser.add_parser('export',help='Export tasks')
+        export_parser.add_argument('format',choices=['csv','json'],help='Export tasks')
 
         return parser
 
@@ -65,3 +71,11 @@ class CommandHandler:
     def handle_update_command(self, args):
         self.db.update_task_status(args.task_id, "completed")
         print(f"Marked task {args.task_id} as completed")
+
+    def handle_delete_command(self,args):
+        if self.db.delete_task(args.task_id):
+            print(f"Task {args.task_id} deleted successfully")
+        else:
+            print(f"No task found with ID {args.task_id}")
+
+
