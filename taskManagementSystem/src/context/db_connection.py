@@ -56,16 +56,16 @@ class DatabaseHandler:
 
         return tasks
 
+    # In db_connection.py
     def add_task(self, title, description, priority):
         try:
             cursor = self.conn.cursor()
             cursor.execute("""
-            Insert into tasks(title,description,priority,status,created_at
-            Values(?,?,?,'pending',DATETIME('now'))
-            """, (title, description, priority))
+                INSERT INTO tasks (title, description, priority, status, created_at)
+                VALUES (?, ?, ?, 'pending', DATETIME('now'))
+                """, (title, description, priority))  # Fixed the syntax error in SQL query
             self.conn.commit()
             return cursor.lastrowid
-
         except sqlite3.Error as e:
             print(f"Database error: {e}")
             return None

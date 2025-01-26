@@ -14,7 +14,7 @@ class CommandHandler:
         add_parser.add_argument('title', help='Task tile')
         add_parser.add_argument('description', help='Task description')
         add_parser.add_argument('priority', type=int, choices=[1, 2, 3], help='Priority (1=High,2=Medium,3=Low)')
-        add_parser.add_argument('due_date', help='Due date (YYYY-MM-DD)')
+        add_parser.add_argument('due_date',default=None, help='Due date (YYYY-MM-DD)')
 
         list_parser = subparser.add_parser('list', help='List all tasks')
         list_parser.add_argument('--status', choices=['pending', 'completed'],
@@ -38,19 +38,24 @@ class CommandHandler:
 
         return parser
 
+    # In command_handler.py
     def handle_list_command(self, status=None):
         tasks = self.db.get_all_tasks()
         if not tasks:
             print("No tasks found")
             return
 
+        print("\nTask List:")
+        print("-" * 40)
         for task in tasks:
-            print(f"{task['ID']}")
-            print(f"{task['title']}")
-            print(f"{task['description']}")
-            print(f"{task['priority']}")
-            print(f"{task['status']}")
-            print("_" * 30)
+            print(f"ID: {task['id']}")  # Changed 'ID' to 'id'
+            print(f"Title: {task['title']}")
+            print(f"Description: {task['description']}")
+            print(f"Priority: {task['priority']}")
+            print(f"Status: {task['status']}")
+            if task['due_date']:
+                print(f"Due Date: {task['due_date']}")
+            print("-" * 40)
 
     def handle_add_command(self, args):
 
