@@ -75,7 +75,7 @@ class DatabaseHandler:
             cursor = self.conn.cursor()
             cursor.execute("""
             UPDATE tasks SET status = ? where id = ? 
-            """, (task_id, status))
+            """, (status, task_id))
             self.conn.commit()
         except sqlite3.Error as e:
             print(f'Database error: {e}')

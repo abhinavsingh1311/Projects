@@ -32,7 +32,6 @@ def main():
 
         elif args.command == "complete":
             handler.handle_update_command(args)
-            print(f"Marking task {args.task_id} as completed...")
 
         elif args.command == "delete":
             handler.handle_delete_command(args)

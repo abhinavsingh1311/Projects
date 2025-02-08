@@ -37,6 +37,12 @@ class CommandHandler:
         search_parser = subparser.add_parser('search',help='Search for tasks')
         search_parser.add_argument('keyword',help='Search keyword')
 
+        status_parser = subparser.add_parser('status',help='Change task status')
+        status_parser.add_argument('task_id',type=int,help='ID of the task')
+        status_parser.add_argument('status',choices=['pending','in-progress','completed'],help='New status for the task')
+
+        list_parser.add_argument('--status',choices=['pending','in-progress','completed'],help='Filter tasks by status')
+
         stats_parser = subparser.add_parser('stats',help='Shows task statistics')
 
         export_parser = subparser.add_parser('export',help='Export tasks')
@@ -77,5 +83,11 @@ class CommandHandler:
             print(f"Task {args.task_id} deleted successfully")
         else:
             print(f"No task found with ID {args.task_id}")
+
+    def handle_status_command(self,args):
+        if self.db.update_task_status(args.task_id,args.status):
+            print(f"Task {args.task_id} status changed to {args.status}")
+        else:
+            print(f"Failed to update task {args.task_id}")
 
 
