@@ -25,9 +25,8 @@ export default function ResumeUpload() {
             setError(null);
         } else {
             setFile(null);
-            setError('Please select a valid file type (PDF,DOC, or DOCX)');
+            setError('Please select a valid file type (PDF, DOC, or DOCX)');
         }
-
     };
 
     const getFileType = (file) => {
@@ -50,73 +49,89 @@ export default function ResumeUpload() {
             setUploading(true);
             setError(null);
 
-            //get user
-
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
+            // Get user session
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
                 throw new Error('You must be logged in to upload a resume');
             }
 
-            //file upload to supabase
+            // Get current user
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                throw new Error('User authentication failed');
+            }
 
+            console.log("Authenticated user:", user.id);
+
+            // File upload to Supabase
             const fileExt = file.name.split('.').pop();
             const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-            const filePath = `resume/${fileName}`;
+            const filePath = `${user.id}/${fileName}`; // Important: Include user ID in path for RLS
 
-            const { error: uploadError } = await supabase.storage
+            console.log(`Uploading file to path: ${filePath}`);
+
+            const { data: uploadData, error: uploadError } = await supabase.storage
                 .from('resumes')
-                .upload(filePath, file);
+                .upload(filePath, file, {
+                    upsert: true,
+                    cacheControl: '3600'
+                });
 
-            if (uploadError) throw uploadError;
+            if (uploadError) {
+                console.error('Upload error details:', uploadError);
+                throw uploadError;
+            }
 
-            //public url for the file
+            console.log('File uploaded successfully:', filePath);
 
-            const { data: { publicUrl } } = supabase.storage
+            // Get public URL
+            const { data: urlData } = supabase.storage
                 .from('resumes')
                 .getPublicUrl(filePath);
 
-            // save resumes 
+            const publicUrl = urlData.publicUrl;
+            console.log('Public URL:', publicUrl);
 
-            const { error: dbError } = await supabase
-                .schema('public')
+            // Save to database
+            const resumeData = {
+                title: title || 'Untitled Resume',
+                user_id: user.id,
+                file_url: publicUrl,
+                file_type: getFileType(file),
+                status: 'uploaded',
+                created_at: new Date().toISOString()
+            };
+
+            console.log('Saving resume data:', resumeData);
+
+            const { data: insertData, error: dbError } = await supabase
                 .from('resumes')
-                .insert(({
-                    title: title || 'Untitled',
-                    user_id: user.id,
-                    file_url: publicUrl,
-                    file_type: getFileType(file),
-                    status: 'uploaded',
-                    created_at: new Date()
-                }));
+                .insert([resumeData]);
 
-            if (dbError) throw dbError;
+            if (dbError) {
+                console.error('Database insertion error details:', dbError);
+                throw dbError;
+            }
 
+            console.log('Resume saved successfully');
             setSuccess(true);
-
             setFile(null);
             setTitle('');
 
-            //Trigger resume parsing will be coded later
-            // await triggerResumeParsing(resumeId);
-        }
-
-        catch (error) {
-
-            console.log('Error uploading resume:', error);
-            setError(error.message);
-
+        } catch (error) {
+            console.error('Error uploading resume:', error);
+            setError(error.message || 'An error occurred during upload');
         } finally {
             setUploading(false);
         }
-
     };
 
     if (success) {
         return (
             <div className='max-w-md mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800'>
                 <div className='text-center'>
-                    <svg className="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24" xmlns="https://www.w3.org/2000/svg">
-                        <path strokeLineCap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13L4 4L19 7"></path>
+                    <svg className="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13L9 17L19 7"></path>
                     </svg>
                     <h2 className="text-xl font-semibold mb-2 mt-4">Resume Uploaded Successfully!</h2>
                     <p className="mb-4">Your resume has been uploaded and will be analyzed shortly</p>
@@ -145,7 +160,6 @@ export default function ResumeUpload() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-
                 <div>
                     <label htmlFor="title" className="block text-sm font-medium">
                         Resume Title
@@ -154,9 +168,7 @@ export default function ResumeUpload() {
                         type="text"
                         id="title"
                         value={title}
-                        onChange={(e) => {
-                            setTitle(e.target.value)
-                        }}
+                        onChange={(e) => setTitle(e.target.value)}
                         className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                         placeholder="e.g., Software Engineer Resume"
                     />
@@ -187,10 +199,7 @@ export default function ResumeUpload() {
                 >
                     {uploading ? 'Uploading...' : 'Upload Resume'}
                 </button>
-
             </form>
-
         </div>
     )
-
 }
