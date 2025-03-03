@@ -50,12 +50,6 @@ export default function ResumeUpload() {
             setError(null);
 
             // Get user session
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                throw new Error('You must be logged in to upload a resume');
-            }
-
-            // Get current user
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) {
                 throw new Error('User authentication failed');
@@ -63,18 +57,18 @@ export default function ResumeUpload() {
 
             console.log("Authenticated user:", user.id);
 
-            // File upload to Supabase
+            // Create a simple file path
             const fileExt = file.name.split('.').pop();
-            const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-            const filePath = `${user.id}/${fileName}`; // Include user ID in path for RLS
+            const fileName = `${Date.now()}.${fileExt}`;
+            const filePath = `${user.id}/${fileName}`;
 
             console.log(`Uploading file to path: ${filePath}`);
 
-            const { data: uploadData, error: uploadError } = await supabase.storage
+            // Upload the file
+            const { error: uploadError } = await supabase.storage
                 .from('resumes')
                 .upload(filePath, file, {
-                    upsert: true,
-                    cacheControl: '3600'
+                    upsert: true
                 });
 
             if (uploadError) {
@@ -82,27 +76,13 @@ export default function ResumeUpload() {
                 throw uploadError;
             }
 
-            console.log('File uploaded successfully:', filePath);
+            console.log('File uploaded successfully');
 
-            // Get a signed URL with a long expiry time (30 days)
-            const { data: signedData, error: signedError } = await supabase.storage
-                .from('resumes')
-                .createSignedUrl(filePath, 60 * 60 * 24 * 30); // 30 days expiry
-
-            if (signedError) {
-                console.error('Error creating signed URL:', signedError);
-                throw signedError;
-            }
-
-            const signedUrl = signedData.signedUrl;
-            console.log('Signed URL:', signedUrl);
-
-            // Save to database
+            // Save to database with file path only
             const resumeData = {
                 title: title || 'Untitled Resume',
                 user_id: user.id,
-                file_url: signedUrl,
-                file_path: filePath, // Store the path separately for future use
+                file_path: filePath,
                 file_type: getFileType(file),
                 status: 'uploaded',
                 created_at: new Date().toISOString()
@@ -110,12 +90,12 @@ export default function ResumeUpload() {
 
             console.log('Saving resume data:', resumeData);
 
-            const { data: insertData, error: dbError } = await supabase
+            const { error: dbError } = await supabase
                 .from('resumes')
                 .insert([resumeData]);
 
             if (dbError) {
-                console.error('Database insertion error details:', dbError);
+                console.error('Database insertion error:', dbError);
                 throw dbError;
             }
 

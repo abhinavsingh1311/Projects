@@ -10,40 +10,12 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function refreshResumeUrls(resumesData) {
-      return Promise.all(
-        resumesData.map(async (resume) => {
-          if (resume.file_path) {
-            try {
-              const { data, error } = await supabase.storage
-                .from('resumes')
-                .createSignedUrl(resume.file_path, 60 * 60 * 24 * 30);
-
-              if (!error && data?.signedUrl) {
-                return {
-                  ...resume,
-                  file_url: data.signedUrl
-                };
-              }
-            } catch (err) {
-              console.error('Error refreshing URL:', err);
-            }
-          }
-          return resume;
-        })
-      );
-    }
-
     async function fetchUserAndResumes() {
       try {
         setLoading(true);
 
         // First check if user is authenticated
-        const { data, error: authError } = await supabase.auth.getUser()
-          .catch(err => {
-            console.log("Auth error caught:", err);
-            return { data: { user: null }, error: null };
-          });
+        const { data, error: authError } = await supabase.auth.getUser();
 
         if (authError) {
           console.log("Auth error detected:", authError);
@@ -64,9 +36,8 @@ export default function Home() {
 
           if (resumesError) throw resumesError;
 
-          const processedResumes = await refreshResumeUrls(resumesData || []);
-
-          setResumes(processedResumes);
+          // Use the fetched resumes directly - no URL processing needed
+          setResumes(resumesData || []);
         }
       }
       catch (error) {
@@ -86,42 +57,26 @@ export default function Home() {
     setResumes([]);
   };
 
-
-
   const handleViewResume = async (resume) => {
     try {
-      // Extract just the relative path part from the URL
-      let filePath;
-      if (resume.file_url.includes('/object/sign/')) {
-        // For signed URLs, extract the path from the 'url' query parameter in the token
-        const urlParts = resume.file_url.split('?');
-        const path = urlParts[0].split('/sign/')[1];
-        filePath = path;
-      } else {
-        // Extract userId/fileName from the URL
-        const urlParts = resume.file_url.split('/');
-        const userId = urlParts[urlParts.length - 2];
-        const fileName = urlParts[urlParts.length - 1];
-        filePath = `${userId}/${fileName}`;
+      // Use file_path directly if available
+      if (!resume.file_path) {
+        alert('File path information is missing. Please try uploading the resume again.');
+        return;
       }
 
-      console.log('Attempting to get signed URL for path:', filePath);
+      console.log('Creating signed URL for:', resume.file_path);
 
-      // Create a signed URL with long expiry (30 days)
       const { data, error } = await supabase.storage
         .from('resumes')
-        .createSignedUrl(filePath, 60 * 60 * 24 * 30); // 30 days expiry
+        .createSignedUrl(resume.file_path, 60 * 60); // 1 hour expiry for testing
 
       if (error) {
         console.error('Error creating signed URL:', error);
         throw error;
       }
 
-      if (!data || !data.signedUrl) {
-        throw new Error('No signed URL returned');
-      }
-
-      console.log('Successfully created signed URL:', data.signedUrl);
+      console.log('Successfully created signed URL');
 
       // Open the signed URL in a new tab
       window.open(data.signedUrl, '_blank');
@@ -130,6 +85,7 @@ export default function Home() {
       alert('Could not view the resume. Please try again later.');
     }
   };
+
 
   const getStatusBadge = (status) => {
     const statusConfig = {
