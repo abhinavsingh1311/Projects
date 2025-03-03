@@ -182,9 +182,80 @@ function cleanupText(text) {
         .trim();
 }
 
+/**
+ * Validates the extraction result to ensure quality
+ * @param {string} text - Extracted text
+ * @param {Object} metadata - Extraction metadata
+ * @returns {Object} - Validation result with potential warnings
+ */
+function validateExtractionResult(text, metadata) {
+    const warnings = [];
+    const result = { isValid: true, warnings };
+
+    // Check for minimum text length
+    if (!text || text.length < 50) {
+        warnings.push('Extracted text is very short. File might be empty or contain mostly images.');
+        result.isValid = text.length > 0;
+    }
+
+    // Check for text structure issues
+    if (text && !text.includes('\n') && text.length > 500) {
+        warnings.push('Text has no line breaks. Formatting may have been lost during extraction.');
+    }
+
+    // Check for potential encoding issues
+    if (text && (text.includes('�') || text.includes('□'))) {
+        warnings.push('Text contains replacement characters. There might be encoding issues.');
+    }
+
+    // PDF-specific checks
+    if (metadata.pageCount === 1 && text.length < 200) {
+        warnings.push('Single-page document with little text. May be a scan or image-based PDF.');
+    }
+
+    return result;
+}
+
+
+/**
+ * Enhanced extraction with validation and detailed error reporting
+ */
+async function extractTextWithValidation(buffer, fileType, filename) {
+    try {
+        const { text, metadata } = await extractText(buffer, fileType, filename);
+        const validationResult = validateExtractionResult(text, metadata);
+
+        return {
+            success: true,
+            text,
+            metadata,
+            validation: validationResult
+        };
+    } catch (error) {
+        // Enhanced error categorization
+        let errorType = 'EXTRACTION_ERROR';
+        let errorDetails = error.message;
+
+        if (error.message.includes('unsupported file type')) {
+            errorType = 'UNSUPPORTED_FILE_TYPE';
+        } else if (error.message.includes('encrypted') || error.message.includes('password')) {
+            errorType = 'PROTECTED_DOCUMENT';
+        } else if (error.message.includes('corrupt') || error.message.includes('malformed')) {
+            errorType = 'CORRUPTED_FILE';
+        }
+
+        return {
+            success: false,
+            errorType,
+            errorDetails,
+            originalError: error
+        };
+    }
+}
+
 module.exports = {
     identifyFileType,
-    extractText,
+    extractTextWithValidation,
     extractFromPdf,
     extractFromDocx,
     extractFromDoc,

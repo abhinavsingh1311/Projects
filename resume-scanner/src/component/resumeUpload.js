@@ -129,7 +129,7 @@ export default function ResumeUpload() {
 
             console.log('File uploaded successfully');
 
-            // Get the file URL - IMPORTANT CHANGE HERE
+            // Get the file URL
             const { data: signedData, error: signedError } = await supabase.storage
                 .from('resumes')
                 .createSignedUrl(filePath, 60 * 60 * 24 * 30);
@@ -145,7 +145,7 @@ export default function ResumeUpload() {
                 title: title || 'Untitled Resume',
                 user_id: user.id,
                 file_path: filePath,
-                file_url: fileUrl, // Store the signed URL
+                file_url: fileUrl,
                 file_type: getFileType(file),
                 status: 'uploaded',
                 created_at: new Date().toISOString()
@@ -153,16 +153,45 @@ export default function ResumeUpload() {
 
             console.log('Saving resume data:', resumeData);
 
-            const { error: dbError } = await supabase
+            // Insert resume record into database
+            const { data: insertedResume, error: dbError } = await supabase
                 .from('resumes')
-                .insert([resumeData]);
+                .insert([resumeData])
+                .select('id')
+                .single();
 
             if (dbError) {
                 console.error('Database insertion error:', dbError);
                 throw dbError;
             }
 
-            console.log('Resume saved successfully');
+            console.log('Resume saved successfully with ID:', insertedResume.id);
+
+            // Trigger text extraction processing
+            try {
+                console.log('Triggering resume processing...');
+
+                const processingResponse = await fetch('/api/process-resume', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ resumeId: insertedResume.id }),
+                });
+
+                const processingResult = await processingResponse.json();
+
+                if (processingResult.success) {
+                    console.log('Resume processing initiated successfully');
+                } else {
+                    console.error('Failed to start resume processing:', processingResult.error);
+                    // Not showing this error to user since upload was successful
+                }
+            } catch (processingError) {
+                console.error('Error triggering resume processing:', processingError);
+                // Not showing this error to user since upload was successful
+            }
+
             setSuccess(true);
             setFile(null);
             setTitle('');

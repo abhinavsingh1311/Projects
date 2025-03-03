@@ -7,11 +7,15 @@ const { supabase, supabaseAdmin } = require('../config/database_connection');
  * @param {string} resumeId - The ID of the resume to process
  * @returns {Promise<Object>} - Result of the processing
  */
+
 async function processResume(resumeId) {
     console.log(`Starting processing for resume ID: ${resumeId}`);
 
     try {
-        // 1. Get the resume data
+        // Update status to processing
+        await updateResumeStatus(resumeId, 'parsing');
+
+        // Get the resume data
         const { data: resume, error: resumeError } = await supabaseAdmin
             .from('resumes')
             .select('*')
@@ -19,113 +23,76 @@ async function processResume(resumeId) {
             .single();
 
         if (resumeError) {
-            console.error('Error fetching resume:', resumeError);
-            throw new Error(`Failed to fetch resume: ${resumeError.message}`);
+            const errorInfo = handleExtractionError(resumeError, 'database-fetch');
+            await updateResumeStatus(resumeId, 'failed', errorInfo.userMessage);
+            await recordExtractionError(resumeId, errorInfo);
+            return { success: false, error: errorInfo };
         }
 
-        if (!resume) {
-            throw new Error(`Resume with ID ${resumeId} not found`);
-        }
-
-        // 2. Update status to parsing
-        const { error: updateError } = await supabaseAdmin
-            .from('resumes')
-            .update({ status: 'parsing' })
-            .eq('id', resumeId);
-
-        if (updateError) {
-            console.error('Error updating resume status:', updateError);
-            throw new Error(`Failed to update resume status: ${updateError.message}`);
-        }
-
-        console.log(`Updated resume ${resumeId} status to parsing`);
-
-        // 3. Download the file from storage
+        // Download the file
         const { data: fileData, error: fileError } = await supabaseAdmin.storage
             .from('resumes')
             .download(resume.file_path);
 
         if (fileError) {
-            console.error('Error downloading file:', fileError);
-            throw new Error(`Failed to download resume file: ${fileError.message}`);
+            const errorInfo = handleExtractionError(fileError, 'file-download');
+            await updateResumeStatus(resumeId, 'failed', errorInfo.userMessage);
+            await recordExtractionError(resumeId, errorInfo);
+            return { success: false, error: errorInfo };
         }
 
-        console.log(`Downloaded resume file from path: ${resume.file_path}`);
+        // Extract and validate text
+        const extractionResult = await extractTextWithValidation(
+            fileData,
+            resume.file_type,
+            resume.file_path
+        );
 
-        // 4. Extract text from the file
-        const fileType = resume.file_type || identifyFileType(resume.file_path);
-
-        if (!fileType) {
-            throw new Error('Could not determine file type for text extraction');
+        if (!extractionResult.success) {
+            const errorInfo = handleExtractionError(
+                new Error(extractionResult.errorDetails),
+                'text-extraction'
+            );
+            await updateResumeStatus(resumeId, 'failed', errorInfo.userMessage);
+            await recordExtractionError(resumeId, errorInfo);
+            return { success: false, error: errorInfo };
         }
 
-        console.log(`Extracting text from ${fileType} file...`);
+        // Check for warnings that might indicate poor extraction
+        const hasWarnings = extractionResult.validation &&
+            extractionResult.validation.warnings &&
+            extractionResult.validation.warnings.length > 0;
 
-        const { text, metadata } = await extractText(fileData, fileType, resume.file_path);
+        // Store the extracted text
+        await storeExtractedText(
+            resumeId,
+            extractionResult.text,
+            extractionResult.metadata,
+            hasWarnings ? extractionResult.validation.warnings : []
+        );
 
-        console.log(`Text extraction complete. Extracted ${text.length} characters`);
-
-        // 5. Store the extracted text in the database
-        const { error: insertError } = await supabaseAdmin
-            .from('resume_parsed_data')
-            .insert([{
-                resume_id: resumeId,
-                raw_text: text,
-                metadata: metadata || {},
-                processed_at: new Date().toISOString()
-            }]);
-
-        if (insertError) {
-            console.error('Error storing parsed data:', insertError);
-            throw new Error(`Failed to store parsed resume data: ${insertError.message}`);
-        }
-
-        console.log(`Stored parsed data for resume ${resumeId}`);
-
-        // 6. Update resume status to indicate successful parsing
-        const { error: finalUpdateError } = await supabaseAdmin
-            .from('resumes')
-            .update({
-                status: 'parsed',
-                last_processed_at: new Date().toISOString()
-            })
-            .eq('id', resumeId);
-
-        if (finalUpdateError) {
-            console.error('Error updating final status:', finalUpdateError);
-            throw new Error(`Failed to update final resume status: ${finalUpdateError.message}`);
-        }
-
-        console.log(`Processing completed successfully for resume ${resumeId}`);
+        // Update resume status
+        const finalStatus = hasWarnings ? 'parsed_with_warnings' : 'parsed';
+        await updateResumeStatus(resumeId, finalStatus);
 
         return {
             success: true,
             resumeId,
-            textLength: text.length,
-            message: 'Resume processed successfully'
+            textLength: extractionResult.text.length,
+            hasWarnings,
+            warnings: hasWarnings ? extractionResult.validation.warnings : [],
+            status: finalStatus
         };
 
     } catch (error) {
-        console.error(`Error processing resume ${resumeId}:`, error);
-
-        // Update resume status to failed
-        try {
-            await supabaseAdmin
-                .from('resumes')
-                .update({
-                    status: 'failed',
-                    last_processed_at: new Date().toISOString(),
-                    processing_error: error.message
-                })
-                .eq('id', resumeId);
-        } catch (updateError) {
-            console.error('Failed to update status to failed:', updateError);
-        }
+        // Handle any uncaught errors
+        const errorInfo = handleExtractionError(error, 'unknown');
+        await updateResumeStatus(resumeId, 'failed', errorInfo.userMessage);
+        await recordExtractionError(resumeId, errorInfo);
 
         return {
             success: false,
-            resumeId,
-            error: error.message || 'Unknown error during resume processing'
+            error: errorInfo
         };
     }
 }
@@ -252,9 +219,72 @@ async function processAllPendingResumes() {
     }
 }
 
+/**
+ * Updates resume status with error handling
+ */
+async function updateResumeStatus(resumeId, status, errorMessage = null) {
+    try {
+        const updateData = {
+            status,
+            last_processed_at: new Date().toISOString()
+        };
+
+        if (errorMessage) {
+            updateData.processing_error = errorMessage;
+        } else {
+            // Clear any previous errors if successful
+            updateData.processing_error = null;
+        }
+
+        const { error } = await supabaseAdmin
+            .from('resumes')
+            .update(updateData)
+            .eq('id', resumeId);
+
+        if (error) {
+            console.error(`Failed to update resume status to ${status}:`, error);
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error(`Exception updating resume status to ${status}:`, error);
+        return false;
+    }
+}
+
+/**
+ * Stores extracted text in database with error handling
+ */
+async function storeExtractedText(resumeId, text, metadata, warnings = []) {
+    try {
+        const { error } = await supabaseAdmin
+            .from('resume_parsed_data')
+            .insert([{
+                resume_id: resumeId,
+                raw_text: text,
+                metadata: metadata || {},
+                warnings: warnings,
+                processed_at: new Date().toISOString()
+            }]);
+
+        if (error) {
+            console.error('Failed to store extracted text:', error);
+            throw error;
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Exception storing extracted text:', error);
+        throw error;
+    }
+}
+
 module.exports = {
     processResume,
     reprocessResume,
     doesResumeNeedProcessing,
-    processAllPendingResumes
+    processAllPendingResumes,
+    updateResumeStatus,
+    storeExtractedText
 };
