@@ -310,13 +310,6 @@ export default function ResumeUpload() {
                 </button>
             </form>
 
-            <div className="mt-8 bg-blue-50 rounded-lg p-4 dark:bg-blue-900/20">
-                <h3 className="font-medium text-blue-800 dark:text-blue-300 mb-2 text-sm">Supported File Types</h3>
-                <ul className="list-disc list-inside text-sm text-blue-700 dark:text-blue-400 space-y-1">
-                    <li>PDF documents (.pdf)</li>
-                    <li>Microsoft Word documents (.doc, .docx)</li>
-                </ul>
-            </div>
         </div>
     )
 }
