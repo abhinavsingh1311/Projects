@@ -10,6 +10,30 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    async function refreshResumeUrls(resumesData) {
+      return Promise.all(
+        resumesData.map(async (resume) => {
+          if (resume.file_path) {
+            try {
+              const { data, error } = await supabase.storage
+                .from('resumes')
+                .createSignedUrl(resume.file_path, 60 * 60 * 24 * 30);
+
+              if (!error && data?.signedUrl) {
+                return {
+                  ...resume,
+                  file_url: data.signedUrl
+                };
+              }
+            } catch (err) {
+              console.error('Error refreshing URL:', err);
+            }
+          }
+          return resume;
+        })
+      );
+    }
+
     async function fetchUserAndResumes() {
       try {
         setLoading(true);
@@ -40,7 +64,9 @@ export default function Home() {
 
           if (resumesError) throw resumesError;
 
-          setResumes(resumesData || []);
+          const processedResumes = await refreshResumeUrls(resumesData || []);
+
+          setResumes(processedResumes);
         }
       }
       catch (error) {
@@ -58,6 +84,51 @@ export default function Home() {
     await supabase.auth.signOut();
     setUser(null);
     setResumes([]);
+  };
+
+
+
+  const handleViewResume = async (resume) => {
+    try {
+      // Extract just the relative path part from the URL
+      let filePath;
+      if (resume.file_url.includes('/object/sign/')) {
+        // For signed URLs, extract the path from the 'url' query parameter in the token
+        const urlParts = resume.file_url.split('?');
+        const path = urlParts[0].split('/sign/')[1];
+        filePath = path;
+      } else {
+        // Extract userId/fileName from the URL
+        const urlParts = resume.file_url.split('/');
+        const userId = urlParts[urlParts.length - 2];
+        const fileName = urlParts[urlParts.length - 1];
+        filePath = `${userId}/${fileName}`;
+      }
+
+      console.log('Attempting to get signed URL for path:', filePath);
+
+      // Create a signed URL with long expiry (30 days)
+      const { data, error } = await supabase.storage
+        .from('resumes')
+        .createSignedUrl(filePath, 60 * 60 * 24 * 30); // 30 days expiry
+
+      if (error) {
+        console.error('Error creating signed URL:', error);
+        throw error;
+      }
+
+      if (!data || !data.signedUrl) {
+        throw new Error('No signed URL returned');
+      }
+
+      console.log('Successfully created signed URL:', data.signedUrl);
+
+      // Open the signed URL in a new tab
+      window.open(data.signedUrl, '_blank');
+    } catch (error) {
+      console.error('Error viewing resume:', error);
+      alert('Could not view the resume. Please try again later.');
+    }
   };
 
   const getStatusBadge = (status) => {
@@ -152,7 +223,7 @@ export default function Home() {
 
       {resumes.length === 0 ? (
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           <p className="mb-4 text-lg">No resumes found. Upload your resume to get started!</p>
@@ -187,14 +258,12 @@ export default function Home() {
                   </div>
 
                   <div className="flex space-x-2">
-                    <a
-                      href={resume.file_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => handleViewResume(resume)}
                       className="text-primary hover:underline text-sm"
                     >
                       View
-                    </a>
+                    </button>
 
                     {resume.status === 'analyzed' && (
                       <Link

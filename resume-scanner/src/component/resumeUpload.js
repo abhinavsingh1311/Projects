@@ -66,7 +66,7 @@ export default function ResumeUpload() {
             // File upload to Supabase
             const fileExt = file.name.split('.').pop();
             const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-            const filePath = `${user.id}/${fileName}`; // Important: Include user ID in path for RLS
+            const filePath = `${user.id}/${fileName}`; // Include user ID in path for RLS
 
             console.log(`Uploading file to path: ${filePath}`);
 
@@ -84,19 +84,25 @@ export default function ResumeUpload() {
 
             console.log('File uploaded successfully:', filePath);
 
-            // Get public URL
-            const { data: urlData } = supabase.storage
+            // Get a signed URL with a long expiry time (30 days)
+            const { data: signedData, error: signedError } = await supabase.storage
                 .from('resumes')
-                .getPublicUrl(filePath);
+                .createSignedUrl(filePath, 60 * 60 * 24 * 30); // 30 days expiry
 
-            const publicUrl = urlData.publicUrl;
-            console.log('Public URL:', publicUrl);
+            if (signedError) {
+                console.error('Error creating signed URL:', signedError);
+                throw signedError;
+            }
+
+            const signedUrl = signedData.signedUrl;
+            console.log('Signed URL:', signedUrl);
 
             // Save to database
             const resumeData = {
                 title: title || 'Untitled Resume',
                 user_id: user.id,
-                file_url: publicUrl,
+                file_url: signedUrl,
+                file_path: filePath, // Store the path separately for future use
                 file_type: getFileType(file),
                 status: 'uploaded',
                 created_at: new Date().toISOString()
