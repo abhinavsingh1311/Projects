@@ -3,13 +3,15 @@ import { useState } from "react";
 import { supabase } from "@/server/utils/supabase-client";
 import Link from 'next/link';
 
-export default async function ResumeUpload() {
+export default function ResumeUpload() {
     const [file, setFile] = useState(null);
     const [title, setTitle] = useState('');
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
     const [dragActive, setDragActive] = useState(false);
+    const [resumeId, setResumeId] = useState(null);
+    const [processing, setProcessing] = useState(false);
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -166,10 +168,12 @@ export default async function ResumeUpload() {
             }
 
             console.log('Resume saved successfully with ID:', insertedResume.id);
+            setResumeId(insertedResume.id);
 
             // Trigger text extraction processing
             try {
                 console.log('Triggering resume processing...');
+                setProcessing(true);
 
                 const processingResponse = await fetch('/api/process-resume', {
                     method: 'POST',
@@ -190,6 +194,8 @@ export default async function ResumeUpload() {
             } catch (processingError) {
                 console.error('Error triggering resume processing:', processingError);
                 // Not showing this error to user since upload was successful
+            } finally {
+                setProcessing(false);
             }
 
             setSuccess(true);
@@ -204,30 +210,6 @@ export default async function ResumeUpload() {
         }
     };
 
-    try {
-        console.log('Triggering resume processing...');
-
-        const processingResponse = await fetch('/api/process-resume', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ resumeId: insertedResume.id }),
-        });
-
-        const processingResult = await processingResponse.json();
-
-        if (processingResult.success) {
-            console.log('Resume processing initiated successfully');
-        } else {
-            console.error('Failed to start resume processing:', processingResult.error);
-            // Not showing this error to user since upload was successful
-        }
-    } catch (processingError) {
-        console.error('Error triggering resume processing:', processingError);
-        // Not showing this error to user since upload was successful
-    }
-
     if (success) {
         return (
             <div className='max-w-lg mx-auto p-8 bg-white rounded-xl shadow-lg dark:bg-gray-800'>
@@ -238,13 +220,21 @@ export default async function ResumeUpload() {
                         </svg>
                     </div>
                     <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Resume Uploaded Successfully!</h2>
-                    <p className="mb-6 text-gray-600 dark:text-gray-300">Your resume has been uploaded and will be analyzed shortly.</p>
+                    <p className="mb-6 text-gray-600 dark:text-gray-300">
+                        Your resume has been uploaded and is being processed. You'll be able to view the analysis shortly.
+                    </p>
                     <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center">
+                        <Link
+                            href={`/resume/${resumeId}`}
+                            className="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition duration-200"
+                        >
+                            View Resume
+                        </Link>
                         <button
                             onClick={() => window.location.href = '/'}
                             className="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition duration-200"
                         >
-                            View My Resumes
+                            Go to My Resumes
                         </button>
                         <button
                             onClick={() => setSuccess(false)}
@@ -341,21 +331,25 @@ export default async function ResumeUpload() {
                     </div>
                 </div>
 
+                <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    <p>Your resume will be processed to extract skills, experience, and other information for analysis.</p>
+                </div>
+
                 <button
                     type="submit"
-                    disabled={uploading || !file}
-                    className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${uploading || !file
+                    disabled={uploading || processing || !file}
+                    className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${(uploading || processing || !file)
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
                         } transition-colors duration-200`}
                 >
-                    {uploading ? (
+                    {uploading || processing ? (
                         <div className="flex items-center">
                             <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            Uploading...
+                            {uploading ? 'Uploading...' : 'Processing...'}
                         </div>
                     ) : (
                         "Upload Resume"
@@ -364,5 +358,5 @@ export default async function ResumeUpload() {
             </form>
 
         </div>
-    )
+    );
 }

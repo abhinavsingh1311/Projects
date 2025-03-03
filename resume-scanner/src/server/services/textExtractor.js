@@ -42,8 +42,6 @@ async function extractFromPdf(buffer) {
     try {
         const options = {
             // You can add custom options here if needed
-            // For example, to limit the number of pages processed:
-            // max: 10,
         };
 
         const data = await pdfParse(buffer, options);
@@ -71,7 +69,6 @@ async function extractFromDocx(buffer) {
 
 /**
  * Extracts text content from a DOC buffer (legacy Word format)
- * Note: This is limited as mammoth primarily supports DOCX
  * @param {Buffer} buffer - DOC file as a buffer
  * @returns {Promise<string>} - Extracted text content or error message
  */
@@ -215,7 +212,6 @@ function validateExtractionResult(text, metadata) {
 
     return result;
 }
-
 
 /**
  * Enhanced extraction with validation and detailed error reporting
