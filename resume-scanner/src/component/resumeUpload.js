@@ -1,5 +1,6 @@
+// src/component/resumeUpload.js
 'use client';
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { supabase } from "@/server/utils/supabase-client";
 import Link from 'next/link';
 
@@ -12,10 +13,47 @@ export default function ResumeUpload() {
     const [dragActive, setDragActive] = useState(false);
     const [resumeId, setResumeId] = useState(null);
     const [processing, setProcessing] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [fileValidation, setFileValidation] = useState({ valid: false, message: '' });
+
+    const validateFile = useCallback((selectedFile) => {
+        // Basic validation
+        if (!selectedFile) {
+            return { valid: false, message: 'Please select a file' };
+        }
+
+        // Size validation (max 10MB)
+        const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+        if (selectedFile.size > maxSize) {
+            return {
+                valid: false,
+                message: `File is too large (${(selectedFile.size / (1024 * 1024)).toFixed(2)}MB). Maximum size is 10MB.`
+            };
+        }
+
+        // Type validation
+        const allowedTypes = [
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ];
+
+        if (!allowedTypes.includes(selectedFile.type)) {
+            return {
+                valid: false,
+                message: 'Invalid file type. Please upload a PDF, DOC, or DOCX file.'
+            };
+        }
+
+        // If all checks pass
+        return { valid: true, message: 'File is valid' };
+    }, []);
 
     const handleFileChange = (e) => {
-        const selectedFile = e.target.files[0];
-        processFile(selectedFile);
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+            processFile(selectedFile);
+        }
     };
 
     const handleDrag = (e) => {
@@ -40,21 +78,34 @@ export default function ResumeUpload() {
     };
 
     const processFile = (selectedFile) => {
-        const allowedTypes = [
-            'application/pdf',
-            'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        ];
+        // Reset previous errors
+        setError(null);
 
-        if (selectedFile && allowedTypes.includes(selectedFile.type)) {
+        // Validate the file
+        const validation = validateFile(selectedFile);
+        setFileValidation(validation);
+
+        if (validation.valid) {
             setFile(selectedFile);
+            // Auto-populate title from filename if empty
             if (!title) {
-                setTitle(selectedFile.name.split('.')[0]);
+                // Remove extension and replace underscores/hyphens with spaces
+                let suggestedTitle = selectedFile.name.split('.')[0]
+                    .replace(/[_-]/g, ' ')
+                    .replace(/\s+/g, ' ') // Normalize spaces
+                    .trim();
+
+                // Capitalize words
+                suggestedTitle = suggestedTitle
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+
+                setTitle(suggestedTitle);
             }
-            setError(null);
         } else {
             setFile(null);
-            setError('Please select a valid file type (PDF, DOC, or DOCX)');
+            setError(validation.message);
         }
     };
 
@@ -101,32 +152,42 @@ export default function ResumeUpload() {
         try {
             setUploading(true);
             setError(null);
+            setUploadProgress(0);
 
             // Get user session
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
-                throw new Error('User authentication failed');
+            const { data: { user }, error: authError } = await supabase.auth.getUser();
+            if (authError || !user) {
+                throw new Error(authError?.message || 'Authentication required. Please sign in again.');
             }
 
             console.log("Authenticated user:", user.id);
 
-            // Create a simple file path
+            // Create a sanitized file path
             const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}.${fileExt}`;
+            const sanitizedName = file.name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+            const fileName = `${Date.now()}_${sanitizedName}`;
             const filePath = `${user.id}/${fileName}`;
 
             console.log(`Uploading file to path: ${filePath}`);
 
+            // Set up upload with progress tracking
+            const uploadOptions = {
+                upsert: true,
+                onUploadProgress: (progress) => {
+                    // Calculate percentage completion
+                    const percentage = Math.round((progress.loaded / progress.total) * 100);
+                    setUploadProgress(percentage);
+                }
+            };
+
             // Upload the file
             const { error: uploadError } = await supabase.storage
                 .from('resumes')
-                .upload(filePath, file, {
-                    upsert: true
-                });
+                .upload(filePath, file, uploadOptions);
 
             if (uploadError) {
                 console.error('Upload error details:', uploadError);
-                throw uploadError;
+                throw new Error(`File upload failed: ${uploadError.message}`);
             }
 
             console.log('File uploaded successfully');
@@ -138,7 +199,7 @@ export default function ResumeUpload() {
 
             if (signedError) {
                 console.error('Error creating signed URL:', signedError);
-                throw signedError;
+                throw new Error(`Failed to generate URL for the uploaded file: ${signedError.message}`);
             }
             const fileUrl = signedData.signedUrl;
             console.log('Signed URL generated:', fileUrl);
@@ -164,7 +225,7 @@ export default function ResumeUpload() {
 
             if (dbError) {
                 console.error('Database insertion error:', dbError);
-                throw dbError;
+                throw new Error(`Failed to save resume information: ${dbError.message}`);
             }
 
             console.log('Resume saved successfully with ID:', insertedResume.id);
@@ -183,17 +244,23 @@ export default function ResumeUpload() {
                     body: JSON.stringify({ resumeId: insertedResume.id }),
                 });
 
-                const processingResult = await processingResponse.json();
-
-                if (processingResult.success) {
-                    console.log('Resume processing initiated successfully');
+                if (!processingResponse.ok) {
+                    const errorData = await processingResponse.json();
+                    console.warn('Processing warning:', errorData.error || 'Unknown processing issue');
+                    // We don't fail the upload, but show a warning
                 } else {
-                    console.error('Failed to start resume processing:', processingResult.error);
-                    // Not showing this error to user since upload was successful
+                    const processingResult = await processingResponse.json();
+                    if (processingResult.success) {
+                        console.log('Resume processing initiated successfully');
+                    } else {
+                        console.warn('Processing warning:', processingResult.error || 'Unknown processing issue');
+                    }
                 }
             } catch (processingError) {
                 console.error('Error triggering resume processing:', processingError);
-                // Not showing this error to user since upload was successful
+                // Show a warning toast but don't fail the upload
+                // In a real app, we might use a toast library here
+                console.warn('Your resume was uploaded but processing might be delayed. You can try again later.');
             } finally {
                 setProcessing(false);
             }
@@ -201,6 +268,7 @@ export default function ResumeUpload() {
             setSuccess(true);
             setFile(null);
             setTitle('');
+            setUploadProgress(0);
 
         } catch (error) {
             console.error('Error uploading resume:', error);
@@ -230,12 +298,12 @@ export default function ResumeUpload() {
                         >
                             View Resume
                         </Link>
-                        <button
-                            onClick={() => window.location.href = '/'}
+                        <Link
+                            href="/"
                             className="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition duration-200"
                         >
                             Go to My Resumes
-                        </button>
+                        </Link>
                         <button
                             onClick={() => setSuccess(false)}
                             className="px-6 py-3 bg-white text-gray-700 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition duration-200 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600"
@@ -279,8 +347,10 @@ export default function ResumeUpload() {
                     </label>
 
                     <div
-                        className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer ${dragActive ? 'border-primary bg-primary/5' : 'border-gray-300 dark:border-gray-700'
-                            } hover:border-primary hover:bg-primary/5 transition-colors dark:hover:border-primary/70 dark:hover:bg-primary/10`}
+                        className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer 
+                            ${dragActive ? 'border-primary bg-primary/5' : 'border-gray-300 dark:border-gray-700'}
+                            ${file ? 'bg-gray-50 dark:bg-gray-800' : ''}
+                            hover:border-primary hover:bg-primary/5 transition-colors dark:hover:border-primary/70 dark:hover:bg-primary/10`}
                         onDragEnter={handleDrag}
                         onDragLeave={handleDrag}
                         onDragOver={handleDrag}
@@ -335,6 +405,16 @@ export default function ResumeUpload() {
                     <p>Your resume will be processed to extract skills, experience, and other information for analysis.</p>
                 </div>
 
+                {uploadProgress > 0 && uploadProgress < 100 && (
+                    <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 my-4">
+                        <div
+                            className="bg-primary h-2.5 rounded-full transition-all duration-300"
+                            style={{ width: `${uploadProgress}%` }}
+                        ></div>
+                        <p className="text-xs text-gray-500 mt-1 text-right">{uploadProgress}% uploaded</p>
+                    </div>
+                )}
+
                 <button
                     type="submit"
                     disabled={uploading || processing || !file}
@@ -357,6 +437,15 @@ export default function ResumeUpload() {
                 </button>
             </form>
 
+            <div className="mt-6 border-t pt-4 border-gray-200 dark:border-gray-700">
+                <h3 className="font-medium text-sm text-gray-700 dark:text-gray-300 mb-2">Tips for better results:</h3>
+                <ul className="list-disc list-inside text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                    <li>Use a well-formatted PDF for best extraction accuracy</li>
+                    <li>Ensure your resume includes a skills section</li>
+                    <li>Keep your resume under 10MB in size</li>
+                    <li>Text-based documents work better than scanned images</li>
+                </ul>
+            </div>
         </div>
     );
 }
