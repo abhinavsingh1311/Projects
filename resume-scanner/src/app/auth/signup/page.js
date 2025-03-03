@@ -2,39 +2,76 @@
 import { useState } from 'react';
 import { supabase } from '@/server/utils/supabase-client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
-export default function SignInPage() {
+export default function SignupPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const router = useRouter();
+    const [successMessage, setSuccessMessage] = useState(null);
 
-    const handleSignIn = async (e) => {
+    // Basic email validation
+    const isEmailValid = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
+    // Basic password validation - at least 6 characters
+    const isPasswordValid = (password) => {
+        return password.length >= 6;
+    };
+
+    const handleSignup = async (e) => {
         e.preventDefault();
 
-        if (!email || !password) {
-            setError('Please enter both email and password');
+        // Reset messages
+        setError(null);
+        setSuccessMessage(null);
+
+        // Validate form
+        if (!isEmailValid(email)) {
+            setError('Please enter a valid email address');
+            return;
+        }
+
+        if (!isPasswordValid(password)) {
+            setError('Password must be at least 6 characters long');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
             return;
         }
 
         try {
             setLoading(true);
-            setError(null);
 
-            const { error } = await supabase.auth.signInWithPassword({
+            // Sign up with Supabase
+            const { data, error } = await supabase.auth.signUp({
                 email,
-                password
+                password,
+                options: {
+                    // This will redirect the user after clicking the confirmation link
+                    emailRedirectTo: `${window.location.origin}/auth/callback`,
+                }
             });
 
             if (error) throw error;
 
-            // Redirect to dashboard on successful sign in
-            router.push('/');
+            // Success message
+            setSuccessMessage(
+                'Registration successful! Please check your email for a confirmation link.'
+            );
+
+            // Reset form
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
 
         } catch (error) {
-            console.error('Error signing in:', error);
+            console.error('Error during signup:', error);
             setError(error.message);
         } finally {
             setLoading(false);
@@ -45,9 +82,9 @@ export default function SignInPage() {
         <div className="container mx-auto p-4">
             <div className="max-w-md mx-auto">
                 <div className="text-center mb-8">
-                    <h1 className="text-2xl font-bold">Sign In</h1>
+                    <h1 className="text-2xl font-bold">Create an Account</h1>
                     <p className="text-gray-600 mt-2">
-                        Sign in to access your resume dashboard
+                        Sign up to upload your resume and discover matching job opportunities
                     </p>
                 </div>
 
@@ -58,7 +95,13 @@ export default function SignInPage() {
                         </div>
                     )}
 
-                    <form onSubmit={handleSignIn} className="space-y-4">
+                    {successMessage && (
+                        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                            {successMessage}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSignup} className="space-y-4">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                 Email
@@ -85,6 +128,23 @@ export default function SignInPage() {
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                                 required
                             />
+                            <p className="text-xs text-gray-500 mt-1">
+                                Password must be at least 6 characters long
+                            </p>
+                        </div>
+
+                        <div>
+                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                                Confirm Password
+                            </label>
+                            <input
+                                id="confirmPassword"
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+                                required
+                            />
                         </div>
 
                         <button
@@ -92,15 +152,15 @@ export default function SignInPage() {
                             disabled={loading}
                             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
                         >
-                            {loading ? 'Signing in...' : 'Sign In'}
+                            {loading ? 'Creating Account...' : 'Sign Up'}
                         </button>
                     </form>
 
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-600">
-                            Don't have an account?{' '}
-                            <Link href="/auth/signup" className="text-primary hover:text-primary-dark">
-                                Sign Up
+                            Already have an account?{' '}
+                            <Link href="/auth/signin" className="text-primary hover:text-primary-dark">
+                                Sign In
                             </Link>
                         </p>
                     </div>
