@@ -78,27 +78,38 @@ export default function Home() {
 
   const handleViewResume = async (resume) => {
     try {
-      // Use file_path directly if available
+      // Always create a fresh signed URL, regardless of what's stored
+      // This ensures we always have a working link
       if (!resume.file_path) {
-        alert('File path information is missing. Please try uploading the resume again.');
+        setNotification({
+          show: true,
+          message: 'File path information is missing. Please try uploading the resume again.',
+          type: 'error'
+        });
         return;
       }
 
-      console.log('Creating signed URL for:', resume.file_path);
+      console.log('Creating signed URL for path:', resume.file_path);
 
+      // Create a signed URL with 7-day expiry
       const { data, error } = await supabase.storage
         .from('resumes')
-        .createSignedUrl(resume.file_path, 60 * 60); // 1 hour expiry for testing
+        .createSignedUrl(resume.file_path, 60 * 60 * 24 * 7);
 
       if (error) {
         console.error('Error creating signed URL:', error);
         throw error;
       }
 
+      if (!data || !data.signedUrl) {
+        throw new Error('Failed to generate a signed URL');
+      }
+
       console.log('Successfully created signed URL');
 
       // Open the signed URL in a new tab
       window.open(data.signedUrl, '_blank');
+
     } catch (error) {
       console.error('Error viewing resume:', error);
       setNotification({

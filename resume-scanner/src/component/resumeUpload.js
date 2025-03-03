@@ -130,19 +130,22 @@ export default function ResumeUpload() {
             console.log('File uploaded successfully');
 
             // Get the file URL - IMPORTANT CHANGE HERE
-            const { data: urlData } = supabase.storage
+            const { data: signedData, error: signedError } = await supabase.storage
                 .from('resumes')
-                .getPublicUrl(filePath);
+                .createSignedUrl(filePath, 60 * 60 * 24 * 30);
 
-            const fileUrl = urlData.publicUrl;
-            console.log('File URL generated:', fileUrl);
+            if (signedError) {
+                console.error('Error creating signed URL:', signedError);
+                throw signedError;
+            }
+            const fileUrl = signedData.signedUrl;
+            console.log('Signed URL generated:', fileUrl);
 
-            // Save to database with file path AND file URL
             const resumeData = {
                 title: title || 'Untitled Resume',
                 user_id: user.id,
                 file_path: filePath,
-                file_url: fileUrl, // Add the file_url here to satisfy database constraint
+                file_url: fileUrl, // Store the signed URL
                 file_type: getFileType(file),
                 status: 'uploaded',
                 created_at: new Date().toISOString()
@@ -289,8 +292,8 @@ export default function ResumeUpload() {
                     type="submit"
                     disabled={uploading || !file}
                     className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${uploading || !file
-                            ? 'bg-gray-400 cursor-not-allowed'
-                            : 'bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
                         } transition-colors duration-200`}
                 >
                     {uploading ? (
