@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { supabase } from '@/server/utils/supabase-client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 export default function SignInPage() {
     const [email, setEmail] = useState('');
@@ -45,15 +44,14 @@ export default function SignInPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-cover bg-center"
-            style={{ backgroundImage: 'url(/bg-leaves.jpg)' }}>
-            <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="min-h-screen flex items-center justify-center bg-cream">
+            <div className="absolute inset-0 bg-cream-light opacity-40"></div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-8 w-full max-w-md z-10">
+            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md z-10 border border-brown-light">
                 <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Sign in</h1>
+                    <h1 className="text-2xl font-bold text-brown">Sign in</h1>
                     <button
-                        className="text-gray-400 hover:text-gray-500"
+                        className="text-brown-light hover:text-brown"
                         onClick={() => router.push('/')}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -70,7 +68,7 @@ export default function SignInPage() {
 
                 <form onSubmit={handleSignIn} className="space-y-6">
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label htmlFor="email" className="block text-sm font-medium text-text mb-1">
                             Email or phone number
                         </label>
                         <input
@@ -78,14 +76,14 @@ export default function SignInPage() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                            className="w-full px-4 py-3 rounded-lg border border-brown-light focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent bg-cream-light"
                             required
                         />
                     </div>
 
                     <div>
                         <div className="flex justify-between mb-1">
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <label htmlFor="password" className="block text-sm font-medium text-text">
                                 Password
                             </label>
                         </div>
@@ -95,12 +93,12 @@ export default function SignInPage() {
                                 type={showPassword ? "text" : "password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                className="w-full px-4 py-3 rounded-lg border border-brown-light focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent bg-cream-light"
                                 required
                             />
                             <button
                                 type="button"
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-brown-light hover:text-brown"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? (
@@ -125,15 +123,15 @@ export default function SignInPage() {
                                 type="checkbox"
                                 checked={rememberMe}
                                 onChange={(e) => setRememberMe(e.target.checked)}
-                                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                                className="h-4 w-4 text-brown focus:ring-brown border-brown-light rounded"
                             />
-                            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                            <label htmlFor="remember-me" className="ml-2 block text-sm text-text">
                                 Remember me
                             </label>
                         </div>
 
                         <div className="text-sm">
-                            <Link href="/auth/reset-password" className="text-primary hover:text-primary-dark">
+                            <Link href="/auth/reset-password" className="text-brown hover:text-brown-dark">
                                 Need help?
                             </Link>
                         </div>
@@ -142,7 +140,7 @@ export default function SignInPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 px-4 bg-primary hover:bg-primary-dark focus:ring-4 focus:ring-primary-light focus:outline-none text-white font-medium rounded-lg transition duration-200 ease-in-out"
+                        className="w-full py-3 px-4 bg-brown hover:bg-brown-dark focus:ring-4 focus:ring-brown-light focus:outline-none text-white font-medium rounded-lg transition duration-200 ease-in-out"
                     >
                         {loading ? (
                             <div className="flex items-center justify-center">
@@ -159,17 +157,17 @@ export default function SignInPage() {
                 </form>
 
                 <div className="mt-6 text-center text-sm">
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-text-light">
                         Don't have an account?{' '}
-                        <Link href="/auth/signup" className="text-primary hover:text-primary-dark font-medium">
+                        <Link href="/auth/signup" className="text-brown hover:text-brown-dark font-medium">
                             Sign up
                         </Link>
                     </p>
                 </div>
 
-                <div className="mt-4 text-xs text-center text-gray-500 dark:text-gray-400">
+                <div className="mt-4 text-xs text-center text-text-light">
                     This page is protected by Google reCAPTCHA to ensure you're not a bot.{' '}
-                    <a href="#" className="text-primary hover:text-primary-dark">
+                    <a href="#" className="text-brown hover:text-brown-dark">
                         Learn more
                     </a>.
                 </div>

@@ -280,8 +280,8 @@ export default function ResumeUpload() {
                     type="submit"
                     disabled={uploading || !file}
                     className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${uploading || !file
-                            ? 'bg-gray-400 cursor-not-allowed'
-                            : 'bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
                         } transition-colors duration-200`}
                 >
                     {uploading ? (
