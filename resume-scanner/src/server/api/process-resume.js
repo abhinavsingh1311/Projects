@@ -1,5 +1,5 @@
 // src/pages/api/process-resume.js
-import { processResume, reprocessResume, doesResumeNeedProcessing } from '@/server/services/resumeProcessor';
+import { processAndAnalyzeResume, reprocessAndAnalyzeResume } from '@/server/services/resumeProcessingPipeline';
 
 export default async function handler(req, res) {
     // Only allow POST requests
@@ -22,27 +22,13 @@ export default async function handler(req, res) {
             });
         }
 
-        // Check if this resume needs processing (unless force=true)
-        if (!force) {
-            const needsProcessing = await doesResumeNeedProcessing(resumeId);
-
-            if (!needsProcessing) {
-                return res.status(200).json({
-                    success: true,
-                    message: 'Resume already processed',
-                    resumeId,
-                    alreadyProcessed: true
-                });
-            }
-        }
-
-        // Process immediately or start background processing
+        // Process or reprocess based on force flag
         if (force) {
-            // If force=true, reprocess even if already processed
+            // If force=true, reprocess entirely
             console.log(`Force reprocessing resume ${resumeId}`);
 
             // Start processing in the background
-            reprocessResume(resumeId)
+            reprocessAndAnalyzeResume(resumeId)
                 .then(result => {
                     console.log(`Reprocessing completed for resume ${resumeId}:`, result.success);
                 })
@@ -61,7 +47,7 @@ export default async function handler(req, res) {
             console.log(`Processing resume ${resumeId}`);
 
             // Start processing in the background
-            processResume(resumeId)
+            processAndAnalyzeResume(resumeId)
                 .then(result => {
                     console.log(`Processing completed for resume ${resumeId}:`, result.success);
                 })

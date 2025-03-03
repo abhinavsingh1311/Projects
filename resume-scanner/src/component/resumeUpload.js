@@ -3,7 +3,7 @@ import { useState } from "react";
 import { supabase } from "@/server/utils/supabase-client";
 import Link from 'next/link';
 
-export default function ResumeUpload() {
+export default async function ResumeUpload() {
     const [file, setFile] = useState(null);
     const [title, setTitle] = useState('');
     const [uploading, setUploading] = useState(false);
@@ -203,6 +203,30 @@ export default function ResumeUpload() {
             setUploading(false);
         }
     };
+
+    try {
+        console.log('Triggering resume processing...');
+
+        const processingResponse = await fetch('/api/process-resume', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ resumeId: insertedResume.id }),
+        });
+
+        const processingResult = await processingResponse.json();
+
+        if (processingResult.success) {
+            console.log('Resume processing initiated successfully');
+        } else {
+            console.error('Failed to start resume processing:', processingResult.error);
+            // Not showing this error to user since upload was successful
+        }
+    } catch (processingError) {
+        console.error('Error triggering resume processing:', processingError);
+        // Not showing this error to user since upload was successful
+    }
 
     if (success) {
         return (
