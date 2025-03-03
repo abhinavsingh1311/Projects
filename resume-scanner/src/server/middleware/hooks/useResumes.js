@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/server/utils/supabase-client';
 
-export function userResumes() {
+export function useResumes() {
     const [resumes, setResumes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -17,17 +17,14 @@ export function userResumes() {
                 }
 
                 const { data, error } = await supabase
-                    .schema('public')
                     .from('resumes')
                     .select('*')
                     .eq('user_id', user.id);
-
 
                 if (error) throw error;
 
                 setResumes(data || []);
             }
-
             catch (error) {
                 console.log('Error fetching resumes:', error);
                 setError(error.message);

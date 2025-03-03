@@ -1,7 +1,7 @@
 // src/server/config/database_connection.js
 const { createClient } = require('@supabase/supabase-js');
 
-// Fix typo: "supbaseUrl" -> "supabaseUrl"
+// For server-side, regular env vars are fine
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_KEY;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
