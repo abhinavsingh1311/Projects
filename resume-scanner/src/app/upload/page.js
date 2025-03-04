@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/server/utils/supabase-client';
-import ResumeUpload from '@/component/resumeUpload';
+import ResumeUpload from '@/component/resume/ResumeUpload';
 import Link from 'next/link';
 
 export default function UploadPage() {
