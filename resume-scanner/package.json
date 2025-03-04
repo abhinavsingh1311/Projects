@@ -30,6 +30,7 @@
     "postgres": "^3.4.5",
     "react": "^18",
     "react-dom": "^18",
+    "tesseract.js": "^6.0.0",
     "winston": "^3.10.0"
   },
   "devDependencies": {

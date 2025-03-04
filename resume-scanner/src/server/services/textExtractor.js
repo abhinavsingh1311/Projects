@@ -1,7 +1,7 @@
 // src/server/services/textExtractor.js
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
-const { createWorker } = require('tesseract.js'); // Add this package for OCR
+const { createWorker } = require('tesseract.js');
 
 /**
  * Identifies the type of file based on the file extension or mime type
