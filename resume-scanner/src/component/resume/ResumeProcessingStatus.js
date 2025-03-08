@@ -10,88 +10,113 @@ export default function ResumeProcessingStatus({ resumeId, initialStatus, onStat
     const [timeRemaining, setTimeRemaining] = useState(null);
     const [checkCount, setCheckCount] = useState(0);
     const router = useRouter();
+    const [isMounted, setIsMounted] = useState(false);
 
-    // Status checking with exponential backoff
     useEffect(() => {
-        if (!resumeId) return;
+        setIsMounted(true); // Track mount state
+        return () => setIsMounted(false);
+    }, []);
 
-        // Don't poll if we're in a final state
-        const finalStates = ['parsed', 'analyzed', 'completed', 'failed'];
-        if (finalStates.includes(status)) {
-            if (onStatusChange) onStatusChange(status);
-            return;
-        }
+    useEffect(() => {
+        if (!isMounted || !resumeId) return;
 
-        let intervalId;
-        let timeout;
-
-        const checkStatus = async () => {
+        const interval = setInterval(async () => {
             try {
                 const response = await fetch(`/api/resumes/${resumeId}/status`);
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    setError(errorData.error || 'Error checking status');
-                    return;
-                }
-
                 const data = await response.json();
+                if (!isMounted) return;
 
-                // Update state with new information
-                setStatus(data.status);
-                if (data.progressPercentage) setProgress(data.progressPercentage);
-                if (data.estimatedTimeRemaining) setTimeRemaining(data.estimatedTimeRemaining);
-
-                // Call the callback if provided
-                if (onStatusChange) onStatusChange(data.status);
-
-                // If we've reached a final state, clear the interval
-                if (finalStates.includes(data.status)) {
-                    clearInterval(intervalId);
-
-                    // Special case for failure
-                    if (data.status === 'failed') {
-                        setError(data.error || 'Processing failed');
-                    }
-                }
-
-                // Increment check count for backoff calculation
-                setCheckCount(prev => prev + 1);
-
+                // Handle status updates
             } catch (error) {
-                console.error('Error checking resume status:', error);
-                setError('Failed to check processing status');
+                console.error('Status check failed:', error);
+                if (isMounted) setStatus('error');
             }
-        };
+        }, 2000);
 
-        // Initial check
-        checkStatus();
+        return () => clearInterval(interval);
+    }, [isMounted, resumeId]);
 
-        // Calculate polling interval with exponential backoff
-        // Start with 2s, then increase, but cap at 10s
-        const getPollingInterval = () => {
-            const baseInterval = 2000; // 2 seconds
-            const maxInterval = 10000; // 10 seconds
-            const calculatedInterval = Math.min(baseInterval * Math.pow(1.5, checkCount), maxInterval);
-            return calculatedInterval;
-        };
-
-        // Set up polling with dynamic interval
-        const setupNextPoll = () => {
-            const interval = getPollingInterval();
-            timeout = setTimeout(() => {
-                checkStatus();
-                setupNextPoll();
-            }, interval);
-        };
-
-        setupNextPoll();
-
-        // Cleanup
-        return () => {
-            if (timeout) clearTimeout(timeout);
-        };
-    }, [resumeId, status, checkCount, onStatusChange]);
+    // // Status checking with exponential backoff
+    // useEffect(() => {
+    //     if (!resumeId) return;
+    //
+    //     // Don't poll if we're in a final state
+    //     const finalStates = ['parsed', 'analyzed', 'completed', 'failed'];
+    //     if (finalStates.includes(status)) {
+    //         if (onStatusChange) onStatusChange(status);
+    //         return;
+    //     }
+    //
+    //     let intervalId;
+    //     let timeout;
+    //
+    //     const checkStatus = async () => {
+    //         try {
+    //             const response = await fetch(`/api/resumes/${resumeId}/status`);
+    //
+    //             if (!response.ok) {
+    //                 const errorData = await response.json();
+    //                 setError(errorData.error || 'Error checking status');
+    //                 return;
+    //             }
+    //
+    //             const data = await response.json();
+    //
+    //             // Update state with new information
+    //             setStatus(data.status);
+    //             if (data.progressPercentage) setProgress(data.progressPercentage);
+    //             if (data.estimatedTimeRemaining) setTimeRemaining(data.estimatedTimeRemaining);
+    //
+    //             // Call the callback if provided
+    //             if (onStatusChange) onStatusChange(data.status);
+    //
+    //             // If we've reached a final state, clear the interval
+    //             if (finalStates.includes(data.status)) {
+    //                 clearInterval(intervalId);
+    //
+    //                 // Special case for failure
+    //                 if (data.status === 'failed') {
+    //                     setError(data.error || 'Processing failed');
+    //                 }
+    //             }
+    //
+    //             // Increment check count for backoff calculation
+    //             setCheckCount(prev => prev + 1);
+    //
+    //         } catch (error) {
+    //             console.error('Error checking resume status:', error);
+    //             setError('Failed to check processing status');
+    //         }
+    //     };
+    //
+    //     // Initial check
+    //     checkStatus();
+    //
+    //     // Calculate polling interval with exponential backoff
+    //     // Start with 2s, then increase, but cap at 10s
+    //     const getPollingInterval = () => {
+    //         const baseInterval = 2000; // 2 seconds
+    //         const maxInterval = 10000; // 10 seconds
+    //         const calculatedInterval = Math.min(baseInterval * Math.pow(1.5, checkCount), maxInterval);
+    //         return calculatedInterval;
+    //     };
+    //
+    //     // Set up polling with dynamic interval
+    //     const setupNextPoll = () => {
+    //         const interval = getPollingInterval();
+    //         timeout = setTimeout(() => {
+    //             checkStatus();
+    //             setupNextPoll();
+    //         }, interval);
+    //     };
+    //
+    //     setupNextPoll();
+    //
+    //     // Cleanup
+    //     return () => {
+    //         if (timeout) clearTimeout(timeout);
+    //     };
+    // }, [resumeId, status, checkCount, onStatusChange]);
 
     // Render appropriate UI based on status
     const renderStatusUI = () => {
@@ -116,7 +141,7 @@ export default function ResumeProcessingStatus({ resumeId, initialStatus, onStat
                             <div className="ml-3">
                                 <h3 className="text-sm font-medium text-yellow-800">Resume needs processing</h3>
                                 <div className="mt-2 text-sm text-yellow-700">
-                                    <p>Your resume is uploaded but hasn't been processed yet.</p>
+                                    <p>Your resume is uploaded but has not been processed yet.</p>
                                 </div>
                                 <div className="mt-3">
                                     <button

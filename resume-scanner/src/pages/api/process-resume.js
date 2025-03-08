@@ -1,9 +1,21 @@
 // src/pages/api/process-resume.js
+
 import { supabase, supabaseAdmin } from '@/server/config/database_connection';
 import { processResumeText } from '@/server/services/resumeParser';
-import { analyzeResume } from '@/server/services/resumeAnalyzer';
+import { getSession } from '@supabase/auth-helpers-nextjs';
+
 
 export default async function handler(req, res) {
+    // Allow CORS for development
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
     // Only allow POST requests
     if (req.method !== 'POST') {
         return res.status(405).json({
@@ -14,48 +26,53 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { resumeId, force = false } = req.body;
+        console.log('Processing request with body:', req.body);
+        const { resumeId } = req.body;
 
-        // Validate input
         if (!resumeId) {
-            return res.status(400).json({
-                success: false,
-                error: 'Resume ID is required'
-            });
+            console.error('Missing resumeId in request');
+            return res.status(400).json({ error: 'Resume ID required' });
         }
 
-        // Authenticate user
-        const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-        if (authError || !user) {
-            return res.status(401).json({
-                success: false,
-                error: 'Authentication required',
-                details: authError?.message || 'User not authenticated'
-            });
-        }
-
-        // Get resume data
+        // Add detailed logging
+        console.log(`Fetching resume ${resumeId}`);
         const { data: resume, error: resumeError } = await supabaseAdmin
             .from('resumes')
-            .select('*, user_id')
+            .select('*')
             .eq('id', resumeId)
             .single();
+
+        if (resumeError || !resume) {
+            console.error('Resume fetch error:', resumeError);
+            return res.status(404).json({ error: 'Resume not found' });
+        }
+        console.log(`Found resume: ${resume.id}`);
+
+        // Add file validation
+        if (!resume.file_path) {
+            console.error('Missing file path in resume record');
+            return res.status(400).json({ error: 'Invalid resume file path' });
+        }
+
+        const session = await getSession({ req });
+        if (!session) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        //
+        // // Get resume data without authentication for now
+        // const { data: resume, error: resumeError } = await supabaseAdmin
+        //     .from('resumes')
+        //     .select('*')
+        //     .eq('id', resumeId)
+        //     .eq('user_id', session.user.id)
+        //     .single();
 
         if (resumeError) {
             return res.status(404).json({
                 success: false,
                 error: 'Resume not found',
                 details: resumeError.message
-            });
-        }
-
-        // Verify ownership (make sure the user owns this resume)
-        if (resume.user_id !== user.id) {
-            return res.status(403).json({
-                success: false,
-                error: 'Permission denied',
-                details: 'You do not have permission to process this resume'
             });
         }
 
@@ -118,23 +135,24 @@ export default async function handler(req, res) {
  * Process a resume file in the background
  * @param {string} resumeId - Resume ID to process
  * @param {string} filePath - Path to the file in storage
- * @param {string} fileType - Type of the resume file (pdf, doc, docx)
+ * @param {string} fileType - Type of the resume file
  * @returns {Promise<Object>} - Processing result
  */
 async function processResumeInBackground(resumeId, filePath, fileType) {
     try {
-        // Download the file
-        const { data: fileData, error: fileError } = await supabaseAdmin.storage
+        console.log(`Downloading file from path: ${filePath}`);
+        const { data: fileBlob, error: fileError } = await supabaseAdmin.storage
             .from('resumes')
             .download(filePath);
 
-        if (fileError) {
-            await updateResumeStatus(resumeId, 'failed', `File download failed: ${fileError.message}`);
-            return { success: false, error: fileError.message };
-        }
+        if (fileError) throw fileError;
 
-        // Process the text
-        const processingResult = await processResumeText(fileData, fileType);
+        // Convert Blob to ArrayBuffer first
+        const arrayBuffer = await fileBlob.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        // Now process with the proper Buffer
+        const processingResult = await processResumeText(buffer, fileType);
 
         if (!processingResult.success) {
             await updateResumeStatus(resumeId, 'failed', processingResult.error || 'Text extraction failed');
@@ -159,15 +177,6 @@ async function processResumeInBackground(resumeId, filePath, fileType) {
 
         // Update resume status to parsed
         await updateResumeStatus(resumeId, 'parsed');
-
-        // Start AI analysis in the background
-        analyzeResume(resumeId)
-            .then(analysisResult => {
-                console.log(`Analysis completed for resume ${resumeId}:`, analysisResult.success);
-            })
-            .catch(error => {
-                console.error(`Error analyzing resume ${resumeId}:`, error);
-            });
 
         return {
             success: true,

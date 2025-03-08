@@ -1,7 +1,8 @@
 // src/server/services/textExtractor.js
+
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
-const { createWorker } = require('tesseract.js');
+const {validatePdfBuffer} = require("@/server/utils/pdfValidator");
 
 /**
  * Identifies the type of file based on the file extension or mime type
@@ -19,8 +20,6 @@ function identifyFileType(filename, mimeType) {
         return 'doc';
     } else if (mimeType === 'text/plain') {
         return 'txt';
-    } else if (mimeType === 'image/jpeg' || mimeType === 'image/png') {
-        return 'image';
     }
 
     // Fallback to extension check
@@ -34,8 +33,6 @@ function identifyFileType(filename, mimeType) {
             return 'doc';
         } else if (extension === 'txt') {
             return 'txt';
-        } else if (['jpg', 'jpeg', 'png'].includes(extension)) {
-            return 'image';
         }
     }
 
@@ -49,17 +46,43 @@ function identifyFileType(filename, mimeType) {
  */
 async function extractFromPdf(buffer) {
     try {
-        const options = {
-            // Set max pages to prevent extremely large PDFs from causing issues
-            max: 100
-        };
+        // Add new validation checks
+        validatePdfBuffer(buffer);
 
+        // Validate buffer before processing
+        if (!Buffer.isBuffer(buffer)) {
+            throw new Error('Invalid PDF buffer format');
+        }
+
+        // Check minimum PDF length
+        if (buffer.length < 100) {
+            throw new Error('PDF file appears to be empty');
+        }
+        const options = {
+            max: 100,
+            pagerender: render_page => {
+                // Add custom renderer for better text extraction
+                return render_page().then(text => {
+                    return text.replace(/[^\S\r\n]+/g, ' '); // Clean extra spaces
+                });
+            }
+        };
         const data = await pdfParse(buffer, options);
 
-        // Check if PDF has very little text, might be a scan that needs OCR
+
+        // Check if PDF has very little text, might be a scan
         if (data.text.trim().length < 100) {
-            console.log('PDF has little text, attempting OCR...');
-            return await attemptOCROnPDF(buffer, data);
+            console.log('PDF has little text, might be a scanned document');
+            return {
+                text: data.text,
+                metadata: {
+                    pageCount: data.numpages,
+                    author: data.info?.Author || '',
+                    title: data.info?.Title || '',
+                    creationDate: data.info?.CreationDate || '',
+                    warningMsg: 'This PDF contains very little text and may be a scanned document.'
+                }
+            };
         }
 
         return {
@@ -73,40 +96,8 @@ async function extractFromPdf(buffer) {
         };
     } catch (error) {
         console.error('Error extracting text from PDF:', error);
-
-        // Try OCR as a fallback for problematic PDFs
-        if (error.message.includes('file has been damaged') ||
-            error.message.includes('Invalid PDF structure')) {
-            console.log('PDF parsing failed, attempting OCR as fallback...');
-            return await attemptOCROnPDF(buffer);
-        }
-
         throw new Error(`Failed to extract text from PDF: ${error.message}`);
     }
-}
-
-/**
- * Attempts to use OCR on a PDF that might be image-based or have little text
- * @param {Buffer} buffer - PDF file as a buffer
- * @param {Object} existingData - Any data already extracted from the PDF
- * @returns {Promise<{text: string, metadata: Object}>} - OCR extracted text and metadata
- */
-async function attemptOCROnPDF(buffer, existingData = null) {
-    // Note: In a real implementation, you would need to convert the PDF pages to images
-    // and then run OCR on each page. This is a simplified version.
-
-    // This is a placeholder for a more robust OCR implementation
-    console.log('OCR on PDFs would be implemented here');
-
-    // Return the existing data if we have it, or a placeholder message
-    return {
-        text: existingData?.text || 'PDF requires OCR processing for full text extraction.',
-        metadata: {
-            ...(existingData?.metadata || {}),
-            ocrAttempted: true,
-            processingNote: 'This document appears to be image-based and requires OCR for full text extraction.'
-        }
-    };
 }
 
 /**
@@ -152,37 +143,6 @@ async function extractFromDoc(buffer) {
 }
 
 /**
- * Extracts text from an image using OCR
- * @param {Buffer} buffer - Image file as a buffer
- * @returns {Promise<{text: string, metadata: Object}>} - OCR extracted text
- */
-async function extractFromImage(buffer) {
-    const worker = await createWorker();
-
-    try {
-        await worker.loadLanguage('eng');
-        await worker.initialize('eng');
-
-        // Convert buffer to appropriate format for Tesseract
-        const result = await worker.recognize(buffer);
-
-        await worker.terminate();
-
-        return {
-            text: result.data.text,
-            metadata: {
-                ocrConfidence: result.data.confidence,
-                processingType: 'OCR',
-            }
-        };
-    } catch (error) {
-        if (worker) await worker.terminate();
-        console.error('Error performing OCR on image:', error);
-        throw new Error(`OCR processing failed: ${error.message}`);
-    }
-}
-
-/**
  * Extracts text from a plain text file
  * @param {Buffer} buffer - Text file as a buffer
  * @returns {Promise<{text: string, metadata: Object}>} - Text content
@@ -205,7 +165,7 @@ async function extractFromText(buffer) {
 /**
  * Main function to extract text from document buffers
  * @param {Buffer} buffer - File buffer
- * @param {string} fileType - Type of file ('pdf', 'docx', 'doc', 'image', 'txt')
+ * @param {string} fileType - Type of file ('pdf', 'docx', 'doc', 'txt')
  * @param {string} originalFilename - Original filename (optional)
  * @returns {Promise<{text: string, metadata: Object}>} - Extracted text and metadata
  */
@@ -234,9 +194,6 @@ async function extractText(buffer, fileType, originalFilename = '') {
 
         case 'doc':
             return await extractFromDoc(buffer);
-
-        case 'image':
-            return await extractFromImage(buffer);
 
         case 'txt':
             return await extractFromText(buffer);
@@ -298,11 +255,6 @@ function validateExtractionResult(text, metadata) {
         warnings.push('Single-page document with little text. May be a scan or image-based PDF.');
     }
 
-    // OCR-specific checks
-    if (metadata.ocrConfidence && metadata.ocrConfidence < 80) {
-        warnings.push(`OCR confidence is low (${metadata.ocrConfidence}%). Some text may be incorrectly recognized.`);
-    }
-
     return result;
 }
 
@@ -315,21 +267,22 @@ function validateExtractionResult(text, metadata) {
  */
 async function extractTextWithValidation(buffer, fileType, filename) {
     try {
-        const { text, metadata } = await extractText(buffer, fileType, filename);
+        if (!buffer || buffer.length === 0) {
+            throw new Error('Received empty file buffer');
+        }
 
-        // Clean up the text
-        const cleanedText = cleanupText(text);
+        if (buffer.length > 10 * 1024 * 1024) {
+            throw new Error('File exceeds 10MB size limit');
+        }
 
-        // Validate the extraction
-        const validationResult = validateExtractionResult(cleanedText, metadata);
+        console.log(`Extracting text from ${fileType} file (${buffer.length} bytes)`);
+        const {text, metadata} = await extractText(buffer, fileType, filename);
 
-        return {
-            success: true,
-            text: cleanedText,
-            metadata,
-            validation: validationResult
-        };
-    } catch (error) {
+        if (!text) {
+            throw new Error('No text extracted from document');
+        }
+    }
+    catch (error) {
         // Enhanced error categorization
         let errorType = 'EXTRACTION_ERROR';
         let errorDetails = error.message;
@@ -342,8 +295,6 @@ async function extractTextWithValidation(buffer, fileType, filename) {
             errorType = 'CORRUPTED_FILE';
         } else if (error.message.includes('empty') || error.message.includes('no text')) {
             errorType = 'EMPTY_DOCUMENT';
-        } else if (error.message.includes('OCR')) {
-            errorType = 'OCR_PROCESSING_ERROR';
         }
 
         return {
