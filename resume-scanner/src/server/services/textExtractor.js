@@ -2,7 +2,6 @@
 
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
-const {validatePdfBuffer} = require("@/server/utils/pdfValidator");
 
 /**
  * Identifies the type of file based on the file extension or mime type
@@ -46,9 +45,6 @@ function identifyFileType(filename, mimeType) {
  */
 async function extractFromPdf(buffer) {
     try {
-        // Add new validation checks
-        validatePdfBuffer(buffer);
-
         // Validate buffer before processing
         if (!Buffer.isBuffer(buffer)) {
             throw new Error('Invalid PDF buffer format');
@@ -58,17 +54,8 @@ async function extractFromPdf(buffer) {
         if (buffer.length < 100) {
             throw new Error('PDF file appears to be empty');
         }
-        const options = {
-            max: 100,
-            pagerender: render_page => {
-                // Add custom renderer for better text extraction
-                return render_page().then(text => {
-                    return text.replace(/[^\S\r\n]+/g, ' '); // Clean extra spaces
-                });
-            }
-        };
-        const data = await pdfParse(buffer, options);
 
+        const data = await pdfParse(buffer);
 
         // Check if PDF has very little text, might be a scan
         if (data.text.trim().length < 100) {
@@ -258,57 +245,9 @@ function validateExtractionResult(text, metadata) {
     return result;
 }
 
-/**
- * Enhanced extraction with validation and detailed error reporting
- * @param {Buffer} buffer - File buffer
- * @param {string} fileType - File type
- * @param {string} filename - Original filename
- * @returns {Promise<Object>} - Extraction result with validation
- */
-async function extractTextWithValidation(buffer, fileType, filename) {
-    try {
-        if (!buffer || buffer.length === 0) {
-            throw new Error('Received empty file buffer');
-        }
-
-        if (buffer.length > 10 * 1024 * 1024) {
-            throw new Error('File exceeds 10MB size limit');
-        }
-
-        console.log(`Extracting text from ${fileType} file (${buffer.length} bytes)`);
-        const {text, metadata} = await extractText(buffer, fileType, filename);
-
-        if (!text) {
-            throw new Error('No text extracted from document');
-        }
-    }
-    catch (error) {
-        // Enhanced error categorization
-        let errorType = 'EXTRACTION_ERROR';
-        let errorDetails = error.message;
-
-        if (error.message.includes('unsupported file type')) {
-            errorType = 'UNSUPPORTED_FILE_TYPE';
-        } else if (error.message.includes('encrypted') || error.message.includes('password')) {
-            errorType = 'PROTECTED_DOCUMENT';
-        } else if (error.message.includes('corrupt') || error.message.includes('malformed')) {
-            errorType = 'CORRUPTED_FILE';
-        } else if (error.message.includes('empty') || error.message.includes('no text')) {
-            errorType = 'EMPTY_DOCUMENT';
-        }
-
-        return {
-            success: false,
-            errorType,
-            errorDetails,
-            originalError: error
-        };
-    }
-}
-
 module.exports = {
     identifyFileType,
-    extractTextWithValidation,
     extractText,
     cleanupText,
+    validateExtractionResult
 };

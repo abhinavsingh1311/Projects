@@ -1,7 +1,7 @@
 // src/app/upload/page.js
 
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/server/utils/supabase-client';
 import Link from 'next/link';
 
@@ -135,11 +135,17 @@ export default function UploadPage() {
             setError(null);
             setUploadProgress(0);
 
+            // Get user session
+            const { data: { user }, error: authError } = await supabase.auth.getUser();
+            if (authError || !user) {
+                throw new Error(authError?.message || 'Authentication required. Please sign in again.');
+            }
+
             // Create a sanitized file path
             const fileExt = file.name.split('.').pop();
             const sanitizedName = file.name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
-            const fileName = `${session.user.id}/${Date.now()}_${sanitizedName}`;
-            const filePath = `uploads/${fileName}`;
+            const fileName = `${Date.now()}_${sanitizedName}`;
+            const filePath = `${user.id}/${fileName}`;
 
             // Set up upload with progress tracking
             const uploadOptions = {
@@ -173,6 +179,7 @@ export default function UploadPage() {
             // Create a unique ID for the resume
             const resumeData = {
                 title: title || 'Untitled Resume',
+                user_id: user.id,
                 file_path: filePath,
                 file_url: fileUrl,
                 file_type: getFileType(file),
@@ -422,7 +429,7 @@ export default function UploadPage() {
 
                         <div className="mt-4 flex items-center">
                             <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-brown mr-2"></div>
-                            <span className="text-sm text-gray-600">Please donot close this page</span>
+                            <span className="text-sm text-gray-600">Please don't close this page</span>
                         </div>
                     </div>
                 )}
