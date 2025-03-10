@@ -1,14 +1,14 @@
-// src/components/resume/ResumeProcessingStatus.js
+// src/component/resume/ResumeProcessingStatus.js
+
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function ResumeProcessingStatus({ resumeId, initialStatus, onStatusChange }) {
+export default function ResumeProcessingStatus({ resumeId, status: initialStatus, onStatusChange }) {
     const [status, setStatus] = useState(initialStatus || 'loading');
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState(null);
     const [timeRemaining, setTimeRemaining] = useState(null);
-    const [checkCount, setCheckCount] = useState(0);
     const router = useRouter();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -17,109 +17,96 @@ export default function ResumeProcessingStatus({ resumeId, initialStatus, onStat
         return () => setIsMounted(false);
     }, []);
 
+    // Update local state when prop changes
+    useEffect(() => {
+        if (initialStatus && initialStatus !== status) {
+            setStatus(initialStatus);
+        }
+    }, [initialStatus, status]);
+
+    // Status polling
     useEffect(() => {
         if (!isMounted || !resumeId) return;
 
-        const interval = setInterval(async () => {
-            try {
-                const response = await fetch(`/api/resumes/${resumeId}/status`);
-                const data = await response.json();
-                if (!isMounted) return;
+        // Don't poll if we're in a final state
+        const finalStates = ['parsed', 'analyzed', 'completed', 'failed'];
+        if (finalStates.includes(status)) {
+            return;
+        }
 
-                // Handle status updates
+        console.log(`Setting up status polling for resume: ${resumeId}, current status: ${status}`);
+
+        let intervalId;
+
+        const checkStatus = async () => {
+            try {
+                console.log(`Checking status for resume ${resumeId}...`);
+                const response = await fetch(`/api/resumes/${resumeId}/status`);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Error response from status API:', errorData);
+                    setError(errorData.error || 'Error checking status');
+                    return;
+                }
+
+                const data = await response.json();
+                console.log(`Received status update:`, data);
+
+                // Update local state if status changed
+                if (data.status && data.status !== status) {
+                    console.log(`Status changed from ${status} to ${data.status}`);
+                    setStatus(data.status);
+
+                    // Call the callback if provided
+                    if (onStatusChange) {
+                        console.log('Calling onStatusChange with new status:', data.status);
+                        onStatusChange(data.status);
+                    }
+                }
+
+                // Update progress
+                if (data.progressPercentage) {
+                    setProgress(data.progressPercentage);
+                }
+
+                if (data.estimatedTimeRemaining) {
+                    setTimeRemaining(data.estimatedTimeRemaining);
+                }
+
+                // If processing error occurred
+                if (data.error) {
+                    setError(data.error);
+                }
+
+                // If we've reached a final state, clear the interval
+                if (finalStates.includes(data.status)) {
+                    console.log(`Reached final state ${data.status}, stopping polling`);
+                    clearInterval(intervalId);
+                }
             } catch (error) {
                 console.error('Status check failed:', error);
-                if (isMounted) setStatus('error');
+                if (isMounted) setError('Failed to check processing status');
             }
-        }, 2000);
+        };
 
-        return () => clearInterval(interval);
-    }, [isMounted, resumeId]);
+        // Initial check
+        checkStatus();
 
-    // // Status checking with exponential backoff
-    // useEffect(() => {
-    //     if (!resumeId) return;
-    //
-    //     // Don't poll if we're in a final state
-    //     const finalStates = ['parsed', 'analyzed', 'completed', 'failed'];
-    //     if (finalStates.includes(status)) {
-    //         if (onStatusChange) onStatusChange(status);
-    //         return;
-    //     }
-    //
-    //     let intervalId;
-    //     let timeout;
-    //
-    //     const checkStatus = async () => {
-    //         try {
-    //             const response = await fetch(`/api/resumes/${resumeId}/status`);
-    //
-    //             if (!response.ok) {
-    //                 const errorData = await response.json();
-    //                 setError(errorData.error || 'Error checking status');
-    //                 return;
-    //             }
-    //
-    //             const data = await response.json();
-    //
-    //             // Update state with new information
-    //             setStatus(data.status);
-    //             if (data.progressPercentage) setProgress(data.progressPercentage);
-    //             if (data.estimatedTimeRemaining) setTimeRemaining(data.estimatedTimeRemaining);
-    //
-    //             // Call the callback if provided
-    //             if (onStatusChange) onStatusChange(data.status);
-    //
-    //             // If we've reached a final state, clear the interval
-    //             if (finalStates.includes(data.status)) {
-    //                 clearInterval(intervalId);
-    //
-    //                 // Special case for failure
-    //                 if (data.status === 'failed') {
-    //                     setError(data.error || 'Processing failed');
-    //                 }
-    //             }
-    //
-    //             // Increment check count for backoff calculation
-    //             setCheckCount(prev => prev + 1);
-    //
-    //         } catch (error) {
-    //             console.error('Error checking resume status:', error);
-    //             setError('Failed to check processing status');
-    //         }
-    //     };
-    //
-    //     // Initial check
-    //     checkStatus();
-    //
-    //     // Calculate polling interval with exponential backoff
-    //     // Start with 2s, then increase, but cap at 10s
-    //     const getPollingInterval = () => {
-    //         const baseInterval = 2000; // 2 seconds
-    //         const maxInterval = 10000; // 10 seconds
-    //         const calculatedInterval = Math.min(baseInterval * Math.pow(1.5, checkCount), maxInterval);
-    //         return calculatedInterval;
-    //     };
-    //
-    //     // Set up polling with dynamic interval
-    //     const setupNextPoll = () => {
-    //         const interval = getPollingInterval();
-    //         timeout = setTimeout(() => {
-    //             checkStatus();
-    //             setupNextPoll();
-    //         }, interval);
-    //     };
-    //
-    //     setupNextPoll();
-    //
-    //     // Cleanup
-    //     return () => {
-    //         if (timeout) clearTimeout(timeout);
-    //     };
-    // }, [resumeId, status, checkCount, onStatusChange]);
+        // Set up polling with a fixed interval
+        intervalId = setInterval(checkStatus, 5000); // Check every 5 seconds
+
+        // Cleanup
+        return () => {
+            console.log('Cleaning up status polling interval');
+            if (intervalId) clearInterval(intervalId);
+        };
+    }, [isMounted, resumeId, status, onStatusChange]);
 
     // Render appropriate UI based on status
     const renderStatusUI = () => {
+        console.log(`Rendering status UI for: ${status}`);
+
         switch (status) {
             case 'loading':
                 return (
@@ -167,7 +154,6 @@ export default function ResumeProcessingStatus({ resumeId, initialStatus, onStat
             case 'parsing':
             case 'analyzing':
                 return (
-                    // src/components/resume/ResumeProcessingStatus.js (continued)
                     <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
                         <div className="flex">
                             <div className="flex-shrink-0">
@@ -193,8 +179,8 @@ export default function ResumeProcessingStatus({ resumeId, initialStatus, onStat
                                     {timeRemaining && (
                                         <p className="text-xs text-blue-700 mt-1">
                                             Estimated time remaining: {timeRemaining > 60
-                                                ? `${Math.floor(timeRemaining / 60)} min ${timeRemaining % 60} sec`
-                                                : `${timeRemaining} seconds`}
+                                            ? `${Math.floor(timeRemaining / 60)} min ${timeRemaining % 60} sec`
+                                            : `${timeRemaining} seconds`}
                                         </p>
                                     )}
                                 </div>

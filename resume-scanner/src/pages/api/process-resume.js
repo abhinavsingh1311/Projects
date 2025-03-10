@@ -98,7 +98,9 @@ export default async function handler(req, res) {
  */
 async function processResumeInBackground(resumeId, filePath, fileType) {
     try {
-        console.log(`Downloading file from path: ${filePath}`);
+        console.log(`1. Starting to process resume: ${resumeId}`);
+        console.log(`2. Downloading file from path: ${filePath}`);
+
         const { data: fileBlob, error: fileError } = await supabaseAdmin.storage
             .from('resumes')
             .download(filePath);
@@ -109,13 +111,15 @@ async function processResumeInBackground(resumeId, filePath, fileType) {
             return { success: false, error: fileError.message };
         }
 
-        console.log(`File downloaded successfully, size: ${fileBlob.size} bytes`);
+        console.log(`3. File downloaded successfully, size: ${fileBlob.size} bytes`);
 
         // Extract text from the file
         try {
             // Convert Blob to ArrayBuffer and then to Buffer
             const arrayBuffer = await fileBlob.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
+
+            console.log(`4. Starting text extraction for file type: ${fileType}`);
 
             // Extract text using the text extractor
             const extractionResult = await extractText(buffer, fileType);
@@ -124,89 +128,43 @@ async function processResumeInBackground(resumeId, filePath, fileType) {
                 throw new Error('Text extraction failed - no text returned');
             }
 
-            console.log(`Text extracted successfully, length: ${extractionResult.text.length} characters`);
+            console.log(`5. Text extracted successfully, length: ${extractionResult.text.length} characters`);
 
+            // Store the extracted text directly without complex logic
             try {
-                // First, find out if the table exists
-                const { error: tableCheckError } = await supabaseAdmin
-                    .rpc('table_exists', { table_name: 'resume_parsed_data' });
+                console.log('6. Storing extracted text in database');
 
-                if (tableCheckError) {
-                    console.log("Table might not exist or cannot be checked:", tableCheckError);
-
-                    // Manual fallback approach - try creating a new table if needed
-                    try {
-                        console.log("Attempting to directly use SQL to store extracted text...");
-
-                        // Use RPC to store text - this bypasses the schema cache issues
-                        await supabaseAdmin.rpc('save_resume_text', {
-                            p_resume_id: resumeId,
-                            p_text: extractionResult.text
-                        });
-
-                        // Update resume status to parsed if we got here
-                        await updateResumeStatus(resumeId, 'parsed');
-
-                        return {
-                            success: true,
-                            resumeId,
-                            message: 'Resume processed successfully via RPC'
-                        };
-                    } catch (rpcError) {
-                        console.error("RPC fallback failed:", rpcError);
-
-                        // Final fallback - just update the status and consider it parsed
-                        // Even without storing the text - at least the UI flow will continue
-                        await updateResumeStatus(resumeId, 'parsed');
-
-                        return {
-                            success: true,
-                            resumeId,
-                            message: 'Resume marked as processed (text extraction succeeded but storing failed)'
-                        };
-                    }
-                }
-
-                // If we get here, try a direct insert with minimal columns
                 const { error: insertError } = await supabaseAdmin
                     .from('resume_parsed_data')
                     .insert([{
                         resume_id: resumeId,
-                        // No text column for now
+                        raw_text: extractionResult.text,
+                        parsed_data: {}, // Empty object for now
+                        processed_at: new Date().toISOString()
                     }]);
 
                 if (insertError) {
-                    console.error('Standard insert failed:', insertError);
+                    console.error('Error storing extracted text:', insertError);
+                    console.error('Error details:', JSON.stringify(insertError));
 
-                    // Last resort - mark as parsed anyway
-                    await updateResumeStatus(resumeId, 'parsed');
-
-                    return {
-                        success: true,
-                        resumeId,
-                        message: 'Resume marked as processed but text storage failed'
-                    };
+                    await updateResumeStatus(resumeId, 'failed', `Failed to store text: ${insertError.message}`);
+                    return { success: false, error: insertError.message };
                 }
 
-                // Update status and return success
+                console.log('7. Text stored successfully in database');
+
+                // Update resume status to parsed
                 await updateResumeStatus(resumeId, 'parsed');
+
                 return {
                     success: true,
                     resumeId,
-                    message: 'Resume processed with minimal data storage'
+                    message: 'Resume processed successfully'
                 };
-
             } catch (dbError) {
-                console.error('Exception in database operations:', dbError);
-
-                // Even with DB errors, mark as parsed so the user can continue
-                await updateResumeStatus(resumeId, 'parsed');
-
-                return {
-                    success: true,
-                    note: 'Marked as parsed despite database errors',
-                    error: dbError.message
-                };
+                console.error('Exception storing text:', dbError);
+                await updateResumeStatus(resumeId, 'failed', `Database error: ${dbError.message}`);
+                return { success: false, error: dbError.message };
             }
         } catch (extractionError) {
             console.error('Text extraction error:', extractionError);
@@ -228,6 +186,8 @@ async function processResumeInBackground(resumeId, filePath, fileType) {
  */
 async function updateResumeStatus(resumeId, status, errorMessage = null) {
     try {
+        console.log(`Updating resume ${resumeId} status to: ${status}`);
+
         const updateData = {
             status,
             last_processed_at: new Date().toISOString()
@@ -240,12 +200,20 @@ async function updateResumeStatus(resumeId, status, errorMessage = null) {
             updateData.processing_error = null;
         }
 
-        await supabaseAdmin
+        const { error } = await supabaseAdmin
             .from('resumes')
             .update(updateData)
             .eq('id', resumeId);
 
+        if (error) {
+            console.error(`Failed to update resume status to ${status}:`, error);
+            return false;
+        }
+
+        console.log(`Successfully updated resume ${resumeId} status to: ${status}`);
+        return true;
     } catch (error) {
         console.error(`Error updating resume status to ${status}:`, error);
+        return false;
     }
 }

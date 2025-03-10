@@ -24,6 +24,8 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Resume ID is required' });
         }
 
+        console.log(`Checking status for resume ID: ${id}`);
+
         // Get resume status - skip authentication for debugging
         const { data, error } = await supabaseAdmin
             .from('resumes')
@@ -32,8 +34,11 @@ export default async function handler(req, res) {
             .single();
 
         if (error) {
+            console.error('Database error fetching resume status:', error);
             return res.status(404).json({ error: 'Resume not found' });
         }
+
+        console.log(`Retrieved status for resume ${id}: ${data.status}`);
 
         // Simple progress calculation (useful for UX)
         let progressPercentage = null;
