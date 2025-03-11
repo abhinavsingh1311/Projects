@@ -148,7 +148,6 @@ async function extractFromText(buffer) {
         throw new Error(`Text file extraction failed: ${error.message}`);
     }
 }
-
 /**
  * Main function to extract text from document buffers
  * @param {Buffer} buffer - File buffer
