@@ -92,7 +92,7 @@ export default function ResumePage() {
             setError(null);
             setProcessingStatus('parsing');
 
-            const response = await fetch('/api/process-resume', {
+            const response = await fetch(`/api/resumes/${id}/process-resume`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ export default function ResumePage() {
                                 : processingStatus === 'failed'
                                     ? 'bg-red-100 text-red-800'
                                     : 'bg-gray-100 text-gray-800'
-                            }`}>
+                        }`}>
                             {processingStatus === 'parsed' || processingStatus === 'analyzed' || processingStatus === 'completed'
                                 ? 'Processed'
                                 : processingStatus === 'parsing'

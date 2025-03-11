@@ -2,6 +2,7 @@
 import { supabase, supabaseAdmin } from '@/server/config/database_connection';
 import { analyzeResume } from '@/server/services/resumeAnalyzer';
 
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
@@ -15,14 +16,13 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Resume ID is required' });
         }
 
-        // Get user to ensure they only access their own resumes
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
+        // Authenticate user
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
             return res.status(401).json({ error: 'Authentication required' });
         }
 
-        // Check if the resume belongs to the user
+        // Check if resume belongs to user
         const { data: resume, error: resumeError } = await supabase
             .from('resumes')
             .select('id, user_id, status')
@@ -34,67 +34,31 @@ export default async function handler(req, res) {
             return res.status(404).json({ error: 'Resume not found' });
         }
 
-        // Check if there is existing analysis (if not forcing reanalysis)
-        if (!force) {
-            const { data: existingAnalysis, error: analysisError } = await supabase
-                .from('resume_analysis')
-                .select('id')
-                .eq('resume_id', id)
-                .maybeSingle();
-
-            // If analysis exists and we're not forcing, return existing
-            if (!analysisError && existingAnalysis) {
-                return res.status(200).json({
-                    success: true,
-                    message: 'Resume already analyzed',
-                    resumeId: id,
-                    alreadyAnalyzed: true
-                });
-            }
-        }
-
-        // Check if we have parsed data
-        const { data: parsedData, error: parsedError } = await supabase
-            .from('resume_parsed_data')
-            .select('id')
-            .eq('resume_id', id)
-            .maybeSingle();
-
-        if (parsedError || !parsedData) {
-            // If no parsed data, we need to process the resume first
+        // Make sure resume has been parsed
+        if (!['parsed', 'analyzed', 'completed'].includes(resume.status) && !force) {
             return res.status(400).json({
                 error: 'Resume must be processed before analysis',
-                status: resume.status,
-                message: 'The resume text needs to be extracted before it can be analyzed'
+                status: resume.status
             });
         }
 
         // Update status to analyzing
         await supabaseAdmin
             .from('resumes')
-            .update({
-                status: 'analyzing',
-                processing_error: null // clear any previous errors
-            })
+            .update({ status: 'analyzing' })
             .eq('id', id);
 
-        // Start analysis in the background
-        analyzeInBackground(id, force)
-            .then(result => {
-                console.log(`Analysis completed for resume ${id}`);
-            })
-            .catch(error => {
-                console.error(`Error analyzing resume ${id}:`, error);
-            });
+        // Start analysis in background
+        analyzeResume(id)
+            .then(result => console.log(`Analysis completed for resume ${id}`))
+            .catch(error => console.error(`Error analyzing resume ${id}:`, error));
 
-        // Respond immediately
         return res.status(200).json({
             success: true,
             message: 'Resume analysis started',
             resumeId: id,
             background: true
         });
-
     } catch (error) {
         console.error('API error:', error);
         return res.status(500).json({ error: 'Internal server error' });
@@ -106,7 +70,7 @@ export default async function handler(req, res) {
  * @param {string} resumeId - Resume ID to analyze
  * @param {boolean} force - Force reanalysis
  */
-async function analyzeInBackground(resumeId, force = false) {
+export async function analyzeInBackground(resumeId, force = false) {
     try {
         // If forcing, clear existing analysis
         if (force) {

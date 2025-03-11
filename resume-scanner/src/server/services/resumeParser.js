@@ -159,82 +159,119 @@ function extractContactInfo(text) {
  * @param {string} text - Resume text
  * @returns {Array} - Extracted skills
  */
+// function extractSkills(text) {
+//     // Common skill keywords
+//     const skillsDatabase = {
+//         programmingLanguages: [
+//             'javascript', 'python', 'java', 'c++', 'c#', 'php', 'ruby', 'swift', 'kotlin',
+//             'go', 'rust', 'scala', 'typescript', 'perl', 'r', 'matlab', 'bash', 'powershell',
+//             'assembly', 'objective-c', 'dart', 'julia', 'haskell', 'clojure', 'groovy', 'cobol'
+//         ],
+//         webTechnologies: [
+//             'html', 'css', 'react', 'angular', 'vue', 'node', 'express', 'django', 'flask',
+//             'spring', 'laravel', 'asp.net', 'jquery', 'bootstrap', 'tailwind', 'sass',
+//             'less', 'webpack', 'babel', 'graphql', 'rest', 'soap', 'pwa', 'spa', 'ssr',
+//             'next.js', 'gatsby', 'svelte', 'webgl', 'web components'
+//         ],
+//         databases: [
+//             'sql', 'nosql', 'mysql', 'postgresql', 'mongodb', 'firebase', 'dynamodb',
+//             'cassandra', 'redis', 'oracle', 'sqlite', 'mariadb', 'couchdb', 'elasticsearch',
+//             'neo4j', 'supabase'
+//         ],
+//         cloudServices: [
+//             'aws', 'azure', 'google cloud', 'gcp', 'heroku', 'digitalocean', 'netlify',
+//             'vercel', 'cloudflare', 'lambda', 'ec2', 's3', 'rds', 'fargate', 'eks', 'ecs'
+//         ],
+//         devOpsTools: [
+//             'git', 'docker', 'kubernetes', 'jenkins', 'circleci', 'travis ci', 'github actions',
+//             'ansible', 'terraform', 'prometheus', 'grafana', 'elk stack', 'gitlab ci',
+//             'bitbucket pipelines'
+//         ],
+//         softSkills: [
+//             'communication', 'leadership', 'teamwork', 'problem solving', 'time management',
+//             'critical thinking', 'adaptability', 'creativity', 'emotional intelligence',
+//             'conflict resolution', 'decision making', 'project management', 'negotiation',
+//             'presentation', 'public speaking'
+//         ]
+//     };
+//
+//     // Flatten the skills list
+//     const allSkills = Object.values(skillsDatabase).flat();
+//
+//     // Extract skills using more advanced pattern matching
+//     const foundSkills = [];
+//     const textLower = text.toLowerCase();
+//
+//     // Pattern-based extraction
+//     for (const skill of allSkills) {
+//         // Use word boundary to match whole words
+//         const pattern = new RegExp(`\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+//
+//         if (pattern.test(textLower)) {
+//             // If not already found
+//             if (!foundSkills.includes(skill)) {
+//                 foundSkills.push(skill);
+//             }
+//         }
+//     }
+//
+//     // Extract skills listed in bullet points
+//     const bulletPointPattern = /[•\-*]\s*([^•\-*\n]+)/g;
+//     let match;
+//     while ((match = bulletPointPattern.exec(text)) !== null) {
+//         const bulletPoint = match[1].trim().toLowerCase();
+//
+//         // Check if this bullet point might be a skill not in our database
+//         if (
+//             bulletPoint.length < 30 && // Not too long
+//             !bulletPoint.includes(' and ') && // Not a compound phrase
+//             bulletPoint.split(' ').length <= 3 && // Max 3 words
+//             !foundSkills.some(skill => bulletPoint.includes(skill.toLowerCase())) // Not already found
+//         ) {
+//             // Add capitalized version
+//             foundSkills.push(bulletPoint.replace(/\b\w/g, l => l.toUpperCase()));
+//         }
+//     }
+//
+//     return foundSkills;
+// }
 function extractSkills(text) {
-    // Common skill keywords
-    const skillsDatabase = {
-        programmingLanguages: [
-            'javascript', 'python', 'java', 'c++', 'c#', 'php', 'ruby', 'swift', 'kotlin',
-            'go', 'rust', 'scala', 'typescript', 'perl', 'r', 'matlab', 'bash', 'powershell',
-            'assembly', 'objective-c', 'dart', 'julia', 'haskell', 'clojure', 'groovy', 'cobol'
-        ],
-        webTechnologies: [
-            'html', 'css', 'react', 'angular', 'vue', 'node', 'express', 'django', 'flask',
-            'spring', 'laravel', 'asp.net', 'jquery', 'bootstrap', 'tailwind', 'sass',
-            'less', 'webpack', 'babel', 'graphql', 'rest', 'soap', 'pwa', 'spa', 'ssr',
-            'next.js', 'gatsby', 'svelte', 'webgl', 'web components'
-        ],
-        databases: [
-            'sql', 'nosql', 'mysql', 'postgresql', 'mongodb', 'firebase', 'dynamodb',
-            'cassandra', 'redis', 'oracle', 'sqlite', 'mariadb', 'couchdb', 'elasticsearch',
-            'neo4j', 'supabase'
-        ],
-        cloudServices: [
-            'aws', 'azure', 'google cloud', 'gcp', 'heroku', 'digitalocean', 'netlify',
-            'vercel', 'cloudflare', 'lambda', 'ec2', 's3', 'rds', 'fargate', 'eks', 'ecs'
-        ],
-        devOpsTools: [
-            'git', 'docker', 'kubernetes', 'jenkins', 'circleci', 'travis ci', 'github actions',
-            'ansible', 'terraform', 'prometheus', 'grafana', 'elk stack', 'gitlab ci',
-            'bitbucket pipelines'
-        ],
-        softSkills: [
-            'communication', 'leadership', 'teamwork', 'problem solving', 'time management',
-            'critical thinking', 'adaptability', 'creativity', 'emotional intelligence',
-            'conflict resolution', 'decision making', 'project management', 'negotiation',
-            'presentation', 'public speaking'
-        ]
-    };
+    const foundSkills = []; // Initialize the array
+    const bulletPointPattern = /([•\-*▶]|\d+\.)\s*([^•\-*\n]+)/gi;
+    let match;
 
-    // Flatten the skills list
-    const allSkills = Object.values(skillsDatabase).flat();
+    const normalizeSkill = skill => skill
+        .replace(/:\s*$/, '')
+        .replace(/^[\d\.\-\*▶ ]+/, '')
+        .trim()
+        .toLowerCase();
 
-    // Extract skills using more advanced pattern matching
-    const foundSkills = [];
-    const textLower = text.toLowerCase();
+    const isValidSkill = skill =>
+        skill.length > 2 &&
+        skill.length < 50 &&
+        !/\d{3,}/.test(skill) &&
+        !/http(s)?:\/\//i.test(skill);
 
-    // Pattern-based extraction
-    for (const skill of allSkills) {
-        // Use word boundary to match whole words
-        const pattern = new RegExp(`\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    while ((match = bulletPointPattern.exec(text)) !== null) {
+        const rawSkill = match[2].trim();
+        const normalizedSkill = normalizeSkill(rawSkill);
 
-        if (pattern.test(textLower)) {
-            // If not already found
-            if (!foundSkills.includes(skill)) {
-                foundSkills.push(skill);
+        if (isValidSkill(normalizedSkill)) {
+            const formattedSkill = normalizedSkill
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+
+            if (!foundSkills.includes(formattedSkill)) {
+                foundSkills.push(formattedSkill);
             }
         }
     }
 
-    // Extract skills listed in bullet points
-    const bulletPointPattern = /[•\-*]\s*([^•\-*\n]+)/g;
-    let match;
-    while ((match = bulletPointPattern.exec(text)) !== null) {
-        const bulletPoint = match[1].trim().toLowerCase();
-
-        // Check if this bullet point might be a skill not in our database
-        if (
-            bulletPoint.length < 30 && // Not too long
-            !bulletPoint.includes(' and ') && // Not a compound phrase
-            bulletPoint.split(' ').length <= 3 && // Max 3 words
-            !foundSkills.some(skill => bulletPoint.includes(skill.toLowerCase())) // Not already found
-        ) {
-            // Add capitalized version
-            foundSkills.push(bulletPoint.replace(/\b\w/g, l => l.toUpperCase()));
-        }
-    }
-
-    return foundSkills;
+    return foundSkills; // Add return statement
 }
+
+
 
 /**
  * Parse resume text into structured sections and data
@@ -242,26 +279,21 @@ function extractSkills(text) {
  * @returns {Object} - Structured resume data
  */
 function parseResumeText(text) {
-    // Identify sections
     const sections = identifySections(text);
-
-    // Extract contact information from header
     const contactInfo = extractContactInfo(sections.header || text);
-
-    // Extract skills from the skills section or entire text if skills section not found
     const skills = extractSkills(sections.skills || text);
 
-    // For now, keep a raw version of each section
-    const result = {
+    return {
         contactInfo,
         skills,
         sections,
-        rawText: text
+        rawText: text,
+        metadata: {
+            sectionCount: Object.keys(sections).length,
+            skillCount: skills.length
+        }
     };
-
-    return result;
 }
-
 /**
  * Process a resume file to extract and parse its content
  * @param {Buffer} fileBuffer - The resume file buffer
@@ -270,7 +302,7 @@ function parseResumeText(text) {
  * @returns {Promise<Object>} - Processing result with extracted data
  */
 // src/server/services/resumeParser.js
-async function processResumeText(fileBuffer, fileType) {
+async function processResume(fileBuffer, fileType) {
     try {
         // Allow txt files in validation
         if (!['pdf', 'docx', 'doc', 'txt'].includes(fileType.toLowerCase())) {
@@ -294,7 +326,7 @@ async function processResumeText(fileBuffer, fileType) {
 }
 
 module.exports = {
-    processResumeText,
+    processResume,
     parseResumeText,
     identifySections,
     extractContactInfo,

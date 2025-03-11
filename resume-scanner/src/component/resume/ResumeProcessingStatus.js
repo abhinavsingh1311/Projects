@@ -133,7 +133,7 @@ export default function ResumeProcessingStatus({ resumeId, status: initialStatus
                                 <div className="mt-3">
                                     <button
                                         onClick={() => {
-                                            fetch('/api/process-resume', {
+                                            fetch(`/api/resumes/${resumeId}/process-resume`, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json' },
                                                 body: JSON.stringify({ resumeId, force: true })
@@ -246,7 +246,7 @@ export default function ResumeProcessingStatus({ resumeId, status: initialStatus
                                 <div className="mt-3">
                                     <button
                                         onClick={() => {
-                                            fetch('/api/process-resume', {
+                                            fetch(`/api/resumes/${resumeId}/process-resume`, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json' },
                                                 body: JSON.stringify({ resumeId, force: true })

@@ -7,89 +7,64 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-/**
- * Analyzes resume text using OpenAI's API with enhanced prompt
- * @param {string} resumeText - The extracted resume text
- * @returns {Promise<Object>} - The AI analysis results
- */
+// Update analyzeResumeWithAI() with better prompting:
 async function analyzeResumeWithAI(resumeText) {
     try {
-        console.log('Starting AI analysis of resume text...');
-
         const response = await openai.chat.completions.create({
-            model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
-            messages: [
-                {
-                    role: 'system',
-                    content: `You are an expert resume analyzer with years of recruiting experience across various industries. 
-          Analyze the resume text and provide a detailed assessment in the following JSON structure:
-          
-          {
-            "overall_score": number (1-100),
-            "skills": {
-              "technical": string[],
-              "soft": string[],
-              "tools": string[],
-              "certifications": string[]
-            },
-            "experience_summary": string,
-            "education_summary": string,
-            "strengths": string[],
-            "improvement_areas": string[],
-            "ats_compatibility": {
-              "score": number (1-100),
-              "issues": string[],
-              "recommendations": string[]
-            },
-            "keywords": string[],
-            "experience_level": string (entry, mid, senior, executive),
-            "career_path": string (brief assessment of career trajectory)
-          }
-          
-          Be comprehensive, analytical and provide actionable insights. Focus on specific skills rather than generic ones.`
-                },
-                {
-                    role: 'user',
-                    content: resumeText
-                }
-            ],
-            temperature: 0.2,
+            model: "gpt-3.5-turbo",
+            messages: [{
+                role: 'system',
+                content: `Analyze this resume strictly using this JSON format:
+{
+  "overall_score": 0-100,
+  "skills": {
+    "technical": ["skill1", "skill2"],
+    "soft": ["skill1", "skill2"],
+    "tools": ["tool1", "tool2"]
+  },
+  "experience_summary": "2-3 sentences",
+  "education_summary": "2-3 sentences",
+  "strengths": ["strength1", "strength2"],
+  "improvement_areas": ["area1", "area2"],
+  "ats_compatibility": {
+    "score": 0-100,
+    "issues": ["issue1", "issue2"],
+    "recommendations": ["recommendation1"]
+  },
+  "keywords": ["keyword1", "keyword2"]
+}`
+            }, {
+                role: 'user',
+                content: `RESUME CONTENT:\n${resumeText.substring(0, 12000)}`
+            }],
+            temperature: 0.1,
             response_format: { type: "json_object" }
         });
 
-        // Parse and return the analysis JSON
-        const analysisText = response.choices[0].message.content;
-        const analysis = JSON.parse(analysisText);
+        // Add validation
+        const analysis = JSON.parse(response.choices[0].message.content);
+        if (!analysis.skills?.technical) {
+            throw new Error('Invalid analysis format from AI');
+        }
 
-        console.log('AI analysis completed successfully');
-
-        return {
-            success: true,
-            analysis,
-            model: response.model,
-            usage: response.usage
-        };
+        return { success: true, analysis };
     } catch (error) {
-        console.error('Error analyzing resume with AI:', error);
+        console.error('AI Analysis Error:', error);
         return {
             success: false,
-            error: error.message || 'Unknown error during AI analysis',
-            errorDetails: error
+            error: `AI analysis failed: ${error.message}`
         };
     }
 }
 
-/**
- * Analyze a resume by ID - fetches the parsed text and sends for AI analysis
- * @param {string} resumeId - The ID of the resume to analyze
- * @returns {Promise<Object>} - The analysis results
- */
+// Main function to analyze a resume by ID
 async function analyzeResume(resumeId) {
     try {
-        console.log(`Starting resume analysis for ID: ${resumeId}`);
-
         // Update status to analyzing
-        await updateResumeStatus(resumeId, 'analyzing');
+        await supabaseAdmin
+            .from('resumes')
+            .update({ status: 'analyzing' })
+            .eq('id', resumeId);
 
         // Get the parsed text
         const { data: parsedData, error: parsedError } = await supabaseAdmin
@@ -98,49 +73,49 @@ async function analyzeResume(resumeId) {
             .eq('resume_id', resumeId)
             .single();
 
-        if (parsedError) {
-            console.error('Error fetching parsed resume text:', parsedError);
-            throw new Error(`Failed to fetch parsed resume data: ${parsedError.message}`);
-        }
-
-        if (!parsedData || !parsedData.raw_text) {
-            throw new Error('No parsed text found for this resume. Text extraction may have failed.');
-        }
+        if (parsedError) throw new Error(`Failed to fetch parsed resume data: ${parsedError.message}`);
 
         // Send to AI for analysis
         const analysisResult = await analyzeResumeWithAI(parsedData.raw_text);
-
-        if (!analysisResult.success) {
-            throw new Error(`AI analysis failed: ${analysisResult.error}`);
-        }
+        if (!analysisResult.success) throw new Error(`AI analysis failed: ${analysisResult.error}`);
 
         // Store the analysis results
-        const savedAnalysis = await storeAnalysisResults(resumeId, analysisResult);
+        const { error: insertError } = await supabaseAdmin
+            .from('resume_analysis')
+            .insert([{
+                resume_id: resumeId,
+                analysis_json: analysisResult.analysis,
+                model_version: analysisResult.model || 'unknown',
+                raw_response: analysisResult.usage || {},
+                created_at: new Date().toISOString()
+            }]);
+
+        if (insertError) throw new Error(`Failed to store analysis results: ${insertError.message}`);
 
         // Process and save skills
-        await processAndSaveSkills(resumeId, analysisResult.analysis.skills);
+        await processAndSaveSkills(resumeId, analysisResult);
 
         // Update resume status
-        await updateResumeStatus(resumeId, 'analyzed');
+        await supabaseAdmin
+            .from('resumes')
+            .update({
+                status: 'analyzed',
+                last_analyzed_at: new Date().toISOString()
+            })
+            .eq('id', resumeId);
 
-        // Find potential job matches
-        await findJobMatches(resumeId, analysisResult.analysis.skills);
-
-        return {
-            success: true,
-            resumeId,
-            analysis: analysisResult.analysis,
-            savedAnalysisId: savedAnalysis.id
-        };
+        return { success: true, resumeId, analysis: analysisResult.analysis };
     } catch (error) {
         console.error(`Error in resume analysis process:`, error);
 
         // Update resume status to failed_analysis
-        try {
-            await updateResumeStatus(resumeId, 'analysis_failed', error.message || 'Unknown analysis error');
-        } catch (updateError) {
-            console.error('Failed to update status after analysis error:', updateError);
-        }
+        await supabaseAdmin
+            .from('resumes')
+            .update({
+                status: 'analysis_failed',
+                processing_error: error.message || 'Unknown analysis error'
+            })
+            .eq('id', resumeId);
 
         return {
             success: false,
@@ -231,90 +206,91 @@ async function storeAnalysisResults(resumeId, analysisResult) {
 /**
  * Process and save skills extracted from the resume
  * @param {string} resumeId - Resume ID
- * @param {Object} skillsData - Skills data from analysis
+ * @param {Object} analysisResult - Skills data from analysis
  */
-async function processAndSaveSkills(resumeId, skillsData) {
+async function processAndSaveSkills(resumeId, analysisResult) {
     try {
+        const skillsData = analysisResult.analysis_json.skills;
         if (!skillsData) return;
 
-        // Combine all skills
+        // Combine all skills from different categories
         const allSkills = [
             ...(skillsData.technical || []),
             ...(skillsData.soft || []),
-            ...(skillsData.tools || []),
-            ...(skillsData.certifications || [])
+            ...(skillsData.tools || [])
         ];
 
-        if (allSkills.length === 0) return;
+        // Get parsed data for additional skills
+        const { data: parsedData } = await supabaseAdmin
+            .from('resume_parsed_data')
+            .select('parsed_data')
+            .eq('resume_id', resumeId)
+            .single();
 
-        // First ensure all skills exist in the skills table
-        for (const skillName of allSkills) {
-            // Determine category
-            let category = 'other';
-            if (skillsData.technical && skillsData.technical.includes(skillName)) {
-                category = 'technical';
-            } else if (skillsData.soft && skillsData.soft.includes(skillName)) {
-                category = 'soft';
-            } else if (skillsData.tools && skillsData.tools.includes(skillName)) {
-                category = 'tool';
-            } else if (skillsData.certifications && skillsData.certifications.includes(skillName)) {
-                category = 'certification';
-            }
+        // Merge with parsed skills
+        if (parsedData?.parsed_data?.skills) {
+            allSkills.push(...parsedData.parsed_data.skills);
+        }
 
-            // Try to find the skill first
-            const { data: existingSkill, error: findError } = await supabaseAdmin
+        // Remove duplicates
+        const uniqueSkills = [...new Set(allSkills)];
+
+        if (uniqueSkills.length === 0) return;
+
+        // Process skill storage
+        for (const skillName of uniqueSkills) {
+            // Skill normalization and storage logic
+            const { data: existingSkill } = await supabaseAdmin
                 .from('skills')
                 .select('id')
-                .eq('name', skillName)
+                .ilike('name', skillName)
                 .maybeSingle();
 
-            if (findError) {
-                console.error(`Error finding skill ${skillName}:`, findError);
-                continue;
-            }
-
             let skillId;
-
             if (!existingSkill) {
-                // Create the skill if it doesn't exist
-                const { data: newSkill, error: insertError } = await supabaseAdmin
+                const { data: newSkill } = await supabaseAdmin
                     .from('skills')
-                    .insert([{ name: skillName, category }])
+                    .insert([{
+                        name: skillName,
+                        category: determineSkillCategory(skillName)
+                    }])
                     .select('id')
                     .single();
-
-                if (insertError) {
-                    console.error(`Error creating skill ${skillName}:`, insertError);
-                    continue;
-                }
-
                 skillId = newSkill.id;
             } else {
                 skillId = existingSkill.id;
             }
 
-            // Now create the resume_skills connection
-            // Use upsert to handle potential duplicates
-            const { error: linkError } = await supabaseAdmin
+            // Link to resume
+            await supabaseAdmin
                 .from('resume_skills')
-                .upsert([{
+                .upsert({
                     resume_id: resumeId,
                     skill_id: skillId,
-                    level: determineSkillLevel(skillName, skillsData),
                     created_at: new Date().toISOString()
-                }], {
+                }, {
                     onConflict: 'resume_id,skill_id'
                 });
-
-            if (linkError) {
-                console.error(`Error linking skill ${skillName} to resume:`, linkError);
-            }
         }
-
-        console.log(`Successfully processed ${allSkills.length} skills for resume ${resumeId}`);
     } catch (error) {
         console.error('Error processing skills:', error);
     }
+}
+
+function determineSkillCategory(skillName) {
+    const categories = {
+        technical: ['programming', 'framework', 'database', 'cloud', 'devops'],
+        soft: ['communication', 'leadership', 'teamwork'],
+        tools: ['software', 'tool', 'platform']
+    };
+
+    const lowerSkill = skillName.toLowerCase();
+    for (const [category, keywords] of Object.entries(categories)) {
+        if (keywords.some(keyword => lowerSkill.includes(keyword))) {
+            return category;
+        }
+    }
+    return 'other';
 }
 
 /**
