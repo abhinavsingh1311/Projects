@@ -1,6 +1,6 @@
 // pages/api/resumes/[id]/status.js
 
-import {supabaseAdmin} from "@/server/config/database_connection";
+import {supabase,supabaseAdmin} from "@/server/config/database_connection";
 
 export default async function handler(req, res) {
     // CORS headers
@@ -44,6 +44,13 @@ export default async function handler(req, res) {
                 code: 'RESUME_NOT_FOUND'
             });
         }
+        // Get resume status
+        const { data, error } = await supabase
+            .from('resumes')
+            .select('id, status, processing_error, created_at, last_processed_at')
+            .eq('id', id)
+            .eq('user_id', user.id)
+            .single();
 
         return res.status(200).json({
             status: resume.status,

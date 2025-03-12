@@ -151,6 +151,34 @@ export default function ResumePage() {
         }
     };
 
+    const handleAnalyzeResume = async () => {
+        try {
+            setAnalyzing(true);
+
+            const response = await fetch(`/api/resumes/${id}/analyze`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ force: false }),  // Set to true to force reanalysis
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to analyze resume');
+            }
+
+            // Poll for status updates or navigate to analysis page
+            router.push(`/resume/${id}/analysis`);
+
+        } catch (error) {
+            console.error('Error analyzing resume:', error);
+            setError(error.message);
+        } finally {
+            setAnalyzing(false);
+        }
+    };
+
     if (loading) {
         return (
             <div className="container mx-auto p-6">
@@ -419,6 +447,26 @@ export default function ResumePage() {
                                         </svg>
                                         View Original Resume
                                     </button>
+
+                                    {resume.status === 'analyzed' || resume.status === 'completed' ? (
+                                        <Link
+                                            href={`/resume/${resume.id}/analysis`}
+                                            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brown hover:bg-brown-dark"
+                                        >
+                                            <svg className="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                            </svg>
+                                            View Analysis
+                                        </Link>
+                                    ) : (
+                                        <button
+                                            onClick={handleAnalyzeResume}
+                                            disabled={analyzing || resume.status === 'analyzing' || resume.status === 'uploading'}
+                                            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brown hover:bg-brown-dark disabled:opacity-50"
+                                        >
+                                            {analyzing || resume.status === 'analyzing' ? 'Analyzing...' : 'Analyze Resume'}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
