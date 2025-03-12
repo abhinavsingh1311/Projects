@@ -9,7 +9,7 @@ export default function ResumePage() {
     const params = useParams();
     const router = useRouter();
     const { id } = params;
-
+    const [analyzing, setAnalyzing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [resume, setResume] = useState(null);
     const [parsedData, setParsedData] = useState(null);
@@ -154,13 +154,21 @@ export default function ResumePage() {
     const handleAnalyzeResume = async () => {
         try {
             setAnalyzing(true);
+            setError(null);
+
+            // Get the current session token
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                throw new Error('Authentication required');
+            }
 
             const response = await fetch(`/api/resumes/${id}/analyze`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
                 },
-                body: JSON.stringify({ force: false }),  // Set to true to force reanalysis
+                body: JSON.stringify({ resumeId: id, force: false }),
             });
 
             if (!response.ok) {
