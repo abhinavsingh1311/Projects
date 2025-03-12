@@ -148,44 +148,60 @@ async function extractFromText(buffer) {
         throw new Error(`Text file extraction failed: ${error.message}`);
     }
 }
+
+
 /**
- * Main function to extract text from document buffers
- * @param {Buffer} buffer - File buffer
- * @param {string} fileType - Type of file ('pdf', 'docx', 'doc', 'txt')
- * @param {string} originalFilename - Original filename (optional)
- * @returns {Promise<{text: string, metadata: Object}>} - Extracted text and metadata
+ * Extract text from various file types
+ * @param {Buffer} buffer - The file as a buffer
+ * @param {string} fileType - Type of file (pdf, docx, doc, txt)
+ * @returns {Promise<Object>} - Extracted text and metadata
  */
-async function extractText(buffer, fileType, originalFilename = '') {
-    if (!buffer) {
-        throw new Error('No file buffer provided');
-    }
+async function extractText(buffer, fileType) {
+    try {
+        if (!buffer) {
+            throw new Error('No file buffer provided');
+        }
 
-    // If fileType not provided, try to identify it
-    if (!fileType && originalFilename) {
-        fileType = identifyFileType(originalFilename);
-    }
+        console.log(`Extracting text from ${fileType.toUpperCase()} file:`);
 
-    if (!fileType) {
-        throw new Error('Unsupported or unidentified file type');
-    }
+        // For now, focus on PDF since that's the most common
+        if (fileType.toLowerCase() === 'pdf') {
+            const data = await pdfParse(buffer);
 
-    console.log(`Extracting text from ${fileType.toUpperCase()} file: ${originalFilename}`);
-
-    switch (fileType.toLowerCase()) {
-        case 'pdf':
-            return await extractFromPdf(buffer);
-
-        case 'docx':
-            return await extractFromDocx(buffer);
-
-        case 'doc':
-            return await extractFromDoc(buffer);
-
-        case 'txt':
-            return await extractFromText(buffer);
-
-        default:
+            return {
+                text: data.text,
+                metadata: {
+                    pageCount: data.numpages || 0,
+                    author: data.info?.Author || '',
+                    title: data.info?.Title || '',
+                    fileType: 'pdf'
+                }
+            };
+        }
+        else if (fileType.toLowerCase() === 'docx' || fileType.toLowerCase() === 'doc') {
+            // For this quick fix, just return the buffer as a string
+            // In production, use proper DOCX/DOC parser
+            return {
+                text: buffer.toString('utf8').replace(/[^\x20-\x7E\r\n]/g, ''),
+                metadata: {
+                    fileType: fileType.toLowerCase()
+                }
+            };
+        }
+        else if (fileType.toLowerCase() === 'txt') {
+            return {
+                text: buffer.toString('utf8'),
+                metadata: {
+                    fileType: 'txt'
+                }
+            };
+        }
+        else {
             throw new Error(`Unsupported file type: ${fileType}`);
+        }
+    } catch (error) {
+        console.error('Error extracting text:', error);
+        throw error;
     }
 }
 

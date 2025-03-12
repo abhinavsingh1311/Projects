@@ -92,16 +92,25 @@ export default function ResumePage() {
             setError(null);
             setProcessingStatus('parsing');
 
-            const response = await fetch(`/api/resumes/${id}/process-resume`, {
+            // Get the current session token
+            const { data: { session } } = await supabase.auth.getSession();
+
+            if (!session) {
+                throw new Error('Authentication required');
+            }
+
+            const response = await fetch('/api/process-resume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
                 },
                 body: JSON.stringify({ resumeId: id, force: true }),
             });
 
             if (!response.ok) {
-                throw new Error('Failed to start processing');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to start processing');
             }
 
             // Start polling for status updates
@@ -164,7 +173,7 @@ export default function ResumePage() {
                         Try Again
                     </button>
                 </div>
-                <Link href="/public" className="text-brown hover:underline">
+                <Link href="/" className="text-brown hover:underline">
                     Back to My Resumes
                 </Link>
             </div>
@@ -206,7 +215,7 @@ export default function ResumePage() {
                                 : processingStatus === 'failed'
                                     ? 'bg-red-100 text-red-800'
                                     : 'bg-gray-100 text-gray-800'
-                        }`}>
+                            }`}>
                             {processingStatus === 'parsed' || processingStatus === 'analyzed' || processingStatus === 'completed'
                                 ? 'Processed'
                                 : processingStatus === 'parsing'
