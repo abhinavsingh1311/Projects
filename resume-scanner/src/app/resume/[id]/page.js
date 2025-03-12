@@ -173,7 +173,7 @@ export default function ResumePage() {
                         Try Again
                     </button>
                 </div>
-                <Link href="/public" className="text-brown hover:underline">
+                <Link href="/" className="text-brown hover:underline">
                     Back to My Resumes
                 </Link>
             </div>

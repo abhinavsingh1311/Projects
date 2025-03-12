@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/server/utils/supabase-client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function UploadPage() {
     const [file, setFile] = useState(null);
@@ -18,7 +19,37 @@ export default function UploadPage() {
     const [fileValidation, setFileValidation] = useState({ valid: false, message: '' });
     const [processingStatus, setProcessingStatus] = useState(null);
     const [processingProgress, setProcessingProgress] = useState(0);
+    const router = useRouter();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [loading, setLoading] = useState(true);
 
+
+    // Check authentication on component mount
+    useEffect(() => {
+        const checkAuth = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                // Redirect to login if not authenticated
+                router.push('/auth/signin');
+            } else {
+                setIsAuthenticated(true);
+            }
+            setLoading(false);
+        };
+
+        checkAuth();
+    }, [router]);
+
+    // Show loading state or redirect if not authenticated
+    if (loading) {
+        return <div className="flex justify-center items-center min-h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brown"></div>
+        </div>;
+    }
+
+    if (!isAuthenticated) {
+        return null; // Will redirect in the useEffect
+    }
 
     // Validate the file
     const validateFile = (selectedFile) => {
@@ -123,6 +154,8 @@ export default function UploadPage() {
         return types[file.type] || 'unknown';
     };
 
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!file) {
@@ -134,19 +167,22 @@ export default function UploadPage() {
             setUploading(true);
             setError(null);
             setUploadProgress(0);
-            // Get the current session token
-            const { data: { session } } = await supabase.auth.getSession();
 
-            if (!session) {
-                throw new Error('Authentication required');
-            }
-            // Get user session
-            const { data: { user }, error: authError } = await supabase.auth.getUser();
-            if (authError || !user) {
-                throw new Error(authError?.message || 'Authentication required. Please sign in again.');
+            // Get fresh session - this is critical for authentication
+            const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+            if (sessionError || !sessionData.session) {
+                throw new Error('Session expired - please sign in again');
             }
 
-            // Create a sanitized file path
+            // Store the token for later use
+            const token = sessionData.session.access_token;
+
+            // Verify valid user
+            const { data: { user }, error: userError } = await supabase.auth.getUser();
+            if (!user || userError) throw new Error('User authentication failed');
+
+            // Upload file to storage
             const fileExt = file.name.split('.').pop();
             const sanitizedName = file.name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
             const fileName = `${Date.now()}_${sanitizedName}`;
@@ -181,7 +217,6 @@ export default function UploadPage() {
             }
             const fileUrl = signedData.signedUrl;
 
-            // Create a unique ID for the resume
             const resumeData = {
                 title: title || 'Untitled Resume',
                 user_id: user.id,
@@ -210,30 +245,43 @@ export default function UploadPage() {
             setProcessingProgress(0);
             setProcessingStatus('processing');
 
-            // In the handleSubmit function, update the processing request:
+            // Make sure to include the auth token in your request
             const processingResponse = await fetch('/api/process-resume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${session.access_token}`
+                    'Authorization': `Bearer ${token}`  // Send the token here
                 },
-                body: JSON.stringify({ resumeId: insertedResume.id }),
+                body: JSON.stringify({
+                    resumeId: insertedResume.id
+                }),
             });
 
             if (!processingResponse.ok) {
                 const errorData = await processingResponse.json();
                 console.warn('Processing warning:', errorData.error || 'Unknown processing issue');
+                // Continue instead of throwing - we'll still poll for status
             }
 
             // Start polling for status updates
             const statusCheckInterval = setInterval(async () => {
                 try {
-                    const statusResponse = await fetch(`/api/resumes/${insertedResume.id}/status`);
+                    // Also include the token in status requests
+                    const statusResponse = await fetch(`/api/resumes/${insertedResume.id}/status`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
                     if (statusResponse.ok) {
                         const statusData = await statusResponse.json();
                         setProcessingStatus(statusData.status);
+
                         if (statusData.progressPercentage) {
                             setProcessingProgress(statusData.progressPercentage);
+                        } else {
+                            // Otherwise increment our simulated progress
+                            setProcessingProgress(prev => Math.min(prev + 5, 95));
                         }
 
                         // If processing is complete or failed
