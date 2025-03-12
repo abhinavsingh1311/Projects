@@ -92,16 +92,25 @@ export default function ResumePage() {
             setError(null);
             setProcessingStatus('parsing');
 
+            // Get the current session token
+            const { data: { session } } = await supabase.auth.getSession();
+
+            if (!session) {
+                throw new Error('Authentication required');
+            }
+
             const response = await fetch('/api/process-resume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
                 },
                 body: JSON.stringify({ resumeId: id, force: true }),
             });
 
             if (!response.ok) {
-                throw new Error('Failed to start processing');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to start processing');
             }
 
             // Start polling for status updates

@@ -134,7 +134,12 @@ export default function UploadPage() {
             setUploading(true);
             setError(null);
             setUploadProgress(0);
+            // Get the current session token
+            const { data: { session } } = await supabase.auth.getSession();
 
+            if (!session) {
+                throw new Error('Authentication required');
+            }
             // Get user session
             const { data: { user }, error: authError } = await supabase.auth.getUser();
             if (authError || !user) {
@@ -205,10 +210,12 @@ export default function UploadPage() {
             setProcessingProgress(0);
             setProcessingStatus('processing');
 
+            // In the handleSubmit function, update the processing request:
             const processingResponse = await fetch('/api/process-resume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
                 },
                 body: JSON.stringify({ resumeId: insertedResume.id }),
             });

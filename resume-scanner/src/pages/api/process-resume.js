@@ -1,13 +1,21 @@
 // src/pages/api/process-resume.js
-
-import { supabase, supabaseAdmin } from '@/server/config/database_connection';
+import { supabase, supabaseAdmin, hasAdminAccess } from '@/server/config/database_connection';
+import { processResume } from '@/server/services/resumeProcessor';
 import { extractText } from '@/server/services/textExtractor';
+import { handleExtractionError, recordExtractionError, hasRecentErrors } from '@/server/services/extractionErrorHandler';
+
+// CORS configuration for development
+const CORS_HEADERS = {
+    'Access-Control-Allow-Origin': process.env.NODE_ENV === 'development' ? '*' : process.env.CLIENT_URL,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+};
 
 export default async function handler(req, res) {
-    // Allow CORS for development
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    // Set CORS headers
+    Object.entries(CORS_HEADERS).forEach(([key, value]) => {
+        res.setHeader(key, value);
+    });
 
     // Handle preflight requests
     if (req.method === 'OPTIONS') {
@@ -27,48 +35,109 @@ export default async function handler(req, res) {
         console.log('Processing request with body:', req.body);
         const { resumeId, force = false } = req.body;
 
+        // Validate input
         if (!resumeId) {
             console.error('Missing resumeId in request');
-            return res.status(400).json({ error: 'Resume ID required' });
+            return res.status(400).json({
+                success: false,
+                error: 'Resume ID is required'
+            });
         }
 
-        // Add detailed logging
-        console.log(`Fetching resume ${resumeId}`);
+        // Authenticate user
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+            console.error('Authentication error:', authError?.message);
+            return res.status(401).json({
+                success: false,
+                error: 'Authentication required',
+                details: authError?.message || 'User not authenticated'
+            });
+        }
+
+        // Get resume data with enhanced logging
+        console.log(`Fetching resume ${resumeId} for user ${user.id}`);
         const { data: resume, error: resumeError } = await supabaseAdmin
             .from('resumes')
-            .select('*')
+            .select('*, user_id')
             .eq('id', resumeId)
             .single();
 
         if (resumeError || !resume) {
-            console.error('Resume fetch error:', resumeError);
-            return res.status(404).json({ error: 'Resume not found' });
+            console.error('Resume fetch error:', resumeError?.message);
+            return res.status(404).json({
+                success: false,
+                error: 'Resume not found',
+                details: resumeError?.message
+            });
         }
-        console.log(`Found resume: ${resume.id}`);
 
-        // Add file validation
+        // Verify ownership
+        if (resume.user_id !== user.id) {
+            console.error(`User ${user.id} attempted to access resume ${resumeId} without permission`);
+            return res.status(403).json({
+                success: false,
+                error: 'Permission denied',
+                details: 'You do not have permission to process this resume'
+            });
+        }
+
+        // Check for existing processing unless forced
+        if (!force) {
+            const { data: existingData } = await supabaseAdmin
+                .from('resume_parsed_data')
+                .select('id')
+                .eq('resume_id', resumeId)
+                .maybeSingle();
+
+            if (existingData) {
+                console.log(`Resume ${resumeId} already processed`);
+                return res.status(200).json({
+                    success: true,
+                    message: 'Resume already processed',
+                    resumeId,
+                    alreadyProcessed: true
+                });
+            }
+        }
+
+        // Check for recent errors
+        if (!force && await hasRecentErrors(resumeId, 'processing', 5)) {
+            console.warn(`Too many errors for resume ${resumeId}`);
+            return res.status(429).json({
+                success: false,
+                error: 'Too many recent failures',
+                details: 'This resume has failed processing multiple times recently. Wait a few minutes or try with a different file.',
+                waitTime: '10 minutes'
+            });
+        }
+
+        // Update status with file validation
         if (!resume.file_path) {
             console.error('Missing file path in resume record');
-            return res.status(400).json({ error: 'Invalid resume file path' });
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid resume file path'
+            });
         }
 
-        // Update status to processing
+        console.log(`Starting processing for resume ${resumeId}`);
         await supabaseAdmin
             .from('resumes')
             .update({
                 status: 'parsing',
                 last_processed_at: new Date().toISOString(),
-                processing_error: null // Clear any previous errors
+                processing_error: null
             })
             .eq('id', resumeId);
 
-        // Start the processing in the background
+        // Start background processing
         processResumeInBackground(resumeId, resume.file_path, resume.file_type)
             .then(result => {
-                console.log(`Background processing completed for resume ${resumeId}:`, result.success);
+                console.log(`Processing completed for ${resumeId}:`, result.success);
             })
             .catch(error => {
-                console.error(`Error in background processing for resume ${resumeId}:`, error);
+                console.error(`Background error for ${resumeId}:`, error);
             });
 
         return res.status(200).json({
@@ -76,11 +145,11 @@ export default async function handler(req, res) {
             message: 'Resume processing started',
             resumeId,
             background: true,
-            statusEndpoint: `/api/resumes/${resumeId}/status` // Let the client know where to check status
+            statusEndpoint: `/api/resumes/${resumeId}/status`
         });
-    } catch (error) {
-        console.error('API Error in process-resume:', error);
 
+    } catch (error) {
+        console.error('API Error:', error);
         return res.status(500).json({
             success: false,
             error: 'Internal server error',
@@ -89,163 +158,119 @@ export default async function handler(req, res) {
     }
 }
 
-/**
- * Process a resume file in the background
- * @param {string} resumeId - Resume ID to process
- * @param {string} filePath - Path to the file in storage
- * @param {string} fileType - Type of the resume file
- * @returns {Promise<Object>} - Processing result
- */
+// Enhanced background processor with hybrid approach
 async function processResumeInBackground(resumeId, filePath, fileType) {
-    try {
-        console.log(`Downloading file from path: ${filePath}`);
-        const { data: fileBlob, error: fileError } = await supabaseAdmin.storage
-            .from('resumes')
-            .download(filePath);
+    const MAX_RETRIES = 3;
+    let retryCount = 0;
 
-        if (fileError) {
-            console.error('File download error:', fileError);
-            await updateResumeStatus(resumeId, 'failed', `Failed to download file: ${fileError.message}`);
-            return { success: false, error: fileError.message };
-        }
-
-        console.log(`File downloaded successfully, size: ${fileBlob.size} bytes`);
-
-        // Extract text from the file
+    async function attemptProcessing() {
         try {
-            // Convert Blob to ArrayBuffer and then to Buffer
-            const arrayBuffer = await fileBlob.arrayBuffer();
-            const buffer = Buffer.from(arrayBuffer);
+            console.log(`[${resumeId}] Attempt ${retryCount + 1}/${MAX_RETRIES}`);
 
-            // Extract text using the text extractor
-            const extractionResult = await extractText(buffer, fileType);
+            // Download file with error handling
+            console.log(`[${resumeId}] Downloading file from ${filePath}`);
+            const { data: fileData, error: fileError } = await supabaseAdmin.storage
+                .from('resumes')
+                .download(filePath);
 
-            if (!extractionResult || !extractionResult.text) {
-                throw new Error('Text extraction failed - no text returned');
+            if (fileError) {
+                const errorInfo = handleExtractionError(fileError, 'file-download');
+                await recordExtractionError(resumeId, errorInfo);
+                throw errorInfo;
             }
 
-            console.log(`Text extracted successfully, length: ${extractionResult.text.length} characters`);
+            // Hybrid processing flow
+            console.log(`[${resumeId}] Starting text extraction`);
+            const arrayBuffer = await fileData.arrayBuffer();
+            const textResult = await extractText(Buffer.from(arrayBuffer), fileType);
 
-            try {
-                // First, find out if the table exists
-                const { error: tableCheckError } = await supabaseAdmin
-                    .rpc('table_exists', { table_name: 'resume_parsed_data' });
+            console.log(`[${resumeId}] Text extracted (${textResult.text.length} chars)`);
+            console.log(`[${resumeId}] Starting structured parsing`);
 
-                if (tableCheckError) {
-                    console.log("Table might not exist or cannot be checked:", tableCheckError);
+            const parseResult = await processResume(textResult.text, filePath, fileType);
 
-                    // Manual fallback approach - try creating a new table if needed
-                    try {
-                        console.log("Attempting to directly use SQL to store extracted text...");
-
-                        // Use RPC to store text - this bypasses the schema cache issues
-                        await supabaseAdmin.rpc('save_resume_text', {
-                            p_resume_id: resumeId,
-                            p_text: extractionResult.text
-                        });
-
-                        // Update resume status to parsed if we got here
-                        await updateResumeStatus(resumeId, 'parsed');
-
-                        return {
-                            success: true,
-                            resumeId,
-                            message: 'Resume processed successfully via RPC'
-                        };
-                    } catch (rpcError) {
-                        console.error("RPC fallback failed:", rpcError);
-
-                        // Final fallback - just update the status and consider it parsed
-                        // Even without storing the text - at least the UI flow will continue
-                        await updateResumeStatus(resumeId, 'parsed');
-
-                        return {
-                            success: true,
-                            resumeId,
-                            message: 'Resume marked as processed (text extraction succeeded but storing failed)'
-                        };
-                    }
-                }
-
-                // If we get here, try a direct insert with minimal columns
-                const { error: insertError } = await supabaseAdmin
-                    .from('resume_parsed_data')
-                    .insert([{
-                        resume_id: resumeId,
-                        // No text column for now
-                    }]);
-
-                if (insertError) {
-                    console.error('Standard insert failed:', insertError);
-
-                    // Last resort - mark as parsed anyway
-                    await updateResumeStatus(resumeId, 'parsed');
-
-                    return {
-                        success: true,
-                        resumeId,
-                        message: 'Resume marked as processed but text storage failed'
-                    };
-                }
-
-                // Update status and return success
-                await updateResumeStatus(resumeId, 'parsed');
-                return {
-                    success: true,
-                    resumeId,
-                    message: 'Resume processed with minimal data storage'
-                };
-
-            } catch (dbError) {
-                console.error('Exception in database operations:', dbError);
-
-                // Even with DB errors, mark as parsed so the user can continue
-                await updateResumeStatus(resumeId, 'parsed');
-
-                return {
-                    success: true,
-                    note: 'Marked as parsed despite database errors',
-                    error: dbError.message
-                };
+            if (!parseResult.success) {
+                const errorInfo = handleExtractionError(
+                    new Error(parseResult.errorDetails),
+                    'processing'
+                );
+                throw errorInfo;
             }
-        } catch (extractionError) {
-            console.error('Text extraction error:', extractionError);
-            await updateResumeStatus(resumeId, 'failed', `Text extraction failed: ${extractionError.message}`);
-            return { success: false, error: extractionError.message };
+
+            // Unified data storage
+            console.log(`[${resumeId}] Storing parsed data`);
+            const { error: insertError } = await supabaseAdmin
+                .from('resume_parsed_data')
+                .insert([{
+                    resume_id: resumeId,
+                    raw_text: textResult.text,
+                    parsed_data: parseResult.parsedData,
+                    metadata: { ...textResult.metadata, ...parseResult.metadata },
+                    confidence: parseResult.confidence,
+                    warnings: parseResult.validation?.warnings,
+                    processed_at: new Date().toISOString()
+                }]);
+
+            if (insertError) {
+                const errorInfo = handleExtractionError(insertError, 'database-storage');
+                throw errorInfo;
+            }
+
+            await updateResumeStatus(resumeId, 'parsed');
+            return { success: true };
+
+        } catch (error) {
+            console.error(`[${resumeId}] Processing error:`, error);
+
+            if (retryCount < MAX_RETRIES && isRetryableError(error.errorType)) {
+                const delay = Math.pow(2, retryCount) * 1000;
+                console.log(`[${resumeId}] Retrying in ${delay}ms`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                retryCount++;
+                return attemptProcessing();
+            }
+
+            await updateResumeStatus(resumeId, 'failed', error.userMessage);
+            await recordExtractionError(resumeId, error);
+            return { success: false, error };
         }
-    } catch (error) {
-        console.error(`Error processing resume ${resumeId}:`, error);
-        await updateResumeStatus(resumeId, 'failed', error.message || 'Unknown error during processing');
-        return { success: false, error: error.message || 'Unknown error' };
     }
+
+    return attemptProcessing();
 }
 
-/**
- * Update resume status
- * @param {string} resumeId - Resume ID
- * @param {string} status - New status
- * @param {string} errorMessage - Optional error message
- */
+// Improved status updater with logging
 async function updateResumeStatus(resumeId, status, errorMessage = null) {
     try {
+        console.log(`[${resumeId}] Updating status to ${status}`);
+
         const updateData = {
             status,
-            last_processed_at: new Date().toISOString()
+            last_processed_at: new Date().toISOString(),
+            processing_error: errorMessage || null
         };
 
-        if (errorMessage) {
-            updateData.processing_error = errorMessage;
-        } else {
-            // Clear any previous errors if successful
-            updateData.processing_error = null;
-        }
-
-        await supabaseAdmin
+        const { error } = await supabaseAdmin
             .from('resumes')
             .update(updateData)
             .eq('id', resumeId);
 
+        if (error) throw error;
+
+        console.log(`[${resumeId}] Status updated to ${status}`);
+        return true;
     } catch (error) {
-        console.error(`Error updating resume status to ${status}:`, error);
+        console.error(`[${resumeId}] Status update failed:`, error);
+        return false;
     }
+}
+
+// Retry classifier
+function isRetryableError(errorType) {
+    return [
+        'NETWORK_ERROR',
+        'TIMEOUT_ERROR',
+        'API_ERROR',
+        'DATABASE_ERROR'
+    ].includes(errorType);
 }
