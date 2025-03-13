@@ -260,7 +260,7 @@ async function storeExtractedText(resumeId, text, metadata, warnings = []) {
     try {
         const { error } = await supabaseAdmin
             .from('resume_parsed_data')
-            .insert([{
+            .upsert([{
                 resume_id: resumeId,
                 raw_text: text,
                 metadata: metadata || {},

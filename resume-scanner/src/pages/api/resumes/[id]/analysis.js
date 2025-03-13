@@ -2,11 +2,19 @@
 import { supabase } from '@/server/config/database_connection';
 
 export default async function handler(req, res) {
+    console.log("Analysis API hit:", req.method, req.url);
+
     if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
+        const { id } = req.query;
+
+        if (!id) {
+            return res.status(400).json({ error: 'Resume ID is required' });
+        }
+
         // Authenticate user
         const authHeader = req.headers.authorization;
         if (!authHeader?.startsWith('Bearer ')) {

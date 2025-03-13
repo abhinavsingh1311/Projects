@@ -23,18 +23,23 @@ export default function ResumeAnalysisPage() {
             try {
                 setLoading(true);
 
-                const { data: { session}} = await supabase.auth.getSession();
+                const { data: { session } } = await supabase.auth.getSession();
 
-                // Change this to a GET request
+                if (!session) {
+                    throw new Error('Authentication required. Please sign in again.');
+                }
+
+                console.log("Fetching analysis with token:", session.access_token.substring(0, 10) + "...");
+
+                // Use GET method for fetching analysis
                 const response = await fetch(`/api/resumes/${id}/analysis`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${session.access_token}`
                     }
                 });
-                //
-                // // Fetch analysis
-                // const response = await fetch(`/api/resumes/${id}/analysis`);
+
+                console.log("Analysis response status:", response.status);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -46,6 +51,7 @@ export default function ResumeAnalysisPage() {
                     });
                 } else {
                     const errorData = await response.json();
+                    console.error("Analysis error data:", errorData);
 
                     // If analysis not found but resume exists
                     if (response.status === 404 && errorData.resumeStatus) {
@@ -62,7 +68,11 @@ export default function ResumeAnalysisPage() {
 
                             // Poll for status updates
                             const intervalId = setInterval(async () => {
-                                const statusResponse = await fetch(`/api/resumes/${id}/status`);
+                                const statusResponse = await fetch(`/api/resumes/${id}/status`, {
+                                    headers: {
+                                        'Authorization': `Bearer ${session.access_token}`
+                                    }
+                                });
                                 if (statusResponse.ok) {
                                     const statusData = await statusResponse.json();
 
@@ -92,7 +102,7 @@ export default function ResumeAnalysisPage() {
             }
         };
 
-        fetchAnalysis();
+        fetchAnalysis().then();
     }, [id]);
 
     const handleAnalyzeResume = async () => {
@@ -100,7 +110,13 @@ export default function ResumeAnalysisPage() {
             setAnalyzing(true);
             setError(null);
 
-            const { data: { session}} = await supabase.auth.getSession();
+            const { data: { session } } = await supabase.auth.getSession();
+
+            if (!session) {
+                throw new Error('Authentication required. Please sign in again.');
+            }
+
+            console.log("Analyzing resume with token:", session.access_token.substring(0, 10) + "...");
 
             const response = await fetch(`/api/resumes/${id}/analyze`, {
                 method: 'POST',
@@ -108,15 +124,17 @@ export default function ResumeAnalysisPage() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${session.access_token}`
                 },
-                body: JSON.stringify({ resumeId: id, force: false }),
+                body: JSON.stringify({ resumeId: id, force: true }),
             });
+
+            console.log("Analyze response status:", response.status);
 
             const data = await response.json();
 
             if (!response.ok) {
+                console.error("Analyze error data:", data);
                 throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
-
 
             // Show analyzing message
             setError('Analysis started. This may take a minute or two. The page will refresh when the analysis is complete.');
