@@ -158,6 +158,7 @@ export default function ResumePage() {
 
             // Get the current session token
             const { data: { session } } = await supabase.auth.getSession();
+
             if (!session) {
                 throw new Error('Authentication required');
             }

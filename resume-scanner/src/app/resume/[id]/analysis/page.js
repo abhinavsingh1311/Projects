@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import {supabase} from "@/server/utils/supabase-client";
 
 export default function ResumeAnalysisPage() {
     const params = useParams();
@@ -22,8 +23,18 @@ export default function ResumeAnalysisPage() {
             try {
                 setLoading(true);
 
-                // Fetch analysis
-                const response = await fetch(`/api/resumes/${id}/analysis`);
+                const { data: { session}} = await supabase.auth.getSession();
+
+                // Change this to a GET request
+                const response = await fetch(`/api/resumes/${id}/analysis`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${session.access_token}`
+                    }
+                });
+                //
+                // // Fetch analysis
+                // const response = await fetch(`/api/resumes/${id}/analysis`);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -89,21 +100,34 @@ export default function ResumeAnalysisPage() {
             setAnalyzing(true);
             setError(null);
 
+            const { data: { session}} = await supabase.auth.getSession();
+
             const response = await fetch(`/api/resumes/${id}/analyze`, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify({ resumeId: id, force: false }),
             });
 
+            const data = await response.json();
+
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to start analysis');
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
+
 
             // Show analyzing message
             setError('Analysis started. This may take a minute or two. The page will refresh when the analysis is complete.');
 
             // Poll for status updates
             const intervalId = setInterval(async () => {
-                const statusResponse = await fetch(`/api/resumes/${id}/status`);
+                const statusResponse = await fetch(`/api/resumes/${id}/status`, {
+                    headers: {
+                        'Authorization': `Bearer ${session.access_token}`
+                    }
+                });
                 if (statusResponse.ok) {
                     const statusData = await statusResponse.json();
 

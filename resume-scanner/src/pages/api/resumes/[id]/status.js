@@ -1,6 +1,5 @@
 // pages/api/resumes/[id]/status.js
-
-import {supabase,supabaseAdmin} from "@/server/config/database_connection";
+import { supabaseAdmin } from "@/server/config/database_connection";
 
 export default async function handler(req, res) {
     // CORS headers
@@ -14,66 +13,76 @@ export default async function handler(req, res) {
     try {
         const { id } = req.query;
 
-        // Check for the auth header
-        const authHeader = req.headers.authorization;
-        let token;
+        // Validate required parameters
+        if (!id) {
+            return res.status(400).json({ error: 'Resume ID is required' });
+        }
 
-        if (authHeader && authHeader.startsWith('Bearer ')) {
-            token = authHeader.split(' ')[1];
-        } else {
+        // Authentication
+        const authHeader = req.headers.authorization;
+        if (!authHeader?.startsWith('Bearer ')) {
             return res.status(401).json({ error: 'Authentication required' });
         }
 
-        // Validate user with the token
+        const token = authHeader.split(' ')[1];
         const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
 
-        if (!user || authError) {
-            return res.status(401).json({ error: 'Unauthorized' });
+        if (authError || !user) {
+            return res.status(401).json({ error: 'Invalid token' });
         }
 
-        // Get resume status
+        // Get resume status with ownership check
         const { data: resume, error: dbError } = await supabaseAdmin
             .from('resumes')
-            .select('status, processing_error')
-            .eq('id', id)
-            .single();
-
-        if (dbError) {
-            return res.status(404).json({
-                error: 'Resume not found',
-                code: 'RESUME_NOT_FOUND'
-            });
-        }
-        // Get resume status
-        const { data, error } = await supabase
-            .from('resumes')
-            .select('id, status, processing_error, created_at, last_processed_at')
+            .select(`
+                status,
+                processing_error,
+                created_at,
+                last_processed_at,
+                user_id
+            `)
             .eq('id', id)
             .eq('user_id', user.id)
             .single();
 
+        if (dbError) {
+            const statusCode = dbError.code === 'PGRST116' ? 404 : 500;
+            return res.status(statusCode).json({
+                error: dbError.code === 'PGRST116'
+                    ? 'Resume not found'
+                    : 'Database error',
+                code: dbError.code
+            });
+        }
+
+
         return res.status(200).json({
             status: resume.status,
             error: resume.processing_error,
-            progressPercentage: calculateProgress(resume.status)
+            progressPercentage: calculateProgress(resume.status),
+            createdAt: resume.created_at,
+            processedAt: resume.last_processed_at
         });
 
     } catch (error) {
         console.error('Status check error:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({
+            error: 'Internal server error',
+            details: error.message
+        });
     }
 }
 
-// Simple progress calculation function
+// Enhanced progress calculation
 function calculateProgress(status) {
-    switch(status) {
-        case 'uploaded': return 10;
-        case 'parsing': return 40;
-        case 'parsed': return 70;
-        case 'analyzing': return 85;
-        case 'analyzed':
-        case 'completed': return 100;
-        case 'failed': return 0;
-        default: return 25;
-    }
+    const progressMap = {
+        uploaded: 10,
+        parsing: 40,
+        parsed: 70,
+        analyzing: 85,
+        analyzed: 95,
+        completed: 100,
+        failed: 0
+    };
+    return progressMap[status] || 25;
 }

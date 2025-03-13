@@ -8,6 +8,19 @@ export default async function handler(req, res) {
     }
 
     try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader?.startsWith('Bearer ')) {
+            return res.status(401).json({ error: 'Authentication required' });
+        }
+
+        const token = authHeader.split(' ')[1];
+
+
+        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+        if (authError || !user) {
+            return res.status(401).json({ error: 'Authentication failed' });
+        }
         const { id } = req.query;
         const { force = false } = req.body;
 
@@ -15,11 +28,6 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Resume ID is required' });
         }
 
-        // Authenticate user
-        const { data: { user }, error: authError } = await supabase.auth.getUser();
-        if (authError || !user) {
-            return res.status(401).json({ error: 'Authentication required' });
-        }
 
         // Check if resume belongs to user
         const { data: resume, error: resumeError } = await supabase

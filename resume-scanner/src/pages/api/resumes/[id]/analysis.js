@@ -7,16 +7,17 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { id } = req.query;
-
-        if (!id) {
-            return res.status(400).json({ error: 'Resume ID is required' });
+        // Authenticate user
+        const authHeader = req.headers.authorization;
+        if (!authHeader?.startsWith('Bearer ')) {
+            return res.status(401).json({ error: 'Authentication required' });
         }
 
-        // Authenticate user
-        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        const token = authHeader.split(' ')[1];
+        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
         if (authError || !user) {
-            return res.status(401).json({ error: 'Authentication required' });
+            return res.status(401).json({ error: 'Authentication failed' });
         }
 
         // First check if the resume exists and belongs to the user
