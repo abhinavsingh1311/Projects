@@ -164,9 +164,20 @@ async function extractText(buffer, fileType) {
 
         console.log(`Extracting text from ${fileType.toUpperCase()} file:`);
 
-        // For now, focus on PDF since that's the most common
+        // For PDF files
         if (fileType.toLowerCase() === 'pdf') {
-            const data = await pdfParse(buffer);
+            // Make sure we're passing a proper buffer to pdf-parse
+            if (!(buffer instanceof Buffer)) {
+                console.log('Converting to Buffer for PDF parsing');
+                buffer = Buffer.from(buffer);
+            }
+
+            // Logging buffer details for debugging
+            console.log(`Buffer length: ${buffer.length}, is Buffer: ${buffer instanceof Buffer}`);
+
+            // PDF-parse expects an object with a 'data' property containing the buffer
+            const pdfData = { data: buffer };
+            const data = await pdfParse(pdfData);
 
             return {
                 text: data.text,
@@ -260,9 +271,72 @@ function validateExtractionResult(text, metadata) {
     return result;
 }
 
+// src/server/services/textExtractor.js
+async function extractTextWithValidation(buffer, fileType, filePath) {
+    try {
+        console.log(`Extracting text from ${fileType} file: ${filePath}`);
+
+        if (!buffer) {
+            return {
+                success: false,
+                errorDetails: 'No file buffer provided'
+            };
+        }
+
+        // Make sure buffer is properly formatted for pdf-parse
+        let processedBuffer = buffer;
+
+        // If it's not a plain buffer or instance of Uint8Array, try to convert it
+        if (fileType === 'pdf' && !(buffer instanceof Uint8Array)) {
+            console.log('Converting buffer format for PDF parsing');
+            // If it's an ArrayBuffer, convert to Buffer
+            if (buffer instanceof ArrayBuffer) {
+                processedBuffer = Buffer.from(buffer);
+            }
+            // If it's a Blob or File, convert to ArrayBuffer then Buffer
+            else if (buffer.arrayBuffer) {
+                const arrayBuffer = await buffer.arrayBuffer();
+                processedBuffer = Buffer.from(arrayBuffer);
+            }
+            // Log the buffer type for debugging
+            console.log('Buffer type:', processedBuffer.constructor.name);
+        }
+
+        // Extract the text using the existing function with the properly formatted buffer
+        const extractionResult = await extractText(processedBuffer, fileType);
+
+        if (!extractionResult || !extractionResult.text) {
+            return {
+                success: false,
+                errorDetails: 'Text extraction failed to return content'
+            };
+        }
+
+        // Clean up the text
+        const cleanedText = cleanupText(extractionResult.text);
+
+        // Validate the extraction result
+        const validation = validateExtractionResult(cleanedText, extractionResult.metadata || {});
+
+        return {
+            success: true,
+            text: cleanedText,
+            metadata: extractionResult.metadata || {},
+            validation
+        };
+    } catch (error) {
+        console.error('Error in extractTextWithValidation:', error);
+        return {
+            success: false,
+            errorDetails: error.message || 'Unknown error during text extraction and validation'
+        };
+    }
+}
+
 module.exports = {
     identifyFileType,
     extractText,
     cleanupText,
-    validateExtractionResult
+    validateExtractionResult,
+    extractTextWithValidation
 };

@@ -110,13 +110,15 @@ export default function ResumeAnalysisPage() {
             setAnalyzing(true);
             setError(null);
 
+            // Get the current session token
             const { data: { session } } = await supabase.auth.getSession();
 
             if (!session) {
-                throw new Error('Authentication required. Please sign in again.');
+                throw new Error('Authentication required');
             }
 
-            console.log("Analyzing resume with token:", session.access_token.substring(0, 10) + "...");
+            console.log("Making analyze request with token:", session.access_token.substring(0, 10) + "...");
+            console.log("Resume ID:", id);
 
             const response = await fetch(`/api/resumes/${id}/analyze`, {
                 method: 'POST',
@@ -124,16 +126,20 @@ export default function ResumeAnalysisPage() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${session.access_token}`
                 },
-                body: JSON.stringify({ resumeId: id, force: true }),
+                body: JSON.stringify({
+                    resumeId: id,
+                    force: true
+                }),
             });
 
-            console.log("Analyze response status:", response.status);
+            // Log the raw response for debugging
+            console.log("Response status:", response.status);
 
             const data = await response.json();
+            console.log("Response data:", data);
 
             if (!response.ok) {
-                console.error("Analyze error data:", data);
-                throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                throw new Error(data.error || data.details || `HTTP error! status: ${response.status}`);
             }
 
             // Show analyzing message

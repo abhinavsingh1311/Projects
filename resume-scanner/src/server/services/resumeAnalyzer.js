@@ -104,6 +104,20 @@ async function analyzeResume(resumeId) {
         }
 
         if (!parsedData || !parsedData.raw_text) {
+            // Enhanced error logging
+            console.error(`No parsed text found for resume ${resumeId}`);
+
+            // Check if resume exists
+            const { data: resume } = await supabaseAdmin
+                .from('resumes')
+                .select('status, file_path')
+                .eq('id', resumeId)
+                .single();
+
+            if (resume) {
+                console.log(`Resume exists with status: ${resume.status}, path: ${resume.file_path}`);
+            }
+
             throw new Error('No parsed text found for this resume. Text extraction may have failed.');
         }
 
@@ -139,8 +153,6 @@ async function analyzeResume(resumeId) {
             })
             .eq('id', resumeId);
 
-        await processAndSaveSkills(resumeId, analysisResult);
-
         return {
             success: true,
             resumeId,
@@ -169,6 +181,7 @@ async function analyzeResume(resumeId) {
         };
     }
 }
+
 /**
  * Process and save skills extracted from the resume
  * @param {string} resumeId - Resume ID

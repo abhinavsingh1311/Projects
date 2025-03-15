@@ -105,7 +105,10 @@ export default function ResumePage() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${session.access_token}`
                 },
-                body: JSON.stringify({ resumeId: id, force: true }),
+                body: JSON.stringify({
+                    resumeId: id,
+                    force: true
+                }),
             });
 
             if (!response.ok) {

@@ -1,6 +1,6 @@
 // src/pages/api/process-resume.js
 import { supabase, supabaseAdmin } from '@/server/config/database_connection';
-import { processResume } from '@/server/services/resumeProcessor';
+import { processResume,reprocessResume } from '@/server/services/resumeProcessor';
 import { extractText } from '@/server/services/textExtractor';
 
 // CORS configuration for development
@@ -32,6 +32,7 @@ export default async function handler(req, res) {
 
 
     try {
+
         console.log('Processing request with body:', req.body);
         const { resumeId, force = false } = req.body;
 
@@ -88,7 +89,7 @@ export default async function handler(req, res) {
             });
         }
 
-        // Verify ownership
+        // Verify ownership - you might keep or remove this check depending on your needs
         if (resume.user_id !== user.id) {
             console.error(`User ${user.id} attempted to access resume ${resumeId} without permission`);
             return res.status(403).json({
@@ -98,46 +99,27 @@ export default async function handler(req, res) {
             });
         }
 
-        // Check for existing processing unless forced
-        if (!force) {
-            const { data: existingData } = await supabaseAdmin
-                .from('resume_parsed_data')
-                .select('id')
-                .eq('resume_id', resumeId)
-                .maybeSingle();
+        // Check for existing processing data to determine if we need to reprocess
+        const { data: existingData } = await supabaseAdmin
+            .from('resume_parsed_data')
+            .select('id')
+            .eq('resume_id', resumeId)
+            .maybeSingle();
 
-            if (existingData) {
-                console.log(`Resume ${resumeId} already processed`);
-                return res.status(200).json({
-                    success: true,
-                    message: 'Resume already processed',
-                    resumeId,
-                    alreadyProcessed: true
-                });
-            }
-        }
+        // Determine if we should reprocess based on existing data and force flag
+        const shouldReprocess = existingData && force;
 
-        // Skip checking for recent errors since it's causing problems
-        // if (!force && await hasRecentErrors(resumeId, 'processing', 5)) {
-        //     console.warn(`Too many errors for resume ${resumeId}`);
-        //     return res.status(429).json({
-        //         success: false,
-        //         error: 'Too many recent failures',
-        //         details: 'This resume has failed processing multiple times recently. Wait a few minutes or try with a different file.',
-        //         waitTime: '10 minutes'
-        //     });
-        // }
-
-        // Update status with file validation
-        if (!resume.file_path) {
-            console.error('Missing file path in resume record');
-            return res.status(400).json({
-                success: false,
-                error: 'Invalid resume file path'
+        if (existingData && !force) {
+            console.log(`Resume ${resumeId} already processed`);
+            return res.status(200).json({
+                success: true,
+                message: 'Resume already processed',
+                resumeId,
+                alreadyProcessed: true
             });
         }
 
-        console.log(`Starting processing for resume ${resumeId}`);
+        // Update status
         await supabaseAdmin
             .from('resumes')
             .update({
@@ -147,22 +129,37 @@ export default async function handler(req, res) {
             })
             .eq('id', resumeId);
 
-        // Start background processing
-        processResumeInBackground(resumeId, resume.file_path, resume.file_type)
-            .then(result => {
-                console.log(`Processing completed for ${resumeId}:`, result.success);
-            })
-            .catch(error => {
-                console.error(`Background error for ${resumeId}:`, error);
-            });
+        // Start background processing - use the appropriate function based on whether we're reprocessing
+        if (shouldReprocess) {
+            console.log(`Starting reprocessing for resume ${resumeId}`);
+            // Use reprocessResume for already processed resumes
+            reprocessResumeInBackground(resumeId)
+                .then(result => {
+                    console.log(`Reprocessing completed for ${resumeId}:`, result.success);
+                })
+                .catch(error => {
+                    console.error(`Background reprocessing error for ${resumeId}:`, error);
+                });
+        } else {
+            console.log(`Starting processing for resume ${resumeId}`);
+            // Use processResume for new processing
+            processResumeInBackground(resumeId, resume.file_path, resume.file_type)
+                .then(result => {
+                    console.log(`Processing completed for ${resumeId}:`, result.success);
+                })
+                .catch(error => {
+                    console.error(`Background error for ${resumeId}:`, error);
+                });
+        }
 
         return res.status(200).json({
             success: true,
-            message: 'Resume processing started',
+            message: shouldReprocess ? 'Resume reprocessing started' : 'Resume processing started',
             resumeId,
             background: true,
             statusEndpoint: `/api/resumes/${resumeId}/status`
         });
+
 
     } catch (error) {
         console.error('API Error:', error);
@@ -304,6 +301,46 @@ async function updateResumeStatus(resumeId, status, errorMessage = null) {
         console.error(`[${resumeId}] Status update failed:`, error);
         return false;
     }
+}
+
+async function reprocessResumeInBackground(resumeId) {
+    const MAX_RETRIES = 3;
+    let retryCount = 0;
+
+    async function attemptReprocessing() {
+        try {
+            console.log(`[${resumeId}] Reprocessing attempt ${retryCount + 1}/${MAX_RETRIES}`);
+
+            // Call the reprocessResume function from resumeProcessor.js
+            const result = await reprocessResume(resumeId);
+
+            if (result.success) {
+                console.log(`[${resumeId}] Reprocessing successful`);
+                return { success: true };
+            } else {
+                // Proper error handling with detailed information
+                console.error(`[${resumeId}] Reprocessing returned error:`, result.error);
+                throw new Error(result.error?.userMessage || result.error?.message || 'Reprocessing failed');
+            }
+        } catch (error) {
+            console.error(`[${resumeId}] Reprocessing error:`, error);
+
+            if (retryCount < MAX_RETRIES) {
+                const delay = Math.pow(2, retryCount) * 1000;
+                console.log(`[${resumeId}] Retrying reprocessing in ${delay}ms`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                retryCount++;
+                return attemptReprocessing();
+            }
+
+            // Make sure to update the status on failure
+            await updateResumeStatus(resumeId, 'failed',
+                error.message || 'Reprocessing failed after multiple attempts');
+            return { success: false, error };
+        }
+    }
+
+    return attemptReprocessing();
 }
 
 // Retry classifier

@@ -1,7 +1,7 @@
 // src/server/services/resumeProcessor.js
-const { extractText, identifyFileType } = require('./textExtractor');
+const { extractText,extractTextWithValidation, identifyFileType } = require('./textExtractor');
 const { supabase, supabaseAdmin } = require('../config/database_connection');
-
+const {handleExtractionError,recordExtractionError} = require('@/server/services/extractionErrorHandler');
 /**
  * Process a resume: extract text and update status
  * @param {string} resumeId - The ID of the resume to process
@@ -137,23 +137,85 @@ async function doesResumeNeedProcessing(resumeId) {
     }
 }
 
-/**
- * Reprocess a resume even if it was processed before
- * @param {string} resumeId - The ID of the resume to reprocess
- * @returns {Promise<Object>} - Result of the processing
- */
+
 async function reprocessResume(resumeId) {
     try {
+        console.log(`Starting reprocessing for resume ID: ${resumeId}`);
+
         // Delete existing parsed data if any
         await supabaseAdmin
             .from('resume_parsed_data')
             .delete()
             .eq('resume_id', resumeId);
 
-        // Process the resume
-        return await processResume(resumeId);
+        // Get the resume data to access the file path
+        const { data: resume, error: resumeError } = await supabaseAdmin
+            .from('resumes')
+            .select('*')
+            .eq('id', resumeId)
+            .single();
+
+        if (resumeError) {
+            throw new Error(`Failed to fetch resume data: ${resumeError.message}`);
+        }
+
+        // Ensure we're getting a fresh copy of the file
+        console.log(`Downloading file from ${resume.file_path}`);
+        const { data: fileData, error: fileError } = await supabaseAdmin.storage
+            .from('resumes')
+            .download(resume.file_path);
+
+        if (fileError) {
+            throw new Error(`Failed to download file: ${fileError.message}`);
+        }
+
+        // Convert to proper Buffer before continuing
+        const arrayBuffer = await fileData.arrayBuffer();
+        const fileBuffer = Buffer.from(arrayBuffer);
+
+        // Update status to processing
+        await updateResumeStatus(resumeId, 'parsing');
+
+        // Extract and validate text with the properly formatted buffer
+        const extractionResult = await extractTextWithValidation(
+            fileBuffer,
+            resume.file_type,
+            resume.file_path
+        );
+
+        if (!extractionResult.success) {
+            const errorInfo = handleExtractionError(
+                new Error(extractionResult.errorDetails),
+                'text-extraction'
+            );
+            await updateResumeStatus(resumeId, 'failed', errorInfo.userMessage);
+            return { success: false, error: errorInfo };
+        }
+
+        // Store the extracted text
+        await storeExtractedText(
+            resumeId,
+            extractionResult.text,
+            extractionResult.metadata,
+            extractionResult.validation?.warnings || []
+        );
+
+        // Update resume status
+        const finalStatus = extractionResult.validation?.warnings?.length > 0 ?
+            'parsed_with_warnings' : 'parsed';
+        await updateResumeStatus(resumeId, finalStatus);
+
+        return {
+            success: true,
+            resumeId,
+            status: finalStatus
+        };
     } catch (error) {
         console.error('Error reprocessing resume:', error);
+
+        // Update status to failed
+        await updateResumeStatus(resumeId, 'failed', error.message || 'Unknown error during reprocessing');
+
         return {
             success: false,
             resumeId,
@@ -258,13 +320,47 @@ async function updateResumeStatus(resumeId, status, errorMessage = null) {
  */
 async function storeExtractedText(resumeId, text, metadata, warnings = []) {
     try {
+        // Import the parser
+        const { parseResumeText } = require('./resumeParser');
+
+        // Parse the extracted text to get structured data
+        let parsedData = {};
+        try {
+            parsedData = parseResumeText(text);
+            console.log('Resume text parsed successfully');
+        } catch (parseError) {
+            console.error('Error parsing resume text:', parseError);
+            // Create a minimal valid object if parsing fails
+            parsedData = {
+                contactInfo: {},
+                skills: [],
+                sections: {
+                    header: text.substring(0, 200) // Just include the first portion as header
+                },
+                rawText: text
+            };
+        }
+
+        // First delete any existing record
+        const { error: deleteError } = await supabaseAdmin
+            .from('resume_parsed_data')
+            .delete()
+            .eq('resume_id', resumeId);
+
+        if (deleteError) {
+            console.warn('Warning when deleting existing parsed data:', deleteError);
+            // Continue anyway - it might not exist
+        }
+
+        // Then insert the new record
         const { error } = await supabaseAdmin
             .from('resume_parsed_data')
-            .upsert([{
+            .insert([{
                 resume_id: resumeId,
                 raw_text: text,
+                parsed_data: parsedData,
                 metadata: metadata || {},
-                warnings: warnings,
+                warnings: warnings || [],
                 processed_at: new Date().toISOString()
             }]);
 
