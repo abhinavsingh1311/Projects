@@ -6,12 +6,14 @@ import Image from 'next/image';
 import DeleteConfirmationModal from '@/component/DeleteConfirmationModal';
 import ResumeProcessingStatus from '@/component/resume/ResumeProcessingStatus';
 import { PieChart, BarChart, Clipboard, FileText, Briefcase, Search, Award, Lock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [user, setUser] = useState(null);
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
     resumeId: null,
@@ -35,73 +37,38 @@ export default function Home() {
     averageScore: 0
   });
 
-  useEffect(() => {
-    async function fetchUserAndResumes() {
-      try {
-        setLoading(true);
-        const { data, error: authError } = await supabase.auth.getUser();
+  // Fetch job matches for a specific resume
+  const fetchJobMatches = useCallback(async (resumeId) => {
+    if (!resumeId) return;
 
-        if (authError) {
-          console.log("Auth error detected:", authError);
-          setUser(null);
-          return;
-        }
+    try {
+      setJobMatchesLoading(true);
 
-        const currentUser = data?.user;
-        setUser(currentUser);
+      const { data, error } = await supabase
+          .from('job_matches')
+          .select(`
+          *,
+          jobs(id, title, company_name, location, job_types, salary_min, salary_max)
+        `)
+          .eq('resume_id', resumeId)
+          .order('match_score', { ascending: false });
 
-        if (currentUser) {
-          const { data: resumesData, error: resumesError } = await supabase
-              .from('resumes')
-              .select(`
-              *,
-              resume_parsed_data(*),
-              resume_analysis(id, created_at, analysis_json)
-            `)
-              .eq('user_id', currentUser.id)
-              .order('created_at', { ascending: false });
+      if (error) throw error;
 
-          if (resumesError) throw resumesError;
-
-          const processedResumes = resumesData.map(resume => ({
-            ...resume,
-            hasAnalysis: resume.resume_analysis && resume.resume_analysis.length > 0,
-            isParsed: resume.status === 'parsed' || resume.status === 'analyzed' || resume.status === 'completed',
-            lastUpdated: resume.updated_at || resume.created_at,
-            processingStatus: getProcessingStatus(resume.status),
-            skillCount: resume.resume_analysis && resume.resume_analysis.length > 0 ?
-                (resume.resume_analysis[0].analysis_json?.skills?.technical?.length || 0) +
-                (resume.resume_analysis[0].analysis_json?.skills?.soft?.length || 0) : 0,
-            overallScore: resume.resume_analysis && resume.resume_analysis.length > 0 ?
-                resume.resume_analysis[0].analysis_json?.overall_score || 0 : 0,
-            atsScore: resume.resume_analysis && resume.resume_analysis.length > 0 ?
-                resume.resume_analysis[0].analysis_json?.ats_compatibility?.score || 0 : 0
-          }));
-
-          setResumes(processedResumes || []);
-          setFilteredResumes(processedResumes || []);
-
-          if (processedResumes.length > 0) {
-            calculateDashboardStats(processedResumes);
-          }
-
-          if (processedResumes.length > 0) {
-            await fetchJobMatches(processedResumes[0].id);
-          }
-        }
-      }
-      catch (error) {
-        console.error('Error:', error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
+      setJobMatches(data || []);
+      setDashboardStats(prev => ({
+        ...prev,
+        matchedJobs: data.length
+      }));
+    } catch (error) {
+      console.error('Error fetching job matches:', error);
+    } finally {
+      setJobMatchesLoading(false);
     }
-
-    fetchUserAndResumes();
   }, []);
 
-  const calculateDashboardStats = (resumeData) => {
+  // Calculate dashboard stats from resume data
+  const calculateDashboardStats = useCallback((resumeData) => {
     const analyzed = resumeData.filter(r => r.hasAnalysis).length;
     const allSkills = [];
     resumeData.forEach(resume => {
@@ -134,38 +101,143 @@ export default function Home() {
       resumeCount: resumeData.length,
       analyzedCount: analyzed,
       topSkills,
-      matchedJobs: 0,
+      matchedJobs: jobMatches.length,
       averageScore: avgScore
     });
-  };
+  }, [jobMatches.length]);
 
-  const fetchJobMatches = async (resumeId) => {
+  // Process resumes to add derived properties
+  const processResumes = useCallback((resumesData) => {
+    return resumesData.map(resume => ({
+      ...resume,
+      hasAnalysis: resume.resume_analysis && resume.resume_analysis.length > 0,
+      isParsed: resume.status === 'parsed' || resume.status === 'analyzed' || resume.status === 'completed',
+      lastUpdated: resume.updated_at || resume.created_at,
+      processingStatus: getProcessingStatus(resume.status),
+      skillCount: resume.resume_analysis && resume.resume_analysis.length > 0 ?
+          (resume.resume_analysis[0].analysis_json?.skills?.technical?.length || 0) +
+          (resume.resume_analysis[0].analysis_json?.skills?.soft?.length || 0) : 0,
+      overallScore: resume.resume_analysis && resume.resume_analysis.length > 0 ?
+          resume.resume_analysis[0].analysis_json?.overall_score || 0 : 0,
+      atsScore: resume.resume_analysis && resume.resume_analysis.length > 0 ?
+          resume.resume_analysis[0].analysis_json?.ats_compatibility?.score || 0 : 0
+    }));
+  }, []);
+
+  // Main data fetching function - used for initial load and refreshes
+  const fetchUserAndResumes = useCallback(async (showLoading = true) => {
     try {
-      setJobMatchesLoading(true);
+      if (showLoading) setLoading(true);
 
-      const { data, error } = await supabase
-          .from('job_matches')
-          .select(`
-          *,
-          jobs(id, title, company_name, location, job_types, salary_min, salary_max)
-        `)
-          .eq('resume_id', resumeId)
-          .order('match_score', { ascending: false });
+      const { data, error: authError } = await supabase.auth.getUser();
 
-      if (error) throw error;
+      if (authError) {
+        console.log("Auth error detected:", authError);
+        setUser(null);
+        return;
+      }
 
-      setJobMatches(data || []);
-      setDashboardStats(prev => ({
-        ...prev,
-        matchedJobs: data.length
-      }));
-    } catch (error) {
-      console.error('Error fetching job matches:', error);
-    } finally {
-      setJobMatchesLoading(false);
+      const currentUser = data?.user;
+      setUser(currentUser);
+
+      if (currentUser) {
+        // Fetch resumes with related data
+        const { data: resumesData, error: resumesError } = await supabase
+            .from('resumes')
+            .select(`
+            *,
+            resume_parsed_data(*),
+            resume_analysis(id, created_at, analysis_json)
+          `)
+            .eq('user_id', currentUser.id)
+            .order('created_at', { ascending: false });
+
+        if (resumesError) throw resumesError;
+
+        // Process the resume data
+        const processedResumes = processResumes(resumesData || []);
+
+        // Update states
+        setResumes(processedResumes);
+        setFilteredResumes(processedResumes);
+
+        // Calculate dashboard stats
+        if (processedResumes.length > 0) {
+          calculateDashboardStats(processedResumes);
+
+          // Get job matches for the first resume
+          if (processedResumes.length > 0) {
+            await fetchJobMatches(processedResumes[0].id);
+          }
+        }
+      }
     }
-  };
+    catch (error) {
+      console.error('Error fetching data:', error);
+      setError(error.message);
+    } finally {
+      if (showLoading) setLoading(false);
+    }
+  }, [calculateDashboardStats, fetchJobMatches, processResumes]);
 
+  // Initial data load
+  useEffect(() => {
+    fetchUserAndResumes();
+  }, [fetchUserAndResumes]);
+
+  // Set up realtime subscriptions
+  useEffect(() => {
+    if (!user) return;
+
+    console.log("Setting up realtime subscriptions");
+
+    // Subscribe to changes in the resumes table
+    const resumesSubscription = supabase
+        .channel('resume-changes')
+        .on('postgres_changes',
+            { event: '*', schema: 'public', table: 'resumes', filter: `user_id=eq.${user.id}` },
+            () => {
+              console.log("Resumes table changed, refreshing data");
+              fetchUserAndResumes(false);
+            }
+        )
+        .subscribe();
+
+    // Subscribe to changes in resume_analysis table
+    const analysisSubscription = supabase
+        .channel('analysis-changes')
+        .on('postgres_changes',
+            { event: '*', schema: 'public', table: 'resume_analysis' },
+            () => {
+              console.log("Resume analysis changed, refreshing data");
+              fetchUserAndResumes(false);
+            }
+        )
+        .subscribe();
+
+    // Subscribe to changes in job_matches table
+    const matchesSubscription = supabase
+        .channel('matches-changes')
+        .on('postgres_changes',
+            { event: '*', schema: 'public', table: 'job_matches' },
+            () => {
+              console.log("Job matches changed, refreshing job matches");
+              if (resumes.length > 0) {
+                fetchJobMatches(resumes[0].id);
+              }
+            }
+        )
+        .subscribe();
+
+    // Cleanup subscriptions on unmount
+    return () => {
+      supabase.removeChannel(resumesSubscription);
+      supabase.removeChannel(analysisSubscription);
+      supabase.removeChannel(matchesSubscription);
+    };
+  }, [user, fetchUserAndResumes, fetchJobMatches, resumes]);
+
+  // Filter and sort resumes when dependencies change
   useEffect(() => {
     if (resumes.length === 0) return;
 
@@ -212,6 +284,7 @@ export default function Home() {
     setFilteredResumes(filtered);
   }, [resumes, searchQuery, sortOption, showOnlyCriticalErrors]);
 
+  // Auto-hide notifications after timeout
   useEffect(() => {
     if (notification.show) {
       const timer = setTimeout(() => {
@@ -221,6 +294,18 @@ export default function Home() {
     }
   }, [notification]);
 
+  // Handle resume status change
+  const handleStatusChange = useCallback((resumeId, newStatus) => {
+    setResumes(prev =>
+        prev.map(resume =>
+            resume.id === resumeId
+                ? { ...resume, status: newStatus, processingStatus: getProcessingStatus(newStatus) }
+                : resume
+        )
+    );
+  }, []);
+
+  // Get processing status text
   function getProcessingStatus(status) {
     switch (status) {
       case 'uploaded': return 'Uploaded, Waiting for Processing';
@@ -234,6 +319,7 @@ export default function Home() {
     }
   }
 
+  // Get status priority for sorting
   function getStatusPriority(status) {
     const priorities = {
       'failed': 0,
@@ -247,12 +333,14 @@ export default function Home() {
     return priorities[status] ?? 999;
   }
 
+  // Sign out handler
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
     setResumes([]);
   };
 
+  // Delete modal handlers
   const openDeleteModal = (resume) => {
     setDeleteModal({
       isOpen: true,
@@ -271,6 +359,7 @@ export default function Home() {
     });
   };
 
+  // Handle resume deletion
   const handleDeleteResume = async () => {
     try {
       setDeleteLoading(true);
@@ -309,6 +398,7 @@ export default function Home() {
     }
   };
 
+  // Get status badge with appropriate styling
   const getStatusBadge = (status) => {
     const statusConfig = {
       'uploaded': { color: 'bg-cream border-brown-light text-brown', label: 'Uploaded' },
@@ -329,6 +419,7 @@ export default function Home() {
     );
   };
 
+  // Format relative time (e.g., "2 hours ago")
   const formatRelativeTime = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -345,23 +436,7 @@ export default function Home() {
     return date.toLocaleDateString();
   };
 
-  const handleStatusChange = useCallback((resumeId, newStatus) => {
-    setResumes(prev =>
-        prev.map(resume =>
-            resume.id === resumeId
-                ? { ...resume, status: newStatus, processingStatus: getProcessingStatus(newStatus) }
-                : resume
-        )
-    );
-  }, []);
-
-  const handleResumeSelect = (resumeId) => {
-    fetchJobMatches(resumeId).then();
-  };
-
-  const handleSearchChange = (e) => setSearchQuery(e.target.value);
-  const handleSortChange = (e) => setSortOption(e.target.value);
-
+  // Format salary range
   const formatSalary = (min, max) => {
     if (!min && !max) return 'Not specified';
     if (min && !max) return `$${min.toLocaleString()}+`;
@@ -369,6 +444,22 @@ export default function Home() {
     return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
   };
 
+  // Refresh dashboard data without full page reload
+  const refreshDashboard = useCallback(() => {
+    setLoading(true);
+    fetchUserAndResumes();
+  }, [fetchUserAndResumes]);
+
+  // Handle resume selection for job matching
+  const handleResumeSelect = (resumeId) => {
+    fetchJobMatches(resumeId);
+  };
+
+  // Input handlers
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
+  const handleSortChange = (e) => setSortOption(e.target.value);
+
+  // Render skill tags
   const renderSkillTags = (skills) => {
     if (!skills || skills.length === 0) return null;
 
@@ -389,6 +480,7 @@ export default function Home() {
     );
   };
 
+  // Loading state
   if (loading) {
     return (
         <div className="min-h-screen flex items-center justify-center bg-cream">
@@ -400,6 +492,7 @@ export default function Home() {
     );
   }
 
+  // Not logged in state
   if (!user) {
     return (
         <div className="min-h-screen bg-cream relative overflow-hidden">
@@ -475,6 +568,7 @@ export default function Home() {
     );
   }
 
+  // Main dashboard
   return (
       <div className="min-h-screen bg-cream">
         <header className="bg-white dark:bg-brown-dark shadow-sm border-b border-brown-light sticky top-0 z-10">
@@ -641,6 +735,19 @@ export default function Home() {
                             : 'No job matches found'}
                       </p>
                     </div>
+                  </div>
+
+                  {/* Refresh Button */}
+                  <div className="flex justify-end mb-6">
+                    <button
+                        onClick={refreshDashboard}
+                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brown hover:bg-brown-dark"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Refresh Dashboard
+                    </button>
                   </div>
 
                   <div className="bg-white p-6 rounded-lg shadow-sm border border-brown-light mb-8">
@@ -857,7 +964,7 @@ export default function Home() {
                       <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
                         Error: {error}
                         <button
-                            onClick={() => window.location.reload()}
+                            onClick={refreshDashboard}
                             className="ml-2 underline"
                         >
                           Try Again
@@ -1181,7 +1288,6 @@ export default function Home() {
                   )}
                 </div>
             )}
-
           </div>
         </main>
 
