@@ -1,10 +1,13 @@
 // src/server/services/jobMatcher.js - Updated to use OpenAI directly
 const { OpenAI } = require('openai');
+// const { DeepSeekAPI } =  import('deepseek-api');
+
 const { supabaseAdmin } = require('../config/database_connection');
 
 // Initialize OpenAI client with API key from environment variables
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    baseURL: 'https://api.deepseek.com/v1',
+    apiKey: process.env.DEEPSEEK_API_KEY,
 });
 
 /**
@@ -94,7 +97,7 @@ async function findJobMatches(resumeId) {
 
             // Use OpenAI to extract skills
             const extractionResponse = await openai.chat.completions.create({
-                model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+                model: process.env.DEEPSEEK_MODEL ||  "deepseek-chat",
                 messages: [
                     {
                         role: 'system',
@@ -124,7 +127,7 @@ async function findJobMatches(resumeId) {
 
         // Get job matches using OpenAI
         const jobMatchResponse = await openai.chat.completions.create({
-            model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+            model: process.env.DEEPSEEK_MODEL || 'deepseek-chat',
             messages: [
                 {
                     role: 'system',
@@ -149,7 +152,7 @@ async function findJobMatches(resumeId) {
             
             Make each job realistic and well-matched to the provided skills. For URLs, use realistic job board domains 
             like linkedin.com/jobs, indeed.com, glassdoor.com, etc. with paths that look like real job listings.`
-                },,
+                },
                 {
                     role: 'user',
                     content: `These are my skills: ${skills.join(", ")}
@@ -297,7 +300,7 @@ async function analyzeJobMatchWithAI(resumeId, jobId) {
 
         // Use OpenAI to analyze the match
         const response = await openai.chat.completions.create({
-            model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
+            model: process.env.DEEPSEEK_MODEL || "deepseek-chat",
             messages: [
                 {
                     role: 'system',
