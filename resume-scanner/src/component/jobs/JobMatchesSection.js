@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/server/utils/supabase-client';
 import Link from 'next/link';
-import { Briefcase, Award, ChevronRight, ExternalLink, Check, AlertTriangle } from 'lucide-react';
+import { Briefcase, ChevronRight, ExternalLink, Check, AlertTriangle } from 'lucide-react';
 
 export default function JobMatchesSection() {
     const [loading, setLoading] = useState(true);
@@ -10,57 +10,103 @@ export default function JobMatchesSection() {
     const [jobMatches, setJobMatches] = useState([]);
     const [resumeInfo, setResumeInfo] = useState(null);
     const [stats, setStats] = useState({ totalMatches: 0, averageScore: 0, topMatchScore: 0 });
+    const [processingMatch, setProcessingMatch] = useState(false);
 
+    // Initial load of job matches
     useEffect(() => {
-        const fetchJobMatches = async () => {
-            try {
-                setLoading(true);
+        fetchJobMatches();
+    }, []);
 
-                // Get the current session token
-                const { data: { session } } = await supabase.auth.getSession();
+    // Fetch job matches using the existing API
+    const fetchJobMatches = async () => {
+        try {
+            setLoading(true);
+            setError(null);
 
-                if (!session) {
-                    // Not authenticated, set empty state
+            // Get the current session token
+            const { data: { session } } = await supabase.auth.getSession();
+
+            if (!session) {
+                // Not authenticated, set empty state
+                setLoading(false);
+                return;
+            }
+
+            // Call your existing job matching API
+            const response = await fetch('/api/job-matches', {
+                headers: {
+                    'Authorization': `Bearer ${session.access_token}`
+                }
+            });
+
+            // If the API returns a 404 or message about no matches, set empty state
+            if (!response.ok) {
+                const errorData = await response.json();
+                if (response.status === 404 || errorData.message?.includes('No analyzed resumes')) {
+                    setJobMatches([]);
+                    setStats({ totalMatches: 0, averageScore: 0, topMatchScore: 0 });
                     setLoading(false);
                     return;
                 }
-
-                // Fetch job matches
-                const response = await fetch('/api/job-matches', {
-                    headers: {
-                        'Authorization': `Bearer ${session.access_token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    // If it's just because there are no matches, don't show as error
-                    if (response.status === 404 || errorData.message?.includes('No analyzed resumes')) {
-                        setJobMatches([]);
-                        setStats({ totalMatches: 0, averageScore: 0, topMatchScore: 0 });
-                        return;
-                    }
-                    throw new Error(errorData.error || 'Failed to fetch job matches');
-                }
-
-                const data = await response.json();
-
-                setJobMatches(data.matches || []);
-                setResumeInfo({
-                    id: data.resumeId,
-                    title: data.resumeTitle
-                });
-                setStats(data.stats || { totalMatches: 0, averageScore: 0, topMatchScore: 0 });
-            } catch (error) {
-                console.error('Error fetching job matches:', error);
-                setError(error.message);
-            } finally {
-                setLoading(false);
+                throw new Error(errorData.error || 'Failed to fetch job matches');
             }
-        };
 
-        fetchJobMatches();
-    }, []);
+            const data = await response.json();
+
+            setJobMatches(data.matches || []);
+            setResumeInfo({
+                id: data.resumeId,
+                title: data.resumeTitle
+            });
+            setStats(data.stats || { totalMatches: 0, averageScore: 0, topMatchScore: 0 });
+        } catch (error) {
+            console.error('Error fetching job matches:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Function to manually trigger job matching
+    const handleTriggerMatching = async () => {
+        if (!resumeInfo || !resumeInfo.id || processingMatch) return;
+
+        try {
+            setProcessingMatch(true);
+            setError(null);
+
+            // Get the current session token
+            const { data: { session } } = await supabase.auth.getSession();
+
+            if (!session) {
+                throw new Error('You must be signed in to match jobs');
+            }
+
+            // Call the API to find job matches
+            const response = await fetch(`/api/resumes/${resumeInfo.id}/find-matches`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify({ force: true })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to find job matches');
+            }
+
+            // Refresh the matches
+            await fetchJobMatches();
+
+        } catch (error) {
+            console.error('Error triggering job matching:', error);
+            setError(error.message);
+        } finally {
+            setProcessingMatch(false);
+        }
+    };
 
     // Format salary range
     const formatSalary = (min, max) => {
@@ -104,6 +150,13 @@ export default function JobMatchesSection() {
                         </div>
                     </div>
                 </div>
+
+                <button
+                    onClick={fetchJobMatches}
+                    className="mt-4 px-4 py-2 bg-brown text-white rounded-md hover:bg-brown-dark"
+                >
+                    Try Again
+                </button>
             </div>
         );
     }
@@ -120,16 +173,40 @@ export default function JobMatchesSection() {
                         </div>
                         <div className="ml-3">
                             <p className="text-sm text-yellow-700">
-                                No job matches found for your resume. Upload your resume to get personalized job matches.
+                                No job matches found for your resume. Upload a resume with skills to get matched with jobs.
                             </p>
-                            <div className="mt-3">
-                                <Link
-                                    href="/upload"
-                                    className="inline-flex items-center text-sm font-medium text-brown hover:text-brown-dark"
-                                >
-                                    Upload Resume <ChevronRight className="ml-1 h-4 w-4" />
-                                </Link>
-                            </div>
+
+                            {resumeInfo && (
+                                <div className="mt-3">
+                                    <button
+                                        onClick={handleTriggerMatching}
+                                        disabled={processingMatch}
+                                        className="inline-flex items-center text-sm font-medium text-brown hover:text-brown-dark"
+                                    >
+                                        {processingMatch ? (
+                                            <>
+                                                <div className="animate-spin h-4 w-4 mr-2 border-t-2 border-b-2 border-brown rounded-full"></div>
+                                                Finding matches...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Find matches <ChevronRight className="ml-1 h-4 w-4" />
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            )}
+
+                            {!resumeInfo && (
+                                <div className="mt-3">
+                                    <Link
+                                        href="/upload"
+                                        className="inline-flex items-center text-sm font-medium text-brown hover:text-brown-dark"
+                                    >
+                                        Upload Resume <ChevronRight className="ml-1 h-4 w-4" />
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -239,18 +316,33 @@ export default function JobMatchesSection() {
                 ))}
             </div>
 
-            {/* View more link */}
-            {stats.totalMatches > jobMatches.length && (
-                <div className="mt-6 text-center">
+            {/* Refresh matches button and view more button */}
+            <div className="mt-6 flex justify-center space-x-4">
+                <button
+                    onClick={handleTriggerMatching}
+                    disabled={processingMatch}
+                    className="px-4 py-2 border border-brown rounded-md text-sm font-medium text-brown hover:bg-brown-light/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown disabled:opacity-50"
+                >
+                    {processingMatch ? (
+                        <span className="flex items-center">
+                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-brown mr-2"></div>
+                            Finding New Matches...
+                        </span>
+                    ) : (
+                        'Find New Matches'
+                    )}
+                </button>
+
+                {stats.totalMatches > jobMatches.length && (
                     <Link
-                        href={`/resume/${resumeInfo.id}/job-match`}
-                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brown hover:bg-brown-dark"
+                        href={`/resume/${resumeInfo.id}/job-matches`}
+                        className="px-4 py-2 bg-brown text-white rounded-md text-sm font-medium hover:bg-brown-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown"
                     >
                         View All {stats.totalMatches} Matches
-                        <ChevronRight className="ml-1.5 h-4 w-4" />
+                        <ChevronRight className="ml-1.5 h-4 w-4 inline-block" />
                     </Link>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }

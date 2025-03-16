@@ -1,6 +1,6 @@
-// src/server/services/jobMatcher.js
-const { supabaseAdmin } = require("../config/database_connection");
-const { OpenAI } = require("openai");
+// src/server/services/jobMatcher.js - Updated to use OpenAI directly
+const { OpenAI } = require('openai');
+const { supabaseAdmin } = require('../config/database_connection');
 
 // Initialize OpenAI client with API key from environment variables
 const openai = new OpenAI({
@@ -8,12 +8,14 @@ const openai = new OpenAI({
 });
 
 /**
- * Find job matches for a resume based on skills and experience
- * @param {string} resumeId - Resume ID 
+ * Find job matches for a resume based on skills using OpenAI
+ * @param {string} resumeId - Resume ID
  * @returns {Promise<Object>} - Matching results
  */
 async function findJobMatches(resumeId) {
     try {
+        console.log(`Finding job matches for resume ID: ${resumeId}`);
+
         // Get resume information
         const { data: resume, error: resumeError } = await supabaseAdmin
             .from('resumes')
@@ -59,12 +61,13 @@ async function findJobMatches(resumeId) {
             console.warn('Error getting resume skills:', skillsError);
         }
 
-        const skills = resumeSkills ? resumeSkills.map(rs => ({
-            id: rs.skill_id,
-            name: rs.skills.name,
-            category: rs.skills.category,
-            level: rs.level
-        })) : [];
+        // Extract skills from various sources
+        let skills = [];
+
+        // From resume_skills table
+        if (resumeSkills && resumeSkills.length > 0) {
+            skills = resumeSkills.map(rs => rs.skills.name);
+        }
 
         // Add skills from the analysis if they're not already in our list
         if (analysis && analysis.analysis_json && analysis.analysis_json.skills) {
@@ -75,92 +78,179 @@ async function findJobMatches(resumeId) {
             ];
 
             // Get existing skill names
-            const existingSkillNames = skills.map(s => s.name.toLowerCase());
+            const existingSkillNames = skills.map(s => s.toLowerCase());
 
             // Add new skills from analysis
             for (const skillName of allAnalysisSkills) {
                 if (!existingSkillNames.includes(skillName.toLowerCase())) {
-                    skills.push({
-                        name: skillName,
-                        category: 'from_analysis',
-                        level: 'intermediate' // Default level
-                    });
+                    skills.push(skillName);
                 }
             }
         }
 
-        // Fetch all jobs
-        const { data: allJobs, error: jobsError } = await supabaseAdmin
-            .from('jobs')
-            .select('*');
+        // If we still don't have skills, extract them directly from parsed text
+        if (skills.length === 0 && parsedData.raw_text) {
+            console.log("No skills found, extracting directly from resume text...");
 
-        if (jobsError) {
-            throw new Error(`Error fetching jobs: ${jobsError.message}`);
+            // Use OpenAI to extract skills
+            const extractionResponse = await openai.chat.completions.create({
+                model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+                messages: [
+                    {
+                        role: 'system',
+                        content: `You are a skilled resume parser. Extract all professional skills from the provided resume text. 
+                        Return the skills as a comma-separated list of single words or short phrases. Include technical skills, 
+                        soft skills, tools, programming languages, and other job-relevant competencies.`
+                    },
+                    {
+                        role: 'user',
+                        content: parsedData.raw_text.substring(0, 4000) // Limit to prevent token issues
+                    }
+                ],
+                temperature: 0.3,
+            });
+
+            const extractedSkillsText = extractionResponse.choices[0].message.content;
+            skills = extractedSkillsText.split(',').map(s => s.trim()).filter(s => s);
+            console.log(`Extracted ${skills.length} skills directly from resume text`);
         }
 
-        if (!allJobs || allJobs.length === 0) {
-            return {
-                success: true,
-                message: 'No jobs available to match',
-                matches: []
-            };
+        if (skills.length === 0) {
+            throw new Error("No skills found in the resume. Cannot find job matches without skills.");
         }
 
-        // Get all job skills
-        const { data: jobSkills, error: jobSkillsError } = await supabaseAdmin
-            .from('job_skills')
-            .select(`
-                job_id,
-                skill_id,
-                is_required,
-                skills(id, name, category)
-            `);
+        console.log(`Found ${skills.length} skills to use for job matching`);
+        console.log("Skills:", skills.join(", "));
 
-        if (jobSkillsError) {
-            throw new Error(`Error fetching job skills: ${jobSkillsError.message}`);
-        }
-
-        // Organize job skills by job_id
-        const jobSkillMap = {};
-        jobSkills.forEach(js => {
-            if (!jobSkillMap[js.job_id]) {
-                jobSkillMap[js.job_id] = {
-                    required: [],
-                    optional: [],
-                    allSkills: []
-                };
-            }
-            const skillInfo = {
-                id: js.skill_id,
-                name: js.skills.name,
-                category: js.skills.category,
-                required: js.is_required
-            };
-            if (js.is_required) {
-                jobSkillMap[js.job_id].required.push(skillInfo);
-            } else {
-                jobSkillMap[js.job_id].optional.push(skillInfo);
-            }
-            jobSkillMap[js.job_id].allSkills.push(skillInfo);
+        // Get job matches using OpenAI
+        const jobMatchResponse = await openai.chat.completions.create({
+            model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+            messages: [
+                {
+                    role: 'system',
+                    content: `You are an expert job matching system. Based on a candidate's skills and experience, provide 
+                    5-7 realistic job matches that would be suitable. Format your response as a JSON array with the following structure:
+                    
+                    [
+                      {
+                        "title": "Job Title",
+                        "company": "Company Name",
+                        "location": "Location (city or Remote)",
+                        "jobType": "Full-time/Part-time/Contract",
+                        "description": "Brief job description",
+                        "requirements": "Key requirements for the role",
+                        "matchingSkills": ["Skill1", "Skill2", "Skill3"], // Skills from the resume that match this job
+                        "missingSkills": ["Skill4", "Skill5"], // Important skills for this job that aren't in the resume
+                        "salaryRange": "$X - $Y",
+                        "score": 85 // Match percentage (1-100)
+                      }
+                    ]
+                    
+                    Make each job realistic and well-matched to the provided skills. Ensure the matchingSkills field only 
+                    contains skills that are in the candidate's resume. The score should reflect how well the candidate's 
+                    skills match the job requirements.`
+                },
+                {
+                    role: 'user',
+                    content: `These are my skills: ${skills.join(", ")}
+                    
+                    ${analysis && analysis.analysis_json && analysis.analysis_json.experience_summary ?
+                        `My experience: ${analysis.analysis_json.experience_summary}` : ''}
+                        
+                    Please find 5-7 suitable job matches. Return only the JSON array.`
+                }
+            ],
+            temperature: 0.7,
+            response_format: { type: "json_object" }
         });
 
-        // Calculate matches and scores
-        const matches = await calculateJobMatches(
-            resumeId,
-            allJobs,
-            jobSkillMap,
-            skills,
-            parsedData.raw_text
-        );
+        // Parse and process the job matches
+        let jsonContent = jobMatchResponse.choices[0].message.content;
+        let jobMatches;
 
-        // Store the matches in the database
-        await saveJobMatches(resumeId, matches);
+        try {
+            // Handle case where response might not be properly formatted
+            const jsonObject = JSON.parse(jsonContent);
+            jobMatches = Array.isArray(jsonObject) ? jsonObject :
+                (jsonObject.jobs || jsonObject.matches || []);
+        } catch (jsonError) {
+            console.error("Error parsing JSON from OpenAI:", jsonError);
+            // Try to extract JSON from the text if it's not properly formatted
+            const jsonMatch = jsonContent.match(/\[\s*\{.*\}\s*\]/s);
+            if (jsonMatch) {
+                try {
+                    jobMatches = JSON.parse(jsonMatch[0]);
+                } catch (e) {
+                    throw new Error("Failed to parse job matches from OpenAI response");
+                }
+            } else {
+                throw new Error("Invalid response format from OpenAI");
+            }
+        }
+
+        // Store the job matches in the database
+        console.log(`Storing ${jobMatches.length} job matches for resume ${resumeId}`);
+
+        // Clear existing matches first
+        await supabaseAdmin
+            .from('job_matches')
+            .delete()
+            .eq('resume_id', resumeId);
+
+        // Process and store each job match
+        for (const match of jobMatches) {
+            // First store the job
+            const { data: jobData, error: jobError } = await supabaseAdmin
+                .from('jobs')
+                .upsert({
+                    title: match.title,
+                    company_name: match.company,
+                    location: match.location || 'Remote',
+                    job_types: match.jobType || 'Full-time',
+                    description: match.description || '',
+                    requirements: match.requirements || '',
+                    salary_min: parseInt(match.salaryRange?.split('-')[0]?.replace(/\D/g, '') || 0),
+                    salary_max: parseInt(match.salaryRange?.split('-')[1]?.replace(/\D/g, '') || 0),
+                    source: 'openai',
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'title,company_name' })
+                .select('id')
+                .single();
+
+            if (jobError) {
+                console.warn(`Warning: Failed to store job "${match.title}":`, jobError);
+                continue;
+            }
+
+            // Then store the match
+            const { error: matchError } = await supabaseAdmin
+                .from('job_matches')
+                .insert({
+                    resume_id: resumeId,
+                    job_id: jobData.id,
+                    match_score: match.score || 0,
+                    match_details: {
+                        matchingSkills: match.matchingSkills || [],
+                        missingSkills: match.missingSkills || [],
+                        skillMatch: match.score || 0,
+                        keywordMatch: 0,
+                        aiGenerated: true
+                    },
+                    created_at: new Date().toISOString()
+                });
+
+            if (matchError) {
+                console.warn(`Warning: Failed to store job match for "${match.title}":`, matchError);
+            }
+        }
 
         return {
             success: true,
             resumeId,
-            matchCount: matches.length,
-            topMatches: matches.slice(0, 5)
+            matchCount: jobMatches.length,
+            topMatchScore: Math.max(...jobMatches.map(m => m.score || 0), 0),
+            message: `Found ${jobMatches.length} job matches`
         };
     } catch (error) {
         console.error('Error finding job matches:', error);
@@ -172,205 +262,7 @@ async function findJobMatches(resumeId) {
 }
 
 /**
- * Calculate job match scores
- * @param {string} resumeId - Resume ID
- * @param {Array} jobs - All available jobs
- * @param {Object} jobSkillMap - Map of job skills
- * @param {Array} resumeSkills - Resume skills
- * @param {string} resumeText - Raw resume text
- * @returns {Array} - Job matches with scores
- */
-async function calculateJobMatches(resumeId, jobs, jobSkillMap, resumeSkills, resumeText) {
-    // Extract just the skill names from resume skills for easier comparison
-    const resumeSkillNames = resumeSkills.map(s => s.name.toLowerCase());
-
-    // Calculate initial match scores based on skill overlap
-    const matches = jobs.map(job => {
-        // Skip jobs with no skills
-        if (!jobSkillMap[job.id]) {
-            return {
-                resumeId,
-                jobId: job.id,
-                score: 0,
-                matchDetails: {
-                    skillMatch: 0,
-                    keywordMatch: 0,
-                    matchingSkills: [],
-                    missingSkills: []
-                }
-            };
-        }
-
-        const jobRequiredSkills = jobSkillMap[job.id].required;
-        const jobOptionalSkills = jobSkillMap[job.id].optional;
-        const allJobSkills = jobSkillMap[job.id].allSkills;
-
-        // Find matching and missing skills
-        const matchingSkills = [];
-        const missingSkills = [];
-
-        // Check required skills
-        jobRequiredSkills.forEach(skill => {
-            if (resumeSkillNames.includes(skill.name.toLowerCase())) {
-                matchingSkills.push(skill.name);
-            } else {
-                missingSkills.push(skill.name);
-            }
-        });
-
-        // Check optional skills
-        jobOptionalSkills.forEach(skill => {
-            if (resumeSkillNames.includes(skill.name.toLowerCase())) {
-                matchingSkills.push(skill.name);
-            }
-        });
-
-        // Calculate skill match percentage
-        const requiredWeight = 0.7; // Required skills are 70% of the score
-        const optionalWeight = 0.3; // Optional skills are 30% of the score
-
-        let skillScore = 0;
-        if (jobRequiredSkills.length > 0) {
-            const requiredMatchPercentage = matchingSkills.filter(skill =>
-                jobRequiredSkills.some(rs => rs.name.toLowerCase() === skill.toLowerCase())
-            ).length / jobRequiredSkills.length;
-            skillScore += requiredMatchPercentage * requiredWeight * 100;
-        } else {
-            // If no required skills, award the full required portion
-            skillScore += requiredWeight * 100;
-        }
-
-        if (jobOptionalSkills.length > 0) {
-            const optionalMatchPercentage = matchingSkills.filter(skill =>
-                jobOptionalSkills.some(os => os.name.toLowerCase() === skill.toLowerCase())
-            ).length / jobOptionalSkills.length;
-            skillScore += optionalMatchPercentage * optionalWeight * 100;
-        }
-
-        // Add bonus for additional skills beyond those required
-        if (matchingSkills.length > (jobRequiredSkills.length + jobOptionalSkills.length) * 0.8) {
-            skillScore = Math.min(skillScore + 5, 100);
-        }
-
-        // Calculate keyword match (simple version)
-        let keywordScore = 0;
-        if (job.description) {
-            const jobKeywords = extractKeywords(job.description);
-            const resumeWords = resumeText.toLowerCase().split(/\W+/);
-
-            let keywordMatches = 0;
-            jobKeywords.forEach(keyword => {
-                if (resumeWords.includes(keyword.toLowerCase())) {
-                    keywordMatches++;
-                }
-            });
-
-            keywordScore = jobKeywords.length > 0 ?
-                (keywordMatches / jobKeywords.length) * 100 : 0;
-        }
-
-        // Final score is 80% skill match, 20% keyword match
-        const finalScore = (skillScore * 0.8) + (keywordScore * 0.2);
-
-        return {
-            resumeId,
-            jobId: job.id,
-            score: Math.round(finalScore * 10) / 10, // Round to 1 decimal place
-            matchDetails: {
-                skillMatch: Math.round(skillScore),
-                keywordMatch: Math.round(keywordScore),
-                matchingSkills,
-                missingSkills,
-                requiredSkillsCount: jobRequiredSkills.length,
-                optionalSkillsCount: jobOptionalSkills.length,
-                matchedRequiredCount: matchingSkills.filter(skill =>
-                    jobRequiredSkills.some(rs => rs.name.toLowerCase() === skill.toLowerCase())
-                ).length
-            }
-        };
-    });
-
-    // Sort by score (descending)
-    return matches.sort((a, b) => b.score - a.score);
-}
-
-/**
- * Save job matches to the database
- * @param {string} resumeId - Resume ID
- * @param {Array} matches - Job matches
- */
-async function saveJobMatches(resumeId, matches) {
-    try {
-        // Clear existing matches
-        await supabaseAdmin
-            .from('job_matches')
-            .delete()
-            .eq('resume_id', resumeId);
-
-        // Only save matches with a score > 0
-        const matchesToSave = matches
-            .filter(match => match.score > 0)
-            .map(match => ({
-                resume_id: resumeId,
-                job_id: match.jobId,
-                match_score: match.score,
-                match_details: match.matchDetails,
-                created_at: new Date().toISOString()
-            }));
-
-        if (matchesToSave.length === 0) return;
-
-        // Insert new matches
-        const { error } = await supabaseAdmin
-            .from('job_matches')
-            .insert(matchesToSave);
-
-        if (error) {
-            console.error('Error saving job matches:', error);
-        }
-    } catch (error) {
-        console.error('Error in saveJobMatches:', error);
-    }
-}
-
-/**
- * Extract important keywords from job description
- * @param {string} text - Job description
- * @returns {Array} - Keywords
- */
-function extractKeywords(text) {
-    // Simple keyword extraction - you could use NLP libraries for better results
-    const commonWords = new Set([
-        'the', 'and', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'with', 'by',
-        'about', 'as', 'of', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
-        'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
-        'shall', 'should', 'can', 'could', 'may', 'might', 'must', 'our', 'we',
-        'us', 'your', 'you', 'their', 'they', 'them', 'he', 'she', 'it', 'his',
-        'her', 'its', 'who', 'whom', 'whose', 'what', 'which', 'that', 'this',
-        'these', 'those', 'job', 'work', 'position', 'candidate', 'company',
-        'team', 'role', 'experience', 'required', 'qualifications', 'skills'
-    ]);
-
-    // Split text into words, remove common words and short words
-    const words = text.split(/\W+/)
-        .map(word => word.toLowerCase())
-        .filter(word => !commonWords.has(word) && word.length > 3);
-
-    // Count word frequency
-    const wordCounts = {};
-    words.forEach(word => {
-        wordCounts[word] = (wordCounts[word] || 0) + 1;
-    });
-
-    // Get top keywords by frequency
-    return Object.entries(wordCounts)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 20)
-        .map(([word]) => word);
-}
-
-/**
- * Enhanced job matching using AI
+ * Analyze job match using AI for more detailed insights
  * @param {string} resumeId - Resume ID
  * @param {string} jobId - Job ID
  * @returns {Promise<Object>} - Detailed AI analysis of match
@@ -401,7 +293,7 @@ async function analyzeJobMatchWithAI(resumeId, jobId) {
 
         // Use OpenAI to analyze the match
         const response = await openai.chat.completions.create({
-            model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+            model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
             messages: [
                 {
                     role: 'system',
@@ -413,7 +305,7 @@ async function analyzeJobMatchWithAI(resumeId, jobId) {
                     content: `I need a detailed match analysis between this resume and job.
                     
                     RESUME:
-                    ${resumeData.raw_text}
+                    ${resumeData.raw_text.substring(0, 4000)}
                     
                     JOB DESCRIPTION:
                     Title: ${job.title}
@@ -486,78 +378,8 @@ async function analyzeJobMatchWithAI(resumeId, jobId) {
  * @returns {Promise<Object>} - Potential jobs
  */
 async function getPotentialJobs(resumeId) {
-    try {
-        // Get the resume skills
-        const { data: resumeSkills, error: skillsError } = await supabaseAdmin
-            .from('resume_skills')
-            .select(`
-                skills(id, name, category)
-            `)
-            .eq('resume_id', resumeId);
-
-        if (skillsError) {
-            throw new Error(`Error getting resume skills: ${skillsError.message}`);
-        }
-
-        // Extract skill IDs
-        const skillIds = resumeSkills.map(rs => rs.skills.id);
-
-        if (skillIds.length === 0) {
-            return {
-                success: true,
-                message: 'No skills found for this resume',
-                jobs: []
-            };
-        }
-
-        // Find jobs that require any of these skills
-        const { data: jobsWithSkills, error: jobsError } = await supabaseAdmin
-            .from('job_skills')
-            .select(`
-                job_id
-            `)
-            .in('skill_id', skillIds)
-            .limit(100);
-
-        if (jobsError) {
-            throw new Error(`Error finding jobs with skills: ${jobsError.message}`);
-        }
-
-        if (!jobsWithSkills || jobsWithSkills.length === 0) {
-            return {
-                success: true,
-                message: 'No matching jobs found',
-                jobs: []
-            };
-        }
-
-        // Get unique job IDs
-        const jobIds = [...new Set(jobsWithSkills.map(j => j.job_id))];
-
-        // Get the job details
-        const { data: jobs, error: jobDetailsError } = await supabaseAdmin
-            .from('jobs')
-            .select('*')
-            .in('id', jobIds)
-            .limit(50);
-
-        if (jobDetailsError) {
-            throw new Error(`Error getting job details: ${jobDetailsError.message}`);
-        }
-
-        return {
-            success: true,
-            resumeId,
-            jobCount: jobs.length,
-            jobs
-        };
-    } catch (error) {
-        console.error('Error getting potential jobs:', error);
-        return {
-            success: false,
-            error: error.message || 'Unknown error getting potential jobs'
-        };
-    }
+    // We'll directly use findJobMatches since we're now using OpenAI for job matching
+    return findJobMatches(resumeId);
 }
 
 module.exports = {
