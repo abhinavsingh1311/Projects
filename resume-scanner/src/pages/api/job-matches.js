@@ -1,6 +1,7 @@
 // src/pages/api/job-matches.js - Updated with fallback for storing issues
 import { supabase } from '@/server/utils/supabase-client';
 import { supabaseAdmin } from '@/server/config/database_connection';
+import {getJobRecommendations} from "@/server/services/jobMatchingService";
 const { findJobMatches } = require('@/server/services/jobMatcher');
 
 export default async function handler(req, res) {
@@ -33,6 +34,7 @@ export default async function handler(req, res) {
         }
 
         const token = authHeader.split(' ')[1];
+        // Authentication code here...
         const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
         if (authError || !user) {
@@ -40,6 +42,25 @@ export default async function handler(req, res) {
                 success: false,
                 error: 'Authentication failed'
             });
+        }
+
+        // Check if we're requesting recommendations
+        const { type } = req.query;
+
+        if (type === 'recommendations') {
+            console.log('Fetching job recommendations for user:', user.id);
+
+            // Call the recommendations service
+            const recommendations = await getJobRecommendations(user.id);
+
+            if (!recommendations.success) {
+                return res.status(500).json({
+                    success: false,
+                    error: recommendations.error || 'Failed to get job recommendations'
+                });
+            }
+
+            return res.status(200).json(recommendations);
         }
 
         // Get the user's most recent analyzed resume
@@ -115,20 +136,21 @@ export default async function handler(req, res) {
         if (matchResult.rawMatches && matchResult.rawMatches.length > 0) {
             console.log('Using raw OpenAI job matches since storage failed');
 
-            // Format the raw matches
-            const formattedMatches = matchResult.rawMatches.map((match, index) => ({
-                id: `temp-${index}`,
-                jobId: `temp-job-${index}`,
-                score: match.score || 50,
-                title: match.title,
-                company: match.company,
-                location: match.location || 'Remote',
-                jobType: match.jobType || 'Full-time',
-                salaryMin: parseInt(match.salaryRange?.split('-')[0]?.replace(/\D/g, '') || 0),
-                salaryMax: parseInt(match.salaryRange?.split('-')[1]?.replace(/\D/g, '') || 0),
-                matchingSkills: match.matchingSkills || [],
-                missingSkills: match.missingSkills || [],
-                description: match.description || 'No description available'
+            // When formatting matches for display
+            const formattedMatches = matches.map(match => ({
+                id: match.id,
+                jobId: match.job_id,
+                score: match.match_score,
+                title: match.jobs?.title || 'Unknown Job',
+                company: match.jobs?.company_name || 'Unknown Company',
+                location: match.jobs?.location || 'Remote',
+                jobType: match.jobs?.job_types || 'Full-time',
+                salaryMin: match.jobs?.salary_min,
+                salaryMax: match.jobs?.salary_max,
+                matchingSkills: match.match_details?.matchingSkills || [],
+                missingSkills: match.match_details?.missingSkills || [],
+                description: match.jobs?.description?.substring(0, 150) + (match.jobs?.description?.length > 150 ? '...' : ''),
+                url: match.jobs?.url || `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(match.jobs?.title || 'jobs')}`
             }));
 
             // Calculate stats

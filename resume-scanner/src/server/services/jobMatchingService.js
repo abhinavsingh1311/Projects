@@ -213,6 +213,7 @@ async function getDetailedJobMatch(resumeId, jobId) {
     }
 }
 
+
 /**
  * Get job recommendations based on user resumes
  * @param {string} userId - The user ID
@@ -250,46 +251,77 @@ async function getJobRecommendations(userId, limit = 3) {
                 };
             }
 
-            // Use the parsed resume instead
-            const potentialJobs = await getPotentialJobs(parsedResume.id);
+            // Get existing job matches for this resume
+            const { data: existingMatches } = await supabaseAdmin
+                .from('job_matches')
+                .select(`
+                    id, job_id, match_score,
+                    jobs(id, title, company_name, location, job_types, description)
+                `)
+                .eq('resume_id', parsedResume.id)
+                .order('match_score', { ascending: false })
+                .limit(limit);
 
-            if (!potentialJobs.success) {
-                throw new Error(`Failed to get potential jobs: ${potentialJobs.error}`);
-            }
-
-            // Format for display
-            const recommendations = (potentialJobs.jobs || [])
-                .slice(0, limit)
-                .map(job => ({
-                    id: job.id,
-                    title: job.title,
-                    company: job.company_name,
-                    location: job.location || 'Remote',
-                    jobType: job.job_types || 'Full-time',
-                    description: job.description?.substring(0, 150) + (job.description?.length > 150 ? '...' : '')
+            if (existingMatches && existingMatches.length > 0) {
+                // In getJobRecommendations function when mapping recommendations
+                const recommendations = (matches || []).map(match => ({
+                    id: match.jobs.id,
+                    jobId: match.job_id,
+                    title: match.jobs.title,
+                    company: match.jobs.company_name,
+                    location: match.jobs.location || 'Remote',
+                    jobType: match.jobs.job_types || 'Full-time',
+                    score: match.match_score,
+                    description: match.jobs.description?.substring(0, 150) + (match.jobs.description?.length > 150 ? '...' : ''),
+                    url: match.jobs.url || `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(match.jobs.title)}`
                 }));
 
+                return {
+                    success: true,
+                    resumeId: parsedResume.id,
+                    resumeTitle: parsedResume.title,
+                    recommendations,
+                    source: 'job_matches'
+                };
+            }
+
+            // If no matches exist, return empty array
             return {
                 success: true,
                 resumeId: parsedResume.id,
                 resumeTitle: parsedResume.title,
-                recommendations,
-                source: 'potential_jobs'
+                recommendations: [],
+                source: 'empty'
             };
         }
 
-        // Get job matches for the analyzed resume
-        const jobMatches = await getUserJobMatches(userId, limit);
+        // For analyzed resumes, get job matches
+        const { data: matches } = await supabaseAdmin
+            .from('job_matches')
+            .select(`
+                id, job_id, match_score,
+                jobs(id, title, company_name, location, job_types, description)
+            `)
+            .eq('resume_id', recentResume.id)
+            .order('match_score', { ascending: false })
+            .limit(limit);
 
-        if (!jobMatches.success) {
-            throw new Error(`Failed to get job matches: ${jobMatches.error}`);
-        }
+        const recommendations = (matches || []).map(match => ({
+            id: match.jobs.id,
+            jobId: match.job_id,
+            title: match.jobs.title,
+            company: match.jobs.company_name,
+            location: match.jobs.location || 'Remote',
+            jobType: match.jobs.job_types || 'Full-time',
+            score: match.match_score,
+            description: match.jobs.description?.substring(0, 150) + (match.jobs.description?.length > 150 ? '...' : '')
+        }));
 
         return {
             success: true,
             resumeId: recentResume.id,
             resumeTitle: recentResume.title,
-            recommendations: jobMatches.matches,
+            recommendations,
             source: 'job_matches'
         };
     } catch (error) {
@@ -300,6 +332,7 @@ async function getJobRecommendations(userId, limit = 3) {
         };
     }
 }
+
 
 module.exports = {
     getUserJobMatches,

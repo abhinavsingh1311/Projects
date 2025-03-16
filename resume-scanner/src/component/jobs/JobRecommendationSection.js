@@ -182,14 +182,16 @@ export default function JobRecommendationsSection() {
                             )}
 
                             <div className="flex justify-end">
-                                <Link
-                                    href={`/resume/${resumeInfo.id}/job-match/${job.jobId || job.id}`}
+                                <a
+                                    href={job.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="inline-flex items-center text-xs font-medium text-brown hover:text-brown-dark"
-                                >
-                                    View Details
-                                    <ChevronRight className="ml-1 h-3 w-3" />
-                                </Link>
-                            </div>
+                                 >
+                                 View Details
+                                <ExternalLink className="ml-1 h-3 w-3" />
+                              </a>
+                        </div>
                         </div>
                     </div>
                 ))}

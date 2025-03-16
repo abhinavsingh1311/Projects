@@ -129,27 +129,27 @@ async function findJobMatches(resumeId) {
                 {
                     role: 'system',
                     content: `You are an expert job matching system. Based on a candidate's skills and experience, provide 
-                    5-7 realistic job matches that would be suitable. Format your response as a JSON array with the following structure:
-                    
-                    [
-                      {
-                        "title": "Job Title",
-                        "company": "Company Name",
-                        "location": "Location (city or Remote)",
-                        "jobType": "Full-time/Part-time/Contract",
-                        "description": "Brief job description",
-                        "requirements": "Key requirements for the role",
-                        "matchingSkills": ["Skill1", "Skill2", "Skill3"], // Skills from the resume that match this job
-                        "missingSkills": ["Skill4", "Skill5"], // Important skills for this job that aren't in the resume
-                        "salaryRange": "$X - $Y",
-                        "score": 85 // Match percentage (1-100)
-                      }
-                    ]
-                    
-                    Make each job realistic and well-matched to the provided skills. Ensure the matchingSkills field only 
-                    contains skills that are in the candidate's resume. The score should reflect how well the candidate's 
-                    skills match the job requirements.`
-                },
+            5-7 realistic job matches that would be suitable. Format your response as a JSON array with the following structure:
+            
+            [
+              {
+                "title": "Job Title",
+                "company": "Company Name",
+                "location": "Location (city or Remote)",
+                "jobType": "Full-time/Part-time/Contract",
+                "description": "Brief job description",
+                "requirements": "Key requirements for the role",
+                "matchingSkills": ["Skill1", "Skill2", "Skill3"], // Skills from the resume that match this job
+                "missingSkills": ["Skill4", "Skill5"], // Important skills for this job that aren't in the resume
+                "salaryRange": "$X - $Y",
+                "score": 85, // Match percentage (1-100)
+                "url": "https://example.com/job-posting" // Include a realistic job board URL (LinkedIn, Indeed, etc.)
+              }
+            ]
+            
+            Make each job realistic and well-matched to the provided skills. For URLs, use realistic job board domains 
+            like linkedin.com/jobs, indeed.com, glassdoor.com, etc. with paths that look like real job listings.`
+                },,
                 {
                     role: 'user',
                     content: `These are my skills: ${skills.join(", ")}
@@ -199,7 +199,7 @@ async function findJobMatches(resumeId) {
 
         // Process and store each job match
         for (const match of jobMatches) {
-            // First store the job
+            // In the job storage section of findJobMatches
             const { data: jobData, error: jobError } = await supabaseAdmin
                 .from('jobs')
                 .upsert({
@@ -211,10 +211,14 @@ async function findJobMatches(resumeId) {
                     requirements: match.requirements || '',
                     salary_min: parseInt(match.salaryRange?.split('-')[0]?.replace(/\D/g, '') || 0),
                     salary_max: parseInt(match.salaryRange?.split('-')[1]?.replace(/\D/g, '') || 0),
+                    url: match.url || `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(match.title)}`, // Default URL if none provided
                     source: 'openai',
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
-                }, { onConflict: 'title,company_name' })
+                }, {
+                    onConflict: 'title,company_name',
+                    ignoreDuplicates: false
+                })
                 .select('id')
                 .single();
 

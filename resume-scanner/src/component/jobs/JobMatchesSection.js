@@ -304,14 +304,16 @@ export default function JobMatchesSection() {
 
                         {/* View details button */}
                         <div className="mt-4 flex justify-end">
-                            <Link
-                                href={`/resume/${resumeInfo.id}/job-match/${match.jobId}`}
-                                className="inline-flex items-center px-3 py-1.5 border border-brown text-sm font-medium rounded-md text-brown hover:bg-brown-light/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown"
+                            <a
+                            href={match.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center px-3 py-1.5 border border-brown text-sm font-medium rounded-md text-brown hover:bg-brown-light/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown"
                             >
-                                View Details
-                                <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
-                            </Link>
-                        </div>
+                            View Job Details
+                            <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                          </a>
+                       </div>
                     </div>
                 ))}
             </div>
