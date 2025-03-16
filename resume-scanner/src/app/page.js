@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import DeleteConfirmationModal from '@/component/DeleteConfirmationModal';
 import ResumeProcessingStatus from '@/component/resume/ResumeProcessingStatus';
+import JobMatchesSection from '@/component/jobs/JobMatchesSection';
+import JobRecommendationsSection from '@/component/jobs/JobRecommendationSection';
 import { PieChart, BarChart, Clipboard, FileText, Briefcase, Search, Award, Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -26,9 +28,7 @@ export default function Home() {
   const [filteredResumes, setFilteredResumes] = useState([]);
   const [sortOption, setSortOption] = useState('newest');
   const [showOnlyCriticalErrors, setShowOnlyCriticalErrors] = useState(false);
-  const [activeTab, setActiveTab] = useState('resumes');
-  const [jobMatches, setJobMatches] = useState([]);
-  const [jobMatchesLoading, setJobMatchesLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [dashboardStats, setDashboardStats] = useState({
     resumeCount: 0,
     analyzedCount: 0,
@@ -37,34 +37,22 @@ export default function Home() {
     averageScore: 0
   });
 
-  // Fetch job matches for a specific resume
-  const fetchJobMatches = useCallback(async (resumeId) => {
-    if (!resumeId) return;
-
-    try {
-      setJobMatchesLoading(true);
-
-      const { data, error } = await supabase
-          .from('job_matches')
-          .select(`
-          *,
-          jobs(id, title, company_name, location, job_types, salary_min, salary_max)
-        `)
-          .eq('resume_id', resumeId)
-          .order('match_score', { ascending: false });
-
-      if (error) throw error;
-
-      setJobMatches(data || []);
-      setDashboardStats(prev => ({
-        ...prev,
-        matchedJobs: data.length
-      }));
-    } catch (error) {
-      console.error('Error fetching job matches:', error);
-    } finally {
-      setJobMatchesLoading(false);
-    }
+  // Process resumes to add derived properties
+  const processResumes = useCallback((resumesData) => {
+    return resumesData.map(resume => ({
+      ...resume,
+      hasAnalysis: resume.resume_analysis && resume.resume_analysis.length > 0,
+      isParsed: resume.status === 'parsed' || resume.status === 'analyzed' || resume.status === 'completed',
+      lastUpdated: resume.updated_at || resume.created_at,
+      processingStatus: getProcessingStatus(resume.status),
+      skillCount: resume.resume_analysis && resume.resume_analysis.length > 0 ?
+          (resume.resume_analysis[0].analysis_json?.skills?.technical?.length || 0) +
+          (resume.resume_analysis[0].analysis_json?.skills?.soft?.length || 0) : 0,
+      overallScore: resume.resume_analysis && resume.resume_analysis.length > 0 ?
+          resume.resume_analysis[0].analysis_json?.overall_score || 0 : 0,
+      atsScore: resume.resume_analysis && resume.resume_analysis.length > 0 ?
+          resume.resume_analysis[0].analysis_json?.ats_compatibility?.score || 0 : 0
+    }));
   }, []);
 
   // Calculate dashboard stats from resume data
@@ -101,27 +89,9 @@ export default function Home() {
       resumeCount: resumeData.length,
       analyzedCount: analyzed,
       topSkills,
-      matchedJobs: jobMatches.length,
+      matchedJobs: 0,
       averageScore: avgScore
     });
-  }, [jobMatches.length]);
-
-  // Process resumes to add derived properties
-  const processResumes = useCallback((resumesData) => {
-    return resumesData.map(resume => ({
-      ...resume,
-      hasAnalysis: resume.resume_analysis && resume.resume_analysis.length > 0,
-      isParsed: resume.status === 'parsed' || resume.status === 'analyzed' || resume.status === 'completed',
-      lastUpdated: resume.updated_at || resume.created_at,
-      processingStatus: getProcessingStatus(resume.status),
-      skillCount: resume.resume_analysis && resume.resume_analysis.length > 0 ?
-          (resume.resume_analysis[0].analysis_json?.skills?.technical?.length || 0) +
-          (resume.resume_analysis[0].analysis_json?.skills?.soft?.length || 0) : 0,
-      overallScore: resume.resume_analysis && resume.resume_analysis.length > 0 ?
-          resume.resume_analysis[0].analysis_json?.overall_score || 0 : 0,
-      atsScore: resume.resume_analysis && resume.resume_analysis.length > 0 ?
-          resume.resume_analysis[0].analysis_json?.ats_compatibility?.score || 0 : 0
-    }));
   }, []);
 
   // Main data fetching function - used for initial load and refreshes
@@ -141,44 +111,33 @@ export default function Home() {
       setUser(currentUser);
 
       if (currentUser) {
-        // Fetch resumes with related data
         const { data: resumesData, error: resumesError } = await supabase
             .from('resumes')
             .select(`
-            *,
-            resume_parsed_data(*),
-            resume_analysis(id, created_at, analysis_json)
-          `)
+              *,
+              resume_parsed_data(*),
+              resume_analysis(id, created_at, analysis_json)
+            `)
             .eq('user_id', currentUser.id)
             .order('created_at', { ascending: false });
 
         if (resumesError) throw resumesError;
 
-        // Process the resume data
         const processedResumes = processResumes(resumesData || []);
-
-        // Update states
         setResumes(processedResumes);
         setFilteredResumes(processedResumes);
 
-        // Calculate dashboard stats
         if (processedResumes.length > 0) {
           calculateDashboardStats(processedResumes);
-
-          // Get job matches for the first resume
-          if (processedResumes.length > 0) {
-            await fetchJobMatches(processedResumes[0].id);
-          }
         }
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error fetching data:', error);
       setError(error.message);
     } finally {
       if (showLoading) setLoading(false);
     }
-  }, [calculateDashboardStats, fetchJobMatches, processResumes]);
+  }, [calculateDashboardStats, processResumes]);
 
   // Initial data load
   useEffect(() => {
@@ -189,53 +148,36 @@ export default function Home() {
   useEffect(() => {
     if (!user) return;
 
-    console.log("Setting up realtime subscriptions");
-
-    // Subscribe to changes in the resumes table
     const resumesSubscription = supabase
         .channel('resume-changes')
         .on('postgres_changes',
             { event: '*', schema: 'public', table: 'resumes', filter: `user_id=eq.${user.id}` },
-            () => {
-              console.log("Resumes table changed, refreshing data");
-              fetchUserAndResumes(false);
-            }
+            () => fetchUserAndResumes(false)
         )
         .subscribe();
 
-    // Subscribe to changes in resume_analysis table
     const analysisSubscription = supabase
         .channel('analysis-changes')
         .on('postgres_changes',
             { event: '*', schema: 'public', table: 'resume_analysis' },
-            () => {
-              console.log("Resume analysis changed, refreshing data");
-              fetchUserAndResumes(false);
-            }
+            () => fetchUserAndResumes(false)
         )
         .subscribe();
 
-    // Subscribe to changes in job_matches table
     const matchesSubscription = supabase
         .channel('matches-changes')
         .on('postgres_changes',
             { event: '*', schema: 'public', table: 'job_matches' },
-            () => {
-              console.log("Job matches changed, refreshing job matches");
-              if (resumes.length > 0) {
-                fetchJobMatches(resumes[0].id);
-              }
-            }
+            () => fetchUserAndResumes(false)
         )
         .subscribe();
 
-    // Cleanup subscriptions on unmount
     return () => {
       supabase.removeChannel(resumesSubscription);
       supabase.removeChannel(analysisSubscription);
       supabase.removeChannel(matchesSubscription);
     };
-  }, [user, fetchUserAndResumes, fetchJobMatches, resumes]);
+  }, [user, fetchUserAndResumes]);
 
   // Filter and sort resumes when dependencies change
   useEffect(() => {
@@ -414,8 +356,8 @@ export default function Home() {
     const config = statusConfig[status] ?? statusConfig.pending;
     return (
         <span className={`${config.color} px-2.5 py-0.5 rounded-full text-xs font-medium border`}>
-        {config.label}
-      </span>
+          {config.label}
+        </span>
     );
   };
 
@@ -436,49 +378,15 @@ export default function Home() {
     return date.toLocaleDateString();
   };
 
-  // Format salary range
-  const formatSalary = (min, max) => {
-    if (!min && !max) return 'Not specified';
-    if (min && !max) return `$${min.toLocaleString()}+`;
-    if (!min && max) return `Up to $${max.toLocaleString()}`;
-    return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
-  };
-
   // Refresh dashboard data without full page reload
   const refreshDashboard = useCallback(() => {
     setLoading(true);
     fetchUserAndResumes();
   }, [fetchUserAndResumes]);
 
-  // Handle resume selection for job matching
-  const handleResumeSelect = (resumeId) => {
-    fetchJobMatches(resumeId);
-  };
-
   // Input handlers
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
   const handleSortChange = (e) => setSortOption(e.target.value);
-
-  // Render skill tags
-  const renderSkillTags = (skills) => {
-    if (!skills || skills.length === 0) return null;
-
-    return (
-        <div className="flex flex-wrap gap-1 mt-2">
-          {skills.slice(0, 5).map((skill, index) => (
-              <span
-                  key={index}
-                  className="bg-brown-light/20 text-brown-dark px-2 py-0.5 rounded-full text-xs"
-              >
-            {skill}
-          </span>
-          ))}
-          {skills.length > 5 && (
-              <span className="text-xs text-brown-light">+{skills.length - 5} more</span>
-          )}
-        </div>
-    );
-  };
 
   // Loading state
   if (loading) {
@@ -730,14 +638,11 @@ export default function Home() {
                         </div>
                       </div>
                       <p className="mt-2 text-xs text-gray-500">
-                        {jobMatches.length > 0
-                            ? `Top match: ${Math.round(jobMatches[0].match_score)}% compatible`
-                            : 'No job matches found'}
+                        Based on your skills and experience
                       </p>
                     </div>
                   </div>
 
-                  {/* Refresh Button */}
                   <div className="flex justify-end mb-6">
                     <button
                         onClick={refreshDashboard}
@@ -749,6 +654,10 @@ export default function Home() {
                       Refresh Dashboard
                     </button>
                   </div>
+
+                  <JobMatchesSection />
+
+                  <JobRecommendationsSection />
 
                   <div className="bg-white p-6 rounded-lg shadow-sm border border-brown-light mb-8">
                     <h3 className="text-lg font-semibold text-brown mb-4">Recent Resumes</h3>
@@ -875,39 +784,53 @@ export default function Home() {
                     </div>
 
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-brown-light">
-                      <h3 className="text-lg font-semibold text-brown mb-4">Recent Job Matches</h3>
-                      {jobMatches.length > 0 ? (
-                          <div className="space-y-4">
-                            {jobMatches.slice(0, 5).map((match) => (
-                                <div key={match.id} className="border-b pb-3 last:border-0">
-                                  <div className="flex justify-between">
-                                    <div>
-                                      <h4 className="font-medium text-gray-900">{match.jobs.title}</h4>
-                                      <p className="text-sm text-gray-500">{match.jobs.company_name}</p>
-                                    </div>
-                                    <div className="text-right">
-                              <span
-                                  className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${match.match_score >= 80 ? 'bg-green-100 text-green-800' :
-                                      match.match_score >= 60 ? 'bg-yellow-100 text-yellow-800' :
-                                          'bg-red-100 text-red-800'
-                                  }`}
-                              >
-                                {Math.round(match.match_score)}% Match
-                              </span>
-                                    </div>
-                                  </div>
-                                  <div className="mt-1 flex justify-between text-xs text-gray-500">
-                                    <span>{match.jobs.location || 'Remote'}</span>
-                                    <span>{formatSalary(match.jobs.salary_min, match.jobs.salary_max)}</span>
-                                  </div>
-                                </div>
-                            ))}
+                      <h3 className="text-lg font-semibold text-brown mb-4">ATS Compatibility Tips</h3>
+                      <div className="space-y-4">
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0 mt-0.5">
+                            <svg className="h-5 w-5 text-brown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
                           </div>
-                      ) : (
-                          <div className="text-center py-8">
-                            <p className="text-gray-500">No job matches available</p>
+                          <div className="ml-3">
+                            <h4 className="text-sm font-medium text-brown">Use Standard Formatting</h4>
+                            <p className="text-sm text-gray-600">Simple layouts with clear section headings work best for ATS systems.</p>
                           </div>
-                      )}
+                        </div>
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0 mt-0.5">
+                            <svg className="h-5 w-5 text-brown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                          <div className="ml-3">
+                            <h4 className="text-sm font-medium text-brown">Include Keywords</h4>
+                            <p className="text-sm text-gray-600">Incorporate relevant keywords from the job description to improve parsing.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0 mt-0.5">
+                            <svg className="h-5 w-5 text-brown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                          <div className="ml-3">
+                            <h4 className="text-sm font-medium text-brown">Avoid Tables and Graphics</h4>
+                            <p className="text-sm text-gray-600">These elements can confuse ATS systems and cause parsing errors.</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start">
+                          <div className="flex-shrink-0 mt-0.5">
+                            <svg className="h-5 w-5 text-brown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                          <div className="ml-3">
+                            <h4 className="text-sm font-medium text-brown">Use Standard Section Names</h4>
+                            <p className="text-sm text-gray-600">Experience, Education, Skills - don't get creative with section titles.</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -984,7 +907,7 @@ export default function Home() {
                         <div className="mt-6">
                           <Link
                               href="/upload"
-                              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brown hover:bg-brown-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown"
+                              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brown hover:bg-brown-dark"
                           >
                             Upload Resume
                           </Link>
@@ -996,7 +919,6 @@ export default function Home() {
                             <div
                                 key={resume.id}
                                 className="bg-white rounded-lg shadow-sm overflow-hidden border border-brown-light transition-all hover:shadow-md"
-                                onClick={() => handleResumeSelect(resume.id)}
                             >
                               <div className="px-6 py-5 border-b border-brown-light">
                                 <div className="flex justify-between items-start">
@@ -1029,10 +951,16 @@ export default function Home() {
                                 )}
                                 {resume.hasAnalysis && resume.resume_analysis && resume.resume_analysis.length > 0 && (
                                     <div className="mt-2">
-                                      {renderSkillTags([
-                                        ...(resume.resume_analysis[0].analysis_json?.skills?.technical || []).slice(0, 3),
-                                        ...(resume.resume_analysis[0].analysis_json?.skills?.soft || []).slice(0, 2)
-                                      ])}
+                                      <div className="flex flex-wrap gap-1">
+                                        {[
+                                          ...(resume.resume_analysis[0].analysis_json?.skills?.technical || []).slice(0, 3),
+                                          ...(resume.resume_analysis[0].analysis_json?.skills?.soft || []).slice(0, 2)
+                                        ].map((skill, idx) => (
+                                            <span key={idx} className="text-xs bg-brown-light/20 text-brown-dark px-2 py-0.5 rounded-full">
+                                              {skill}
+                                            </span>
+                                        ))}
+                                      </div>
                                     </div>
                                 )}
                               </div>
@@ -1065,7 +993,6 @@ export default function Home() {
                                     <Link
                                         href={`/resume/${resume.id}`}
                                         className="text-sm text-brown hover:text-brown-dark font-medium inline-flex items-center"
-                                        onClick={(e) => e.stopPropagation()}
                                     >
                                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1078,7 +1005,6 @@ export default function Home() {
                                         <Link
                                             href={`/resume/${resume.id}/analysis`}
                                             className="text-sm text-brown hover:text-brown-dark font-medium inline-flex items-center"
-                                            onClick={(e) => e.stopPropagation()}
                                         >
                                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -1111,181 +1037,10 @@ export default function Home() {
 
             {activeTab === 'jobs' && (
                 <div className="mb-8">
-                  <div className="flex justify-between items-center mb-6">
-                    <div>
-                      <h2 className="text-2xl font-bold text-brown">Job Matches</h2>
-                      <p className="mt-1 text-sm text-brown-light">
-                        Jobs that match your skills and experience
-                      </p>
-                    </div>
-
-                    {resumes.length > 0 && (
-                        <div className="flex items-center">
-                          <label htmlFor="resume-select" className="block mr-2 text-sm font-medium text-gray-700">
-                            Resume:
-                          </label>
-                          <select
-                              id="resume-select"
-                              className="border border-gray-300 rounded-md shadow-sm py-2 pl-3 pr-10 text-sm focus:outline-none focus:ring-brown focus:border-brown"
-                              onChange={(e) => fetchJobMatches(e.target.value)}
-                              defaultValue={resumes.length > 0 ? resumes[0].id : ''}
-                          >
-                            {resumes.map(resume => (
-                                <option key={resume.id} value={resume.id}>
-                                  {resume.title}
-                                </option>
-                            ))}
-                          </select>
-                        </div>
-                    )}
+                  <JobMatchesSection />
+                  <div className="mt-8">
+                    <JobRecommendationsSection />
                   </div>
-
-                  {jobMatchesLoading ? (
-                      <div className="bg-white rounded-lg shadow-sm border border-brown-light p-8 text-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brown mx-auto"></div>
-                        <p className="mt-3 text-brown">Loading job matches...</p>
-                      </div>
-                  ) : jobMatches.length === 0 ? (
-                      <div className="bg-white rounded-lg shadow-sm border border-brown-light p-8 text-center">
-                        <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-cream">
-                          <Briefcase className="h-8 w-8 text-brown" />
-                        </div>
-                        <h3 className="mt-5 text-lg font-medium text-brown">No job matches found</h3>
-                        <p className="mt-2 text-brown-light max-w-md mx-auto">
-                          {resumes.length === 0
-                              ? 'Upload a resume to get job matches'
-                              : 'We couldn\'t find any job matches for your resume'}
-                        </p>
-                        {resumes.length === 0 && (
-                            <div className="mt-6">
-                              <Link
-                                  href="/upload"
-                                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brown hover:bg-brown-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown"
-                              >
-                                Upload Resume
-                              </Link>
-                            </div>
-                        )}
-                      </div>
-                  ) : (
-                      <div className="space-y-4">
-                        {jobMatches.map(match => (
-                            <div
-                                key={match.id}
-                                className="bg-white rounded-lg shadow-sm border border-brown-light overflow-hidden hover:shadow-md transition-all duration-200"
-                            >
-                              <div className="p-6">
-                                <div className="flex justify-between">
-                                  <div>
-                                    <h3 className="text-xl font-semibold text-brown">{match.jobs.title}</h3>
-                                    <p className="text-lg text-brown-light">{match.jobs.company_name}</p>
-                                  </div>
-                                  <div className="text-right">
-                                    <div className={`text-lg font-bold ${match.match_score >= 80 ? 'text-green-600' :
-                                        match.match_score >= 60 ? 'text-yellow-600' :
-                                            'text-red-600'
-                                    }`}>
-                                      {Math.round(match.match_score)}% Match
-                                    </div>
-                                    <div className="flex items-center justify-end mt-1">
-                                      <div className="w-24 bg-gray-200 rounded-full h-2 mr-2">
-                                        <div
-                                            className={`h-2 rounded-full ${match.match_score >= 80 ? 'bg-green-600' :
-                                                match.match_score >= 60 ? 'bg-yellow-500' :
-                                                    'bg-red-500'
-                                            }`}
-                                            style={{ width: `${match.match_score}%` }}
-                                        ></div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="mt-4 flex flex-wrap gap-2">
-                                  <div className="flex items-center text-sm text-gray-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    {match.jobs.location || 'Remote'}
-                                  </div>
-                                  <div className="flex items-center text-sm text-gray-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    {match.jobs.job_types || 'Full-time'}
-                                  </div>
-                                  <div className="flex items-center text-sm text-gray-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    {formatSalary(match.jobs.salary_min, match.jobs.salary_max)}
-                                  </div>
-                                </div>
-
-                                {match.match_details && match.match_details.matching_skills && (
-                                    <div className="mt-4">
-                                      <h4 className="text-sm font-medium text-gray-700 mb-2">Matching Skills</h4>
-                                      <div className="flex flex-wrap gap-2">
-                                        {match.match_details.matching_skills.slice(0, 8).map((skill, index) => (
-                                            <span
-                                                key={index}
-                                                className="bg-green-100 text-green-800 px-2 py-0.5 rounded-full text-xs"
-                                            >
-                                  {skill}
-                                </span>
-                                        ))}
-                                        {match.match_details.matching_skills.length > 8 && (
-                                            <span className="text-xs text-gray-500">
-                                  +{match.match_details.matching_skills.length - 8} more
-                                </span>
-                                        )}
-                                      </div>
-                                    </div>
-                                )}
-
-                                {match.match_details && match.match_details.missing_skills && match.match_details.missing_skills.length > 0 && (
-                                    <div className="mt-4">
-                                      <h4 className="text-sm font-medium text-gray-700 mb-2">Missing Skills</h4>
-                                      <div className="flex flex-wrap gap-2">
-                                        {match.match_details.missing_skills.slice(0, 5).map((skill, index) => (
-                                            <span
-                                                key={index}
-                                                className="bg-red-100 text-red-800 px-2 py-0.5 rounded-full text-xs"
-                                            >
-                                  {skill}
-                                </span>
-                                        ))}
-                                        {match.match_details.missing_skills.length > 5 && (
-                                            <span className="text-xs text-gray-500">
-                                  +{match.match_details.missing_skills.length - 5} more
-                                </span>
-                                        )}
-                                      </div>
-                                    </div>
-                                )}
-
-                                <div className="mt-4 border-t pt-4">
-                                  <h4 className="text-sm font-medium text-gray-700 mb-2">Description</h4>
-                                  <p className="text-sm text-gray-600 line-clamp-3">
-                                    {match.jobs.description?.substring(0, 250)}
-                                    {match.jobs.description?.length > 250 ? '...' : ''}
-                                  </p>
-                                  <button className="mt-2 text-sm text-brown hover:text-brown-dark font-medium">
-                                    Read more
-                                  </button>
-                                </div>
-
-                                <div className="mt-4 flex justify-end">
-                                  <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brown hover:bg-brown-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown">
-                                    Apply Now
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                        ))}
-                      </div>
-                  )}
                 </div>
             )}
           </div>
