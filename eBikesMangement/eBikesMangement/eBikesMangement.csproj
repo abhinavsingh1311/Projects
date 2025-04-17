@@ -24,7 +24,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\PurchaseOrderSystem\PurchaseOrderSystem.csproj" />
 		<ProjectReference Include="..\ReceivingSystem\ReceivingSystem.csproj" />
+		<ProjectReference Include="..\SalesReturnSystem\SalesReturnSystem.csproj" />
+		<ProjectReference Include="..\ServicingSystem\ServicingSystem.csproj" />
 	</ItemGroup>
 
 </Project>
