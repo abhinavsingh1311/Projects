@@ -1,0 +1,215 @@
+﻿@page "/receiveOrders"
+@page "/receiveOrders/{OrderId:int?}"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@using eBikesMangement.Components
+@attribute [Authorize]
+
+<PageTitle>eBikes Receiving</PageTitle>
+
+<AuthorizeView>
+    <Authorized Context="authContext">
+        <MudText Typo="Typo.h3" GutterBottom="true">eBikes Receiving System</MudText>
+
+        @if (hasError)
+        {
+            <MudAlert Elevation="2" Severity="Severity.Error" Dense="true">
+                <MudText Typo="Typo.h6">@errorMessage</MudText>
+                @foreach (var error in errorDetails)
+                {
+                    <MudText Typo="Typo.body2">@error</MudText>
+                }
+            </MudAlert>
+        }
+
+        @if (hasFeedback)
+        {
+            <MudAlert Elevation="2" Severity="Severity.Success" Dense="true">
+                <MudText Typo="Typo.body2">@feedbackMessage</MudText>
+            </MudAlert>
+        }
+
+        <MudForm @ref="receiveForm" @bind-IsValid="isFormValid" @bind-IsTouched="hasChanges">
+            <div class="d-flex flex-column">
+                <div class="d-flex justify-space-between align-center mb-4">
+                    <MudText Typo="Typo.h5">Purchase Orders</MudText>
+
+                    <!-- Employee info display - Security requirement #3 -->
+                    <MudPaper Elevation="1" Class="pa-2 d-flex align-center" Style="background-color: var(--mud-palette-primary); color: white;">
+                        <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-2" />
+                        <MudText>
+                            @authContext.User.Identity?.Name |
+                            @authContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value |
+                            ID: @authContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value
+                        </MudText>
+                    </MudPaper>
+                </div>
+
+                <MudPaper Elevation="3" Class="mb-4" Style="overflow: hidden;">
+                    <MudTable Items="@OutstandingOrders" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@(OutstandingOrders.Count == 0)" LoadingProgressColor="Color.Primary">
+                        <HeaderContent>
+                            <MudTh>PO #</MudTh>
+                            <MudTh>Date</MudTh>
+                            <MudTh>Vendor</MudTh>
+                            <MudTh>Contact #</MudTh>
+                            <MudTh></MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="PO #">@context.PurchaseOrderNumber</MudTd>
+                            <MudTd DataLabel="Date">@context.OrderDate.ToString("MMMM d")</MudTd>
+                            <MudTd DataLabel="Vendor">@context.VendorName</MudTd>
+                            <MudTd DataLabel="Contact #">@context.Phone</MudTd>
+                            <MudTd>
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                                           OnClick="() => ViewOrder(context.PurchaseOrderID)">
+                                    View Order
+                                </MudButton>
+                            </MudTd>
+                        </RowTemplate>
+                        <NoRecordsContent>
+                            <MudText Typo="Typo.h6">No outstanding orders found.</MudText>
+                        </NoRecordsContent>
+                    </MudTable>
+                </MudPaper>
+
+                @if (SelectedOrder != null)
+                {
+                    <MudGrid Class="mb-4">
+                        <MudItem xs="12">
+                            <MudPaper Elevation="0" Class="d-flex justify-space-between pa-2">
+                                <MudText><strong>PO #: @SelectedOrder.PurchaseOrderNumber</strong></MudText>
+                                <MudText><strong>Vendor: @SelectedOrder.VendorName</strong></MudText>
+                                <MudText><strong>Phone: @SelectedOrder.Phone</strong></MudText>
+                            </MudPaper>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudPaper Elevation="3" Class="mb-4" Style="overflow: hidden;">
+                        <MudToolBar Dense="true" DisableGutters="true">
+                            <MudText Typo="Typo.h6" Class="ml-3">Order Details</MudText>
+                        </MudToolBar>
+                        <MudTable Items="@OrderDetails" Hover="true" Breakpoint="Breakpoint.Sm" Style="overflow: auto;">
+                            <HeaderContent>
+                                <MudTh>Part ID</MudTh>
+                                <MudTh>Description</MudTh>
+                                <MudTh>Order Qty</MudTh>
+                                <MudTh>Outstanding</MudTh>
+                                <MudTh>Received</MudTh>
+                                <MudTh>Returned</MudTh>
+                                <MudTh>Reason</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Part ID">@context.PartID</MudTd>
+                                <MudTd DataLabel="Description">@context.Description</MudTd>
+                                <MudTd DataLabel="Order Qty">@context.Quantity</MudTd>
+                                <MudTd DataLabel="Outstanding">@context.Outstanding</MudTd>
+                                <MudTd DataLabel="Received">
+                                    <MudNumericField @bind-Value="context.Received" Min="0" Max="@context.Outstanding"
+                                                     OnChange="() => UpdateOrderDetail(context)" Class="mud-width-full"
+                                                     Required="true" />
+                                </MudTd>
+                                <MudTd DataLabel="Returned">
+                                    <MudNumericField @bind-Value="context.Returned" Min="0"
+                                                     OnChange="() => UpdateOrderDetail(context)" Class="mud-width-full" />
+                                </MudTd>
+                                <MudTd DataLabel="Reason">
+                                    <MudTextField @bind-Value="context.ReturnReason"
+                                                  Disabled="@(context.Returned <= 0)"
+                                                  Placeholder="Required if returned"
+                                                  OnChange="() => UpdateOrderDetail(context)"
+                                                  Required="@(context.Returned > 0)" />
+                                </MudTd>
+                            </RowTemplate>
+                            <NoRecordsContent>
+                                <MudText Typo="Typo.h6">No order details found.</MudText>
+                            </NoRecordsContent>
+                        </MudTable>
+                    </MudPaper>
+
+                    <MudPaper Elevation="3" Class="mb-4">
+                        <MudToolBar Dense="true" DisableGutters="true">
+                            <MudText Typo="Typo.h6" Class="ml-3">Unordered Items to Return</MudText>
+                        </MudToolBar>
+                        <MudContainer Class="pa-4">
+                            @if (UnorderedItems.Any())
+                            {
+                                <MudTable Items="@UnorderedItems" Hover="true" Class="mb-4" Breakpoint="Breakpoint.Sm" Style="overflow: auto;">
+                                    <HeaderContent>
+                                        <MudTh></MudTh>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Vendor Part ID</MudTh>
+                                        <MudTh>Qty</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+                                                           Size="Size.Small" OnClick="() => Delete(context)" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">@context.Description</MudTd>
+                                        <MudTd DataLabel="Vendor Part ID">@context.VendorSerialNumber</MudTd>
+                                        <MudTd DataLabel="Qty">@context.Quantity</MudTd>
+                                    </RowTemplate>
+                                    <NoRecordsContent>
+                                        <MudText Typo="Typo.h6">No unordered items</MudText>
+                                    </NoRecordsContent>
+                                </MudTable>
+                            }
+                            else
+                            {
+                                <MudText Class="mb-4">No unordered items</MudText>
+                            }
+
+                            <MudGrid>
+                                <MudItem xs="12" md="4">
+                                    <MudTextField Label="Item Description" @bind-Value="description" />
+                                </MudItem>
+                                <MudItem xs="12" md="4">
+                                    <MudTextField Label="Vendor Part ID" @bind-Value="vsn" />
+                                </MudItem>
+                                <MudItem xs="12" md="2">
+                                    <MudNumericField Label="Quantity" @bind-Value="qty" Min="1" />
+                                </MudItem>
+                                <MudItem xs="6" md="1">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Success"
+                                               OnClick="Insert" Class="mt-4 mud-width-full">Insert</MudButton>
+                                </MudItem>
+                                <MudItem xs="6" md="1">
+                                    <MudButton Variant="Variant.Outlined" Color="Color.Secondary"
+                                               OnClick="Clear" Class="mt-4 mud-width-full">Clear</MudButton>
+                                </MudItem>
+                            </MudGrid>
+                        </MudContainer>
+                    </MudPaper>
+
+                    <MudPaper Elevation="2" Class="pa-4 d-flex" Style="gap: 16px;">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.CheckCircle"
+                                   OnClick="ReceiveOrder">Receive</MudButton>
+
+                        <AuthorizeView>
+                            <Authorized>
+                                <!-- Full access for all users -->
+                                <div class="d-flex align-center" style="flex: 1;">
+                                    <MudTextField @bind-Value="reason" Placeholder="Reason for Closing" Required="true"
+                                                  Immediate="true" Class="flex-1 mr-2" />
+                                    <MudButton Variant="Variant.Filled" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Stop"
+                                               OnClick="ForceClose" Disabled="@(string.IsNullOrWhiteSpace(reason))">Force Close</MudButton>
+                                </div>
+                            </Authorized>
+                        </AuthorizeView>
+
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Refresh"
+                                   OnClick="Reset">@resetButtonText</MudButton>
+                    </MudPaper>
+                }
+            </div>
+        </MudForm>
+    </Authorized>
+    <NotAuthorized>
+        <!-- Warning for unauthorized access - Security requirement #2 -->
+        <MudAlert Severity="Severity.Error" Class="ma-4">
+            You are not authorized to access the Receiving System.
+            Please <MudLink Href="/Account/Login?ReturnUrl=/receiveOrders" Underline="Underline.Always">log in</MudLink> to continue.
+        </MudAlert>
+    </NotAuthorized>
+</AuthorizeView>

@@ -1,0 +1,12 @@
+C:\dmit2018\eBikesMangement\ReceivingSystem\bin\Debug\net9.0\ReceivingSystem.deps.json
+C:\dmit2018\eBikesMangement\ReceivingSystem\bin\Debug\net9.0\ReceivingSystem.dll
+C:\dmit2018\eBikesMangement\ReceivingSystem\bin\Debug\net9.0\ReceivingSystem.pdb
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\ReceivingSystem.csproj.AssemblyReference.cache
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\ReceivingSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\ReceivingSystem.AssemblyInfoInputs.cache
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\ReceivingSystem.AssemblyInfo.cs
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\ReceivingSystem.csproj.CoreCompileInputs.cache
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\ReceivingSystem.dll
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\refint\ReceivingSystem.dll
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\ReceivingSystem.pdb
+C:\dmit2018\eBikesMangement\ReceivingSystem\obj\Debug\net9.0\ref\ReceivingSystem.dll

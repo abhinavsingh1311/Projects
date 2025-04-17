@@ -1,0 +1,6 @@
+C:\dmit2018\eBikesMangement\eBikesMangement\obj\Debug\net8.0\eBikesMangement.csproj.AssemblyReference.cache
+C:\dmit2018\eBikesMangement\eBikesMangement\obj\Debug\net8.0\eBikesMangement.GeneratedMSBuildEditorConfig.editorconfig
+C:\dmit2018\eBikesMangement\eBikesMangement\obj\Debug\net8.0\eBikesMangement.AssemblyInfoInputs.cache
+C:\dmit2018\eBikesMangement\eBikesMangement\obj\Debug\net8.0\eBikesMangement.AssemblyInfo.cs
+C:\dmit2018\eBikesMangement\eBikesMangement\obj\Debug\net8.0\eBikesMangement.csproj.CoreCompileInputs.cache
+C:\dmit2018\eBikesMangement\eBikesMangement\obj\Debug\net8.0\eBikesMangement.MvcApplicationPartsAssemblyInfo.cache

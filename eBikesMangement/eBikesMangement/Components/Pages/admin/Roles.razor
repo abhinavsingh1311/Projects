@@ -1,0 +1,147 @@
+﻿@* @page "/admin/roles" *@
+@* @using Microsoft.AspNetCore.Authorization *@
+@* @using Microsoft.AspNetCore.Identity *@
+@* @using eBikesMangement.Data *@
+@* @attribute [Authorize] *@
+@* @inject UserManager<ApplicationUser> UserManager *@
+@* @inject RoleManager<IdentityRole> RoleManager *@
+@* @inject ISnackbar Snackbar *@
+
+@* <PageTitle>Role Management</PageTitle> *@
+
+@* <MudContainer MaxWidth="MaxWidth.Large"> *@
+@*     <MudText Typo="Typo.h3" Class="mb-4">Role Management</MudText> *@
+
+@*     <MudGrid> *@
+@*         <MudItem xs="12" md="6"> *@
+@*             <MudPaper Elevation="3" Class="pa-4 mb-4"> *@
+@*                 <MudText Typo="Typo.h5" Class="mb-4">Create Required Roles</MudText> *@
+@*                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateRequiredRoles"> *@
+@*                     Create PartsManager & StoreStaff Roles *@
+@*                 </MudButton> *@
+@*             </MudPaper> *@
+
+@*             <MudPaper Elevation="3" Class="pa-4 mb-4"> *@
+@*                 <MudText Typo="Typo.h5" Class="mb-4">Create Test Users</MudText> *@
+@*                 <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="CreateTestUsers"> *@
+@*                     Create Test Users *@
+@*                 </MudButton> *@
+
+@*                 <MudText Typo="Typo.caption" Class="mt-2"> *@
+@*                     This will create: *@
+@*                     <ul> *@
+@*                         <li>manager@ebikes.com / Manager123! (PartsManager role)</li> *@
+@*                         <li>staff@ebikes.com / Staff123! (StoreStaff role)</li> *@
+@*                     </ul> *@
+@*                 </MudText> *@
+@*             </MudPaper> *@
+@*         </MudItem> *@
+
+@*         <MudItem xs="12" md="6"> *@
+@*             <MudPaper Elevation="3" Class="pa-4"> *@
+@*                 <MudText Typo="Typo.h5" Class="mb-4">Existing Roles</MudText> *@
+
+     
+
+@*                         @if (roles.Any()) *@
+@*                         { *@
+@*                             <div> *@
+@*                                 @foreach (var role in roles) *@
+@*                                 { *@
+@*                                     <div class="d-flex align-center mb-2 pa-2" style="border-bottom: 1px solid var(--mud-palette-divider)"> *@
+@*                                         <MudIcon Icon="@Icons.Material.Filled.PlaylistAddCheck" Class="mr-2" /> *@
+@*                                         <MudText>@role.Name</MudText> *@
+@*                                     </div> *@
+@*                                 } *@
+@*                             </div> *@
+@*                         } *@
+@*                         else *@
+@*                         { *@
+@*                             <MudText>No roles found.</MudText> *@
+@*                         } *@
+@*                     </MudPaper> *@
+@*         </MudItem> *@
+@*     </MudGrid> *@
+@* </MudContainer> *@
+
+@* @code { *@
+@*     private List<IdentityRole> roles = new(); *@
+
+@*     protected override async Task OnInitializedAsync() *@
+@*     { *@
+@*         await LoadRoles(); *@
+@*     } *@
+
+@*     private async Task LoadRoles() *@
+@*     { *@
+@*         roles = RoleManager.Roles.ToList(); *@
+@*     } *@
+
+@*     private async Task CreateRequiredRoles() *@
+@*     { *@
+@*         string[] requiredRoles = { "PartsManager", "StoreStaff" }; *@
+@*         int createdCount = 0; *@
+
+@*         foreach (var roleName in requiredRoles) *@
+@*         { *@
+@*             if (!await RoleManager.RoleExistsAsync(roleName)) *@
+@*             { *@
+@*                 await RoleManager.CreateAsync(new IdentityRole(roleName)); *@
+@*                 createdCount++; *@
+@*             } *@
+@*         } *@
+
+@*         await LoadRoles(); *@
+
+@*         if (createdCount > 0) *@
+@*         { *@
+@*             Snackbar.Add($"Created {createdCount} role(s)", Severity.Success); *@
+@*         } *@
+@*         else *@
+@*         { *@
+@*             Snackbar.Add("Required roles already exist", Severity.Info); *@
+@*         } *@
+@*     } *@
+
+@*     private async Task CreateTestUsers() *@
+@*     { *@
+@*         // Ensure roles exist first *@
+@*         await CreateRequiredRoles(); *@
+
+@*         // Create manager user if it doesn't exist *@
+@*         if (await UserManager.FindByNameAsync("manager@ebikes.com") == null) *@
+@*         { *@
+@*             var user = new ApplicationUser *@
+@*                 { *@
+@*                     UserName = "manager@ebikes.com", *@
+@*                     Email = "manager@ebikes.com", *@
+@*                     EmailConfirmed = true *@
+@*                 }; *@
+
+@*             var result = await UserManager.CreateAsync(user, "Manager123!"); *@
+@*             if (result.Succeeded) *@
+@*             { *@
+@*                 await UserManager.AddToRoleAsync(user, "PartsManager"); *@
+@*             } *@
+@*         } *@
+
+@*         // Create staff user if it doesn't exist *@
+@*         if (await UserManager.FindByNameAsync("staff@ebikes.com") == null) *@
+@*         { *@
+@*             var user = new ApplicationUser *@
+@*                 { *@
+@*                     UserName = "staff@ebikes.com", *@
+@*                     Email = "staff@ebikes.com", *@
+@*                     EmailConfirmed = true *@
+@*                 }; *@
+
+@*             var result = await UserManager.CreateAsync(user, "Staff123!"); *@
+@*             if (result.Succeeded) *@
+@*             { *@
+@*                 await UserManager.AddToRoleAsync(user, "StoreStaff"); *@
+@*             } *@
+@*         } *@
+
+@*         Snackbar.Add("Test users created/updated", Severity.Success); *@
+@*     } *@
+@* } *@

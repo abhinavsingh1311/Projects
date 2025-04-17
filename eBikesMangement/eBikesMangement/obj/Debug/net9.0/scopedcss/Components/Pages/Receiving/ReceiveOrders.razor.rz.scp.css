@@ -1,0 +1,75 @@
+    /* table */
+.table[b-it4ce2gzk6] {
+    margin-bottom: 0;
+}
+
+.table-striped tbody tr:nth-of-type(odd)[b-it4ce2gzk6] {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-hover tbody tr:hover[b-it4ce2gzk6] {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+thead.table-secondary[b-it4ce2gzk6] {
+    background-color: #e2e3e5;
+}
+
+    /* Card  */
+.card[b-it4ce2gzk6] {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.card-header[b-it4ce2gzk6] {
+    background-color: #f8f9fa;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+        
+        /* Button  */
+.btn-primary[b-it4ce2gzk6] {
+    background-color: #7749F8;
+    border-color: #7749F8;
+}
+
+    .btn-primary:hover[b-it4ce2gzk6] {
+        background-color: #6438e4;
+        border-color: #6438e4;
+    }
+
+.btn:disabled[b-it4ce2gzk6] {
+    opacity: 0.65;
+}
+
+   
+     
+   /* Form control */
+.form-control:disabled[b-it4ce2gzk6] {
+    background-color: #e9ecef;
+    opacity: 0.65;
+}
+
+/* Spacing */
+.gap-2[b-it4ce2gzk6] {
+    gap: 0.5rem;
+}
+
+        /* alert */
+blockquote.success[b-it4ce2gzk6] {
+    background-color: #d4edda;
+    border-left: 5px solid #28a745;
+    padding: 10px 15px;
+    margin: 10px 0;
+    color: #155724;
+}
+
+blockquote.error[b-it4ce2gzk6] {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    padding: 10px 15px;
+    margin: 10px 0;
+    color: #721c24;
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBikesMangement", "eBikesMangement\eBikesMangement.csproj", "{09CBDE2C-AF7D-4F97-9B55-836F542E1040}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReceivingSystem", "ReceivingSystem\ReceivingSystem.csproj", "{7556234B-6A24-41F0-BF94-D24792D8B3CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09CBDE2C-AF7D-4F97-9B55-836F542E1040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09CBDE2C-AF7D-4F97-9B55-836F542E1040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09CBDE2C-AF7D-4F97-9B55-836F542E1040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09CBDE2C-AF7D-4F97-9B55-836F542E1040}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7556234B-6A24-41F0-BF94-D24792D8B3CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7556234B-6A24-41F0-BF94-D24792D8B3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7556234B-6A24-41F0-BF94-D24792D8B3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7556234B-6A24-41F0-BF94-D24792D8B3CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C3798D3-410F-4494-A035-757E9D9F7181}
+	EndGlobalSection
+EndGlobal

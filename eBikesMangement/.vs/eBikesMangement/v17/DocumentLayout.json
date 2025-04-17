@@ -1,0 +1,1407 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\dmit2018\\eBikesMangement\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\bll\\receivingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\bll\\receivingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\pages\\receiving\\receiveorders.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\pages\\receiving\\receiveorders.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\pages\\receiving\\receiveorders.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\pages\\receiving\\receiveorders.razor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\pages\\admin\\roles.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\pages\\admin\\roles.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\layout\\component.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\layout\\component.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\pages\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\pages\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\routes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\routes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\auth.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\auth.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\pages\\receiving\\receiveorders.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\pages\\receiving\\receiveorders.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\entities\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\entities\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\ebikesmangement.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\ebikesmangement.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\data\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\data\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\data\\migrations\\00000000000000_createidentityschema.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\data\\migrations\\00000000000000_createidentityschema.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\data\\migrations\\00000000000000_createidentityschema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\data\\migrations\\00000000000000_createidentityschema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\abhin\\AppData\\Roaming\\Microsoft\\UserSecrets\\ea31392d-9f54-433d-9f95-cad73b05f0c9\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\register.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\register.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\entities\\purchaseorderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\entities\\purchaseorderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\entities\\receiveorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\entities\\receiveorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\entities\\vendor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\entities\\vendor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\dal\\ebike_2025context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\dal\\ebike_2025context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\entities\\returnedorderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\entities\\returnedorderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\entities\\receiveorderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\entities\\receiveorderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\entities\\unorderedpurchaseitemcart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\entities\\unorderedpurchaseitemcart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\entities\\purchaseorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\entities\\purchaseorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\backendextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\backendextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\viewmodels\\receivingdetailview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\viewmodels\\receivingdetailview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\pages\\error.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\pages\\error.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\viewmodels\\purchaseorderlist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\viewmodels\\purchaseorderlist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\blazorhelperclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\blazorhelperclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\externallogin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\externallogin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\forgotpassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\forgotpassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\resendemailconfirmation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\resendemailconfirmation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\registerconfirmation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\registerconfirmation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\loginwithrecoverycode.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\loginwithrecoverycode.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\loginwith2fa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\loginwith2fa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\index.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\index.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\deletepersonaldata.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\deletepersonaldata.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\lockout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\lockout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\identitynoopemailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\identitynoopemailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\identityuseraccessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\identityuseraccessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\identityredirectmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\identityredirectmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\receivingsystem.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\receivingsystem.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\wwwroot\\app.css.disabled||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\wwwroot\\app.css.disabled||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\layout\\navmenu.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\layout\\navmenu.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\layout\\mainlayout.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\layout\\mainlayout.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\shared\\redirecttologin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\shared\\redirecttologin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\shared\\managenavmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\shared\\managenavmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\data\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\data\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\changepassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\changepassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\resetpasswordconfirmation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\resetpasswordconfirmation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\shared\\statusmessage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\shared\\statusmessage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\shared\\showrecoverycodes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\shared\\showrecoverycodes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\shared\\managelayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\shared\\managelayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\shared\\externalloginpicker.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\shared\\externalloginpicker.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\confirmemail.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\confirmemail.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\resetpassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\resetpassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\confirmemailchange.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\confirmemailchange.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\identityrevalidatingauthenticationstateprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\identityrevalidatingauthenticationstateprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\identitycomponentsendpointroutebuilderextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\identitycomponentsendpointroutebuilderextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\twofactorauthentication.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\twofactorauthentication.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\setpassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\setpassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\resetauthenticator.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\resetauthenticator.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\personaldata.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\personaldata.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\generaterecoverycodes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\generaterecoverycodes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\externallogins.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\externallogins.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\enableauthenticator.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\enableauthenticator.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\email.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\email.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\manage\\disable2fa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\manage\\disable2fa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\invaliduser.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\invaliduser.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\invalidpasswordreset.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\invalidpasswordreset.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\forgotpasswordconfirmation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\forgotpasswordconfirmation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\dmit2018\\ebikesmangement\\ebikesmangement\\components\\account\\pages\\accessdenied.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\account\\pages\\accessdenied.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\dmit2018\\ebikesmangement\\receivingsystem\\viewmodels\\unorderedreturnitemview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\viewmodels\\unorderedreturnitemview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 17,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "App.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\App.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\App.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\App.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\App.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:19:01.096Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\_Imports.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\_Imports.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\_Imports.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Pages\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T13:55:21.811Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\_Imports.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\_Imports.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\_Imports.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:19:45.597Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Component.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\Component.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\Component.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\Component.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Layout\\Component.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:17:57.331Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T14:26:53.485Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAAYAAABgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:12:45.108Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Roles.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\admin\\Roles.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\admin\\Roles.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\admin\\Roles.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Pages\\admin\\Roles.razor",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAAIgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-11T05:37:31.464Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ReceiveOrders.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALwAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T01:31:20.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ReceiveOrders.razor.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.cs",
+              "RelativeToolTip": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.cs",
+              "ViewState": "AgIAAIcCAAAAAAAAAAAUwOgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T01:34:12.237Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ReceivingService.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\BLL\\ReceivingService.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\BLL\\ReceivingService.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\BLL\\ReceivingService.cs",
+              "RelativeToolTip": "ReceivingSystem\\BLL\\ReceivingService.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAowFEAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-29T21:26:45.572Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Routes.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Routes.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Routes.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Routes.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Routes.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:19:27.935Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Auth.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Auth.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Auth.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Auth.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Auth.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:23:08.582Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ReceiveOrders.razor.css",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.css",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.css",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.css",
+              "RelativeToolTip": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.css",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-03-28T02:13:35.106Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Part.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\Part.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\Part.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\Part.cs",
+              "RelativeToolTip": "ReceivingSystem\\Entities\\Part.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwDIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T14:28:33.677Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "00000000000000_CreateIdentitySchema.Designer.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.Designer.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.Designer.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.Designer.cs",
+              "RelativeToolTip": "eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.Designer.cs",
+              "ViewState": "AgIAAIsAAAAAAAAAAAAgwA0BAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T20:03:43.383Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ApplicationDbContextModelSnapshot.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Data\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "RelativeToolTip": "eBikesMangement\\Data\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA8AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T18:56:41.958Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\appsettings.json",
+              "RelativeDocumentMoniker": "eBikesMangement\\appsettings.json",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\appsettings.json",
+              "RelativeToolTip": "eBikesMangement\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-03-28T01:40:09.133Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "eBikesMangement.csproj",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\eBikesMangement.csproj",
+              "RelativeDocumentMoniker": "eBikesMangement\\eBikesMangement.csproj",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\eBikesMangement.csproj",
+              "RelativeToolTip": "eBikesMangement\\eBikesMangement.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-10T19:25:17.805Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "eBikesMangement\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T18:22:40.811Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "00000000000000_CreateIdentitySchema.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.cs",
+              "RelativeToolTip": "eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAABjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T18:56:34.541Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Users\\abhin\\AppData\\Roaming\\Microsoft\\UserSecrets\\ea31392d-9f54-433d-9f95-cad73b05f0c9\\secrets.json",
+              "RelativeDocumentMoniker": "..\\..\\Users\\abhin\\AppData\\Roaming\\Microsoft\\UserSecrets\\ea31392d-9f54-433d-9f95-cad73b05f0c9\\secrets.json",
+              "ToolTip": "C:\\Users\\abhin\\AppData\\Roaming\\Microsoft\\UserSecrets\\ea31392d-9f54-433d-9f95-cad73b05f0c9\\secrets.json",
+              "RelativeToolTip": "..\\..\\Users\\abhin\\AppData\\Roaming\\Microsoft\\UserSecrets\\ea31392d-9f54-433d-9f95-cad73b05f0c9\\secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-10T20:33:42.127Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Register.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Register.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Register.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Register.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Register.razor",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAYwJIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:58.154Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Login.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Login.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Login.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Login.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Login.razor",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAYwHkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:32.852Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Program.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Program.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Program.cs",
+              "RelativeToolTip": "eBikesMangement\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAADAAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-27T23:58:45.042Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Vendor.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\Vendor.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\Vendor.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\Vendor.cs",
+              "RelativeToolTip": "ReceivingSystem\\Entities\\Vendor.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAA7wCAAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T07:30:13.197Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "eBike_2025Context.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\DAL\\eBike_2025Context.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\DAL\\eBike_2025Context.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\DAL\\eBike_2025Context.cs",
+              "RelativeToolTip": "ReceivingSystem\\DAL\\eBike_2025Context.cs",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAhwNIAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T14:28:23.856Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "ReceiveOrderDetail.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\ReceiveOrderDetail.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\ReceiveOrderDetail.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\ReceiveOrderDetail.cs",
+              "RelativeToolTip": "ReceivingSystem\\Entities\\ReceiveOrderDetail.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T07:30:02.681Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "UnorderedPurchaseItemCart.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\UnorderedPurchaseItemCart.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\UnorderedPurchaseItemCart.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\UnorderedPurchaseItemCart.cs",
+              "RelativeToolTip": "ReceivingSystem\\Entities\\UnorderedPurchaseItemCart.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAxwCEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T07:30:10.104Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "PurchaseOrderDetail.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\PurchaseOrderDetail.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\PurchaseOrderDetail.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\PurchaseOrderDetail.cs",
+              "RelativeToolTip": "ReceivingSystem\\Entities\\PurchaseOrderDetail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAIAwwBgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T07:29:54.431Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "ReturnedOrderDetail.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\ReturnedOrderDetail.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\ReturnedOrderDetail.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\ReturnedOrderDetail.cs",
+              "RelativeToolTip": "ReceivingSystem\\Entities\\ReturnedOrderDetail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T07:30:06.687Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "ReceiveOrder.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\ReceiveOrder.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\ReceiveOrder.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\ReceiveOrder.cs",
+              "RelativeToolTip": "ReceivingSystem\\Entities\\ReceiveOrder.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAASwBgAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T07:29:58.757Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "PurchaseOrder.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\PurchaseOrder.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\PurchaseOrder.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\Entities\\PurchaseOrder.cs",
+              "RelativeToolTip": "ReceivingSystem\\Entities\\PurchaseOrder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T07:29:51.097Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "BackendExtensions.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\BackendExtensions.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\BackendExtensions.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\BackendExtensions.cs",
+              "RelativeToolTip": "ReceivingSystem\\BackendExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-27T22:02:30.076Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ReceivingDetailView.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\ViewModels\\ReceivingDetailView.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\ViewModels\\ReceivingDetailView.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\ViewModels\\ReceivingDetailView.cs",
+              "RelativeToolTip": "ReceivingSystem\\ViewModels\\ReceivingDetailView.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-27T22:25:36.673Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "Error.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Error.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Error.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Error.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Pages\\Error.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T00:20:44.597Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "PurchaseOrderList.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\ViewModels\\PurchaseOrderList.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\ViewModels\\PurchaseOrderList.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\ViewModels\\PurchaseOrderList.cs",
+              "RelativeToolTip": "ReceivingSystem\\ViewModels\\PurchaseOrderList.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T14:28:36.394Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "BlazorHelperClass.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\BlazorHelperClass.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\BlazorHelperClass.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\BlazorHelperClass.cs",
+              "RelativeToolTip": "eBikesMangement\\Components\\BlazorHelperClass.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T07:23:04.613Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-28T02:57:00.521Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "ExternalLogin.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ExternalLogin.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ExternalLogin.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ExternalLogin.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\ExternalLogin.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:02.989Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "ForgotPassword.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ForgotPassword.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ForgotPassword.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ForgotPassword.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\ForgotPassword.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:16.53Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "ResendEmailConfirmation.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:07.549Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "RegisterConfirmation.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\RegisterConfirmation.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\RegisterConfirmation.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\RegisterConfirmation.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\RegisterConfirmation.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:02.972Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "LoginWithRecoveryCode.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\LoginWithRecoveryCode.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\LoginWithRecoveryCode.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\LoginWithRecoveryCode.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\LoginWithRecoveryCode.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:46.201Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "LoginWith2fa.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\LoginWith2fa.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\LoginWith2fa.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\LoginWith2fa.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\LoginWith2fa.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:42.541Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "Index.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Index.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Index.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Index.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Index.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:02:06.46Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "DeletePersonalData.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\DeletePersonalData.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\DeletePersonalData.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\DeletePersonalData.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\DeletePersonalData.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:34.444Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "Lockout.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Lockout.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Lockout.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Lockout.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Lockout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:31.692Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\_Imports.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\_Imports.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\_Imports.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:59:26.314Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "MainLayout.razor.css",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\MainLayout.razor.css",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\MainLayout.razor.css",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\MainLayout.razor.css",
+              "RelativeToolTip": "eBikesMangement\\Components\\Layout\\MainLayout.razor.css",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAYwGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-04-11T03:41:24.035Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "IdentityNoOpEmailSender.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityNoOpEmailSender.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityNoOpEmailSender.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityNoOpEmailSender.cs",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\IdentityNoOpEmailSender.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T18:57:57.589Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "IdentityUserAccessor.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityUserAccessor.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityUserAccessor.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityUserAccessor.cs",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\IdentityUserAccessor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T18:57:20.467Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "NavMenu.razor.css",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\NavMenu.razor.css",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\NavMenu.razor.css",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Layout\\NavMenu.razor.css",
+              "RelativeToolTip": "eBikesMangement\\Components\\Layout\\NavMenu.razor.css",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAYwGkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-03-28T02:27:30.569Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "IdentityRedirectManager.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityRedirectManager.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityRedirectManager.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityRedirectManager.cs",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\IdentityRedirectManager.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwBUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T04:45:44.218Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "ReceivingSystem.csproj",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\ReceivingSystem.csproj",
+              "RelativeDocumentMoniker": "ReceivingSystem\\ReceivingSystem.csproj",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\ReceivingSystem.csproj",
+              "RelativeToolTip": "ReceivingSystem\\ReceivingSystem.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-03-27T22:33:23.639Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "app.css.disabled",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\wwwroot\\app.css.disabled",
+              "RelativeDocumentMoniker": "eBikesMangement\\wwwroot\\app.css.disabled",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\wwwroot\\app.css.disabled",
+              "RelativeToolTip": "eBikesMangement\\wwwroot\\app.css.disabled",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAkwGEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-03-28T13:51:54.946Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "ManageNavMenu.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ManageNavMenu.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\ManageNavMenu.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ManageNavMenu.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Shared\\ManageNavMenu.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:58:50.018Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "RedirectToLogin.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\RedirectToLogin.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\RedirectToLogin.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\RedirectToLogin.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Shared\\RedirectToLogin.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:59:06.656Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Data\\ApplicationUser.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Data\\ApplicationUser.cs",
+              "RelativeToolTip": "eBikesMangement\\Data\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T18:22:37.54Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\_Imports.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\_Imports.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\_Imports.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:21.95Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "ChangePassword.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ChangePassword.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ChangePassword.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ChangePassword.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ChangePassword.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:24.54Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "ResetPasswordConfirmation.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResetPasswordConfirmation.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ResetPasswordConfirmation.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResetPasswordConfirmation.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\ResetPasswordConfirmation.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:17.505Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "StatusMessage.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\StatusMessage.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\StatusMessage.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\StatusMessage.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Shared\\StatusMessage.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:59:12.964Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "ShowRecoveryCodes.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ShowRecoveryCodes.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\ShowRecoveryCodes.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ShowRecoveryCodes.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Shared\\ShowRecoveryCodes.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:59:10.313Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "ManageLayout.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ManageLayout.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\ManageLayout.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ManageLayout.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Shared\\ManageLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:58:33.485Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "ExternalLoginPicker.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ExternalLoginPicker.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\ExternalLoginPicker.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ExternalLoginPicker.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Shared\\ExternalLoginPicker.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:58:22.593Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "ConfirmEmail.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ConfirmEmail.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ConfirmEmail.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ConfirmEmail.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\ConfirmEmail.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:59:36.917Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "ResetPassword.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResetPassword.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ResetPassword.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResetPassword.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\ResetPassword.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:11.873Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "ConfirmEmailChange.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ConfirmEmailChange.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ConfirmEmailChange.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ConfirmEmailChange.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\ConfirmEmailChange.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:59:56.783Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "IdentityRevalidatingAuthenticationStateProvider.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityRevalidatingAuthenticationStateProvider.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityRevalidatingAuthenticationStateProvider.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityRevalidatingAuthenticationStateProvider.cs",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\IdentityRevalidatingAuthenticationStateProvider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T18:57:39.216Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "IdentityComponentsEndpointRouteBuilderExtensions.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityComponentsEndpointRouteBuilderExtensions.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityComponentsEndpointRouteBuilderExtensions.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityComponentsEndpointRouteBuilderExtensions.cs",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\IdentityComponentsEndpointRouteBuilderExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T18:58:02.764Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "TwoFactorAuthentication.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\TwoFactorAuthentication.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\TwoFactorAuthentication.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\TwoFactorAuthentication.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\TwoFactorAuthentication.razor",
+              "ViewState": "AgIAAAwAAAAAAAAAACBjwAQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:02:23.879Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "SetPassword.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\SetPassword.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\SetPassword.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\SetPassword.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\SetPassword.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:02:19.588Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "ResetAuthenticator.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ResetAuthenticator.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ResetAuthenticator.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ResetAuthenticator.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ResetAuthenticator.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:02:14.237Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "PersonalData.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\PersonalData.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\PersonalData.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\PersonalData.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\PersonalData.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:02:10.453Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "GenerateRecoveryCodes.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\GenerateRecoveryCodes.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\GenerateRecoveryCodes.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\GenerateRecoveryCodes.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\GenerateRecoveryCodes.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:02:02.452Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "ExternalLogins.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ExternalLogins.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ExternalLogins.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ExternalLogins.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ExternalLogins.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:58.046Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "EnableAuthenticator.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\EnableAuthenticator.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\EnableAuthenticator.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\EnableAuthenticator.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\EnableAuthenticator.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:53.415Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "Email.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Email.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Email.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Email.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Email.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:49.758Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "Disable2fa.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Disable2fa.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Disable2fa.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Disable2fa.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Disable2fa.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:01:45.927Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "InvalidUser.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\InvalidUser.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\InvalidUser.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\InvalidUser.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\InvalidUser.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:30.635Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 80,
+              "Title": "InvalidPasswordReset.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\InvalidPasswordReset.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\InvalidPasswordReset.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\InvalidPasswordReset.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\InvalidPasswordReset.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:29.245Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 81,
+              "Title": "ForgotPasswordConfirmation.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ForgotPasswordConfirmation.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ForgotPasswordConfirmation.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ForgotPasswordConfirmation.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\ForgotPasswordConfirmation.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T19:00:22.742Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "AccessDenied.razor",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\AccessDenied.razor",
+              "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\AccessDenied.razor",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\AccessDenied.razor",
+              "RelativeToolTip": "eBikesMangement\\Components\\Account\\Pages\\AccessDenied.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T18:59:34.558Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "UnorderedReturnItemView.cs",
+              "DocumentMoniker": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\ViewModels\\UnorderedReturnItemView.cs",
+              "RelativeDocumentMoniker": "ReceivingSystem\\ViewModels\\UnorderedReturnItemView.cs",
+              "ToolTip": "C:\\dmit2018\\eBikesMangement\\ReceivingSystem\\ViewModels\\UnorderedReturnItemView.cs",
+              "RelativeToolTip": "ReceivingSystem\\ViewModels\\UnorderedReturnItemView.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-27T22:25:24.887Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 175,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

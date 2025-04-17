@@ -1,0 +1,37 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\eBikesMangement.bundle.scp.css",
+      "PackagePath": "staticwebassets\\eBikesMangement.r4acz9nbor.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\wwwroot\\app.css.disabled",
+      "PackagePath": "staticwebassets\\app.css.disabled"
+    },
+    {
+      "Id": "C:\\dmit2018\\eBikesMangement\\eBikesMangement\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.eBikesMangement.props",
+      "PackagePath": "build\\eBikesMangement.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.eBikesMangement.props",
+      "PackagePath": "buildMultiTargeting\\eBikesMangement.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.eBikesMangement.props",
+      "PackagePath": "buildTransitive\\eBikesMangement.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.eBikesMangement.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.eBikesMangement.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
