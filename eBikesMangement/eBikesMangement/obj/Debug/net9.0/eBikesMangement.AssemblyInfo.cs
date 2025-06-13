@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("eBikesMangement")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a8be023d7079665bc57f3c5f298cbb5191f62b68")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fdf477b931a6c2182f18fb72dc76233726e66a63")]
 [assembly: System.Reflection.AssemblyProductAttribute("eBikesMangement")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eBikesMangement")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

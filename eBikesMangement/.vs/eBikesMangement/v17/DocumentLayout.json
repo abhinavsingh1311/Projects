@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\servicingsystem\\entities\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|solutionrelative:servicingsystem\\entities\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\ebikesmangement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\servicingsystem\\backendextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|solutionrelative:servicingsystem\\backendextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\servicingsystem\\entities\\standardjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|solutionrelative:servicingsystem\\entities\\standardjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\servicingsystem\\entities\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|solutionrelative:servicingsystem\\entities\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{90522C49-3E58-49D3-A793-170A1D3A62CA}|ServicingSystem\\ServicingSystem.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\servicingsystem\\entities\\jobpart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -91,10 +95,6 @@
       "RelativeMoniker": "D:0:0:{13459BBA-9081-4EE8-86D9-7E6421F43CA7}|SalesReturnSystem\\SalesReturnSystem.csproj|solutionrelative:salesreturnsystem\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\DAL\\eBike_2025_SR_Context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SalesReturnSystem\\DAL\\eBike_2025_SR_Context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F5D36F1F-8F86-40F2-8390-D5AE24973355}|PurchaseOrderSystem\\PurchaseOrderSystem.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\purchaseordersystem\\backendextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F5D36F1F-8F86-40F2-8390-D5AE24973355}|PurchaseOrderSystem\\PurchaseOrderSystem.csproj|solutionrelative:purchaseordersystem\\backendextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -137,10 +137,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\ebikesmangement\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\ebikesmangement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|solutionrelative:ebikesmangement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{09CBDE2C-AF7D-4F97-9B55-836F542E1040}|eBikesMangement\\eBikesMangement.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\ebikesmangement\\components\\pages\\receiving\\receiveorders.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -460,6 +456,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\receivingsystem\\viewmodels\\unorderedreturnitemview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7556234B-6A24-41F0-BF94-D24792D8B3CC}|ReceivingSystem\\ReceivingSystem.csproj|solutionrelative:receivingsystem\\viewmodels\\unorderedreturnitemview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{13459BBA-9081-4EE8-86D9-7E6421F43CA7}|SalesReturnSystem\\SalesReturnSystem.csproj|c:\\users\\abhin\\projects\\projects\\ebikesmangement\\salesreturnsystem\\dal\\ebike_2025_sr_context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{13459BBA-9081-4EE8-86D9-7E6421F43CA7}|SalesReturnSystem\\SalesReturnSystem.csproj|solutionrelative:salesreturnsystem\\dal\\ebike_2025_sr_context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -469,24 +469,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 2,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "StandardJob.cs",
-              "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\StandardJob.cs",
-              "RelativeDocumentMoniker": "ServicingSystem\\Entities\\StandardJob.cs",
-              "ToolTip": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\StandardJob.cs",
-              "RelativeToolTip": "ServicingSystem\\Entities\\StandardJob.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:43:10.297Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "Part.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\Part.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\Entities\\Part.cs",
@@ -499,7 +494,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "JobPart.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\JobPart.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\Entities\\JobPart.cs",
@@ -507,12 +502,11 @@
               "RelativeToolTip": "ServicingSystem\\Entities\\JobPart.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:43:01.189Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:43:01.189Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "JobDetail.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\JobDetail.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\Entities\\JobDetail.cs",
@@ -520,12 +514,11 @@
               "RelativeToolTip": "ServicingSystem\\Entities\\JobDetail.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:42:57.257Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:42:57.257Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Job.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\Job.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\Entities\\Job.cs",
@@ -533,12 +526,11 @@
               "RelativeToolTip": "ServicingSystem\\Entities\\Job.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:42:53.293Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:42:53.293Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "CustomerVehicle.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\CustomerVehicle.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\Entities\\CustomerVehicle.cs",
@@ -546,12 +538,11 @@
               "RelativeToolTip": "ServicingSystem\\Entities\\CustomerVehicle.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:42:49.521Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:42:49.521Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Customer.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\Customer.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\Entities\\Customer.cs",
@@ -559,12 +550,11 @@
               "RelativeToolTip": "ServicingSystem\\Entities\\Customer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:42:46.009Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:42:46.009Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "ServicingService.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\BLL\\ServicingService.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\BLL\\ServicingService.cs",
@@ -572,25 +562,24 @@
               "RelativeToolTip": "ServicingSystem\\BLL\\ServicingService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:24:11.188Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:24:11.188Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "BackendExtensions.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\BackendExtensions.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\BackendExtensions.cs",
               "ToolTip": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\BackendExtensions.cs",
               "RelativeToolTip": "ServicingSystem\\BackendExtensions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-17T19:17:39.74Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Coupon.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\Coupon.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\Entities\\Coupon.cs",
@@ -598,12 +587,11 @@
               "RelativeToolTip": "ServicingSystem\\Entities\\Coupon.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:42:42.17Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:42:42.17Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Category.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\Category.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\Entities\\Category.cs",
@@ -611,12 +599,11 @@
               "RelativeToolTip": "ServicingSystem\\Entities\\Category.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:42:36.818Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:42:36.818Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "eBike_2025_Servicing_Context.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\DAL\\eBike_2025_Servicing_Context.cs",
               "RelativeDocumentMoniker": "ServicingSystem\\DAL\\eBike_2025_Servicing_Context.cs",
@@ -624,12 +611,11 @@
               "RelativeToolTip": "ServicingSystem\\DAL\\eBike_2025_Servicing_Context.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:42:11.924Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:42:11.924Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "SaleRefundDetail.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\Entities\\SaleRefundDetail.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\Entities\\SaleRefundDetail.cs",
@@ -637,12 +623,11 @@
               "RelativeToolTip": "SalesReturnSystem\\Entities\\SaleRefundDetail.cs",
               "ViewState": "AgIAABUAAAAAAAAAAAAowBIAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:38:19.919Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:38:19.919Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "SaleRefund.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\Entities\\SaleRefund.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\Entities\\SaleRefund.cs",
@@ -650,12 +635,36 @@
               "RelativeToolTip": "SalesReturnSystem\\Entities\\SaleRefund.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:38:15.429Z",
+              "WhenOpened": "2025-04-17T19:38:15.429Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Program.cs",
+              "RelativeDocumentMoniker": "eBikesMangement\\Program.cs",
+              "ToolTip": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Program.cs",
+              "RelativeToolTip": "eBikesMangement\\Program.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAADAAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-27T23:58:45.042Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 4,
+              "Title": "StandardJob.cs",
+              "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\StandardJob.cs",
+              "RelativeDocumentMoniker": "ServicingSystem\\Entities\\StandardJob.cs",
+              "ToolTip": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ServicingSystem\\Entities\\StandardJob.cs",
+              "RelativeToolTip": "ServicingSystem\\Entities\\StandardJob.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-17T19:43:10.297Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
               "Title": "SaleDetail.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\Entities\\SaleDetail.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\Entities\\SaleDetail.cs",
@@ -663,12 +672,11 @@
               "RelativeToolTip": "SalesReturnSystem\\Entities\\SaleDetail.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:38:09.946Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:38:09.946Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "Sale.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\Entities\\Sale.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\Entities\\Sale.cs",
@@ -676,12 +684,11 @@
               "RelativeToolTip": "SalesReturnSystem\\Entities\\Sale.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:38:05.675Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:38:05.675Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "SalesReturnService.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\BLL\\SalesReturnService.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\BLL\\SalesReturnService.cs",
@@ -689,12 +696,11 @@
               "RelativeToolTip": "SalesReturnSystem\\BLL\\SalesReturnService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:23:47.526Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:23:47.526Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "BackendExtensions.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\BackendExtensions.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\BackendExtensions.cs",
@@ -702,12 +708,11 @@
               "RelativeToolTip": "SalesReturnSystem\\BackendExtensions.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:16:44.286Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:16:44.286Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "Part.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\Entities\\Part.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\Entities\\Part.cs",
@@ -715,12 +720,11 @@
               "RelativeToolTip": "SalesReturnSystem\\Entities\\Part.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAgwAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:38:01.145Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:38:01.145Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "Customer.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\Entities\\Customer.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\Entities\\Customer.cs",
@@ -728,12 +732,11 @@
               "RelativeToolTip": "SalesReturnSystem\\Entities\\Customer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:37:56.804Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:37:56.804Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "Coupon.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\Entities\\Coupon.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\Entities\\Coupon.cs",
@@ -741,12 +744,11 @@
               "RelativeToolTip": "SalesReturnSystem\\Entities\\Coupon.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:37:52.222Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:37:52.222Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "Category.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\Entities\\Category.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\Entities\\Category.cs",
@@ -754,12 +756,11 @@
               "RelativeToolTip": "SalesReturnSystem\\Entities\\Category.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:37:46.964Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:37:46.964Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 114,
               "Title": "eBike_2025_SR_Context.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\SalesReturnSystem\\DAL\\eBike_2025_SR_Context.cs",
               "RelativeDocumentMoniker": "SalesReturnSystem\\DAL\\eBike_2025_SR_Context.cs",
@@ -767,8 +768,7 @@
               "RelativeToolTip": "SalesReturnSystem\\DAL\\eBike_2025_SR_Context.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:37:30.691Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:37:30.691Z"
             },
             {
               "$type": "Document",
@@ -780,8 +780,7 @@
               "RelativeToolTip": "PurchaseOrderSystem\\DAL\\eBike_2025_PO_Context.cs",
               "ViewState": "AgIAACwAAAAAAAAAAAAuwBUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:30:53.19Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:30:53.19Z"
             },
             {
               "$type": "Document",
@@ -793,8 +792,7 @@
               "RelativeToolTip": "PurchaseOrderSystem\\BackendExtensions.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:16:21.838Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:16:21.838Z"
             },
             {
               "$type": "Document",
@@ -806,8 +804,7 @@
               "RelativeToolTip": "PurchaseOrderSystem\\BLL\\PurchaseOrderService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:18:36.893Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:18:36.893Z"
             },
             {
               "$type": "Document",
@@ -819,8 +816,7 @@
               "RelativeToolTip": "ReceivingSystem\\BLL\\ReceivingService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T21:26:45.572Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-29T21:26:45.572Z"
             },
             {
               "$type": "Document",
@@ -832,8 +828,7 @@
               "RelativeToolTip": "PurchaseOrderSystem\\Entities\\Category.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:31:51.78Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:31:51.78Z"
             },
             {
               "$type": "Document",
@@ -845,8 +840,7 @@
               "RelativeToolTip": "ReceivingSystem\\BackendExtensions.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T22:02:30.076Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-27T22:02:30.076Z"
             },
             {
               "$type": "Document",
@@ -858,8 +852,7 @@
               "RelativeToolTip": "PurchaseOrderSystem\\Entities\\Vendor.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:32:13.586Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:32:13.586Z"
             },
             {
               "$type": "Document",
@@ -871,8 +864,7 @@
               "RelativeToolTip": "PurchaseOrderSystem\\Entities\\PurchaseOrderDetail.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:32:09.001Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:32:09.001Z"
             },
             {
               "$type": "Document",
@@ -884,8 +876,7 @@
               "RelativeToolTip": "PurchaseOrderSystem\\Entities\\PurchaseOrder.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:32:04.658Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:32:04.658Z"
             },
             {
               "$type": "Document",
@@ -897,12 +888,11 @@
               "RelativeToolTip": "PurchaseOrderSystem\\Entities\\Part.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T19:31:59.813Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T19:31:59.813Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 41,
               "Title": "_Imports.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\_Imports.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\_Imports.razor",
@@ -914,7 +904,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 39,
               "Title": "Component.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Layout\\Component.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\Component.razor",
@@ -926,7 +916,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 38,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Layout\\MainLayout.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\MainLayout.razor",
@@ -938,7 +928,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 37,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\NavMenu.razor",
@@ -950,7 +940,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 36,
               "Title": "Roles.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Pages\\admin\\Roles.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\admin\\Roles.razor",
@@ -962,7 +952,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 34,
               "Title": "ReceiveOrders.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor",
@@ -986,19 +976,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Program.cs",
-              "RelativeDocumentMoniker": "eBikesMangement\\Program.cs",
-              "ToolTip": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Program.cs",
-              "RelativeToolTip": "eBikesMangement\\Program.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAADAAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T23:58:45.042Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 42,
               "Title": "_Imports.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Pages\\_Imports.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\_Imports.razor",
@@ -1010,7 +988,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 40,
               "Title": "App.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\App.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\App.razor",
@@ -1022,7 +1000,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 35,
               "Title": "ReceiveOrders.razor.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.cs",
@@ -1034,7 +1012,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 43,
               "Title": "Routes.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Routes.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Routes.razor",
@@ -1046,7 +1024,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 44,
               "Title": "Auth.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Auth.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Auth.razor",
@@ -1058,7 +1036,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 45,
               "Title": "ReceiveOrders.razor.css",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.css",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Receiving\\ReceiveOrders.razor.css",
@@ -1070,7 +1048,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 46,
               "Title": "Part.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\Entities\\Part.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\Part.cs",
@@ -1082,7 +1060,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 51,
               "Title": "00000000000000_CreateIdentitySchema.Designer.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.Designer.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.Designer.cs",
@@ -1094,7 +1072,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 50,
               "Title": "ApplicationDbContextModelSnapshot.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\ApplicationDbContextModelSnapshot.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Data\\Migrations\\ApplicationDbContextModelSnapshot.cs",
@@ -1106,7 +1084,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 47,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\appsettings.json",
               "RelativeDocumentMoniker": "eBikesMangement\\appsettings.json",
@@ -1118,7 +1096,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 48,
               "Title": "eBikesMangement.csproj",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\eBikesMangement.csproj",
               "RelativeDocumentMoniker": "eBikesMangement\\eBikesMangement.csproj",
@@ -1130,7 +1108,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 49,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Data\\ApplicationDbContext.cs",
@@ -1142,7 +1120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 52,
               "Title": "00000000000000_CreateIdentitySchema.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Data\\Migrations\\00000000000000_CreateIdentitySchema.cs",
@@ -1154,7 +1132,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 53,
               "Title": "secrets.json",
               "DocumentMoniker": "C:\\Users\\abhin\\AppData\\Roaming\\Microsoft\\UserSecrets\\ea31392d-9f54-433d-9f95-cad73b05f0c9\\secrets.json",
               "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\ea31392d-9f54-433d-9f95-cad73b05f0c9\\secrets.json",
@@ -1166,7 +1144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 54,
               "Title": "Register.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Register.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Register.razor",
@@ -1178,7 +1156,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 55,
               "Title": "Login.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Login.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Login.razor",
@@ -1190,7 +1168,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 58,
               "Title": "Vendor.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\Entities\\Vendor.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\Vendor.cs",
@@ -1202,7 +1180,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 59,
               "Title": "eBike_2025Context.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\DAL\\eBike_2025Context.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\DAL\\eBike_2025Context.cs",
@@ -1214,7 +1192,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 61,
               "Title": "ReceiveOrderDetail.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\Entities\\ReceiveOrderDetail.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\ReceiveOrderDetail.cs",
@@ -1226,7 +1204,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 62,
               "Title": "UnorderedPurchaseItemCart.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\Entities\\UnorderedPurchaseItemCart.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\UnorderedPurchaseItemCart.cs",
@@ -1238,7 +1216,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 56,
               "Title": "PurchaseOrderDetail.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\Entities\\PurchaseOrderDetail.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\PurchaseOrderDetail.cs",
@@ -1250,7 +1228,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 60,
               "Title": "ReturnedOrderDetail.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\Entities\\ReturnedOrderDetail.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\ReturnedOrderDetail.cs",
@@ -1262,7 +1240,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 57,
               "Title": "ReceiveOrder.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\Entities\\ReceiveOrder.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\ReceiveOrder.cs",
@@ -1274,7 +1252,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 63,
               "Title": "PurchaseOrder.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\Entities\\PurchaseOrder.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\Entities\\PurchaseOrder.cs",
@@ -1286,7 +1264,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
+              "DocumentIndex": 64,
               "Title": "ReceivingDetailView.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\ViewModels\\ReceivingDetailView.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\ViewModels\\ReceivingDetailView.cs",
@@ -1298,7 +1276,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 65,
               "Title": "Error.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Pages\\Error.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Pages\\Error.razor",
@@ -1310,7 +1288,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 67,
+              "DocumentIndex": 66,
               "Title": "PurchaseOrderList.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\ViewModels\\PurchaseOrderList.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\ViewModels\\PurchaseOrderList.cs",
@@ -1322,7 +1300,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 67,
               "Title": "BlazorHelperClass.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\BlazorHelperClass.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\BlazorHelperClass.cs",
@@ -1334,7 +1312,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 69,
+              "DocumentIndex": 68,
               "Title": "ExternalLogin.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ExternalLogin.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ExternalLogin.razor",
@@ -1346,7 +1324,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
+              "DocumentIndex": 69,
               "Title": "ForgotPassword.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ForgotPassword.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ForgotPassword.razor",
@@ -1358,7 +1336,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
+              "DocumentIndex": 70,
               "Title": "ResendEmailConfirmation.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
@@ -1370,7 +1348,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 72,
+              "DocumentIndex": 71,
               "Title": "RegisterConfirmation.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\RegisterConfirmation.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\RegisterConfirmation.razor",
@@ -1382,7 +1360,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 73,
+              "DocumentIndex": 72,
               "Title": "LoginWithRecoveryCode.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\LoginWithRecoveryCode.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\LoginWithRecoveryCode.razor",
@@ -1394,7 +1372,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 74,
+              "DocumentIndex": 73,
               "Title": "LoginWith2fa.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\LoginWith2fa.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\LoginWith2fa.razor",
@@ -1406,7 +1384,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 75,
+              "DocumentIndex": 74,
               "Title": "Index.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Index.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Index.razor",
@@ -1418,7 +1396,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 76,
+              "DocumentIndex": 75,
               "Title": "DeletePersonalData.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\DeletePersonalData.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\DeletePersonalData.razor",
@@ -1430,7 +1408,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 77,
+              "DocumentIndex": 76,
               "Title": "Lockout.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Lockout.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Lockout.razor",
@@ -1442,7 +1420,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 78,
+              "DocumentIndex": 77,
               "Title": "_Imports.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\_Imports.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\_Imports.razor",
@@ -1454,7 +1432,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 85,
+              "DocumentIndex": 84,
               "Title": "MainLayout.razor.css",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Layout\\MainLayout.razor.css",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\MainLayout.razor.css",
@@ -1466,7 +1444,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 79,
+              "DocumentIndex": 78,
               "Title": "IdentityNoOpEmailSender.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityNoOpEmailSender.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityNoOpEmailSender.cs",
@@ -1478,7 +1456,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 80,
+              "DocumentIndex": 79,
               "Title": "IdentityUserAccessor.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityUserAccessor.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityUserAccessor.cs",
@@ -1490,7 +1468,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 84,
+              "DocumentIndex": 83,
               "Title": "NavMenu.razor.css",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Layout\\NavMenu.razor.css",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Layout\\NavMenu.razor.css",
@@ -1502,7 +1480,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 81,
+              "DocumentIndex": 80,
               "Title": "IdentityRedirectManager.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityRedirectManager.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityRedirectManager.cs",
@@ -1514,7 +1492,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 82,
+              "DocumentIndex": 81,
               "Title": "ReceivingSystem.csproj",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\ReceivingSystem.csproj",
               "RelativeDocumentMoniker": "ReceivingSystem\\ReceivingSystem.csproj",
@@ -1526,7 +1504,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 83,
+              "DocumentIndex": 82,
               "Title": "app.css.disabled",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\wwwroot\\app.css.disabled",
               "RelativeDocumentMoniker": "eBikesMangement\\wwwroot\\app.css.disabled",
@@ -1538,7 +1516,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 87,
+              "DocumentIndex": 86,
               "Title": "ManageNavMenu.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ManageNavMenu.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\ManageNavMenu.razor",
@@ -1550,7 +1528,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 86,
+              "DocumentIndex": 85,
               "Title": "RedirectToLogin.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\RedirectToLogin.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\RedirectToLogin.razor",
@@ -1562,7 +1540,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 88,
+              "DocumentIndex": 87,
               "Title": "ApplicationUser.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Data\\ApplicationUser.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Data\\ApplicationUser.cs",
@@ -1574,7 +1552,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 90,
+              "DocumentIndex": 89,
               "Title": "_Imports.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\_Imports.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\_Imports.razor",
@@ -1586,7 +1564,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 89,
+              "DocumentIndex": 88,
               "Title": "ChangePassword.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ChangePassword.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ChangePassword.razor",
@@ -1598,7 +1576,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 91,
+              "DocumentIndex": 90,
               "Title": "ResetPasswordConfirmation.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResetPasswordConfirmation.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ResetPasswordConfirmation.razor",
@@ -1610,7 +1588,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 92,
+              "DocumentIndex": 91,
               "Title": "StatusMessage.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\StatusMessage.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\StatusMessage.razor",
@@ -1622,7 +1600,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 93,
+              "DocumentIndex": 92,
               "Title": "ShowRecoveryCodes.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ShowRecoveryCodes.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\ShowRecoveryCodes.razor",
@@ -1634,7 +1612,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 94,
+              "DocumentIndex": 93,
               "Title": "ManageLayout.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ManageLayout.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\ManageLayout.razor",
@@ -1646,7 +1624,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 95,
+              "DocumentIndex": 94,
               "Title": "ExternalLoginPicker.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Shared\\ExternalLoginPicker.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Shared\\ExternalLoginPicker.razor",
@@ -1658,7 +1636,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 96,
+              "DocumentIndex": 95,
               "Title": "ConfirmEmail.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ConfirmEmail.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ConfirmEmail.razor",
@@ -1670,7 +1648,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 97,
+              "DocumentIndex": 96,
               "Title": "ResetPassword.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ResetPassword.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ResetPassword.razor",
@@ -1682,7 +1660,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 98,
+              "DocumentIndex": 97,
               "Title": "ConfirmEmailChange.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ConfirmEmailChange.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ConfirmEmailChange.razor",
@@ -1694,7 +1672,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 99,
+              "DocumentIndex": 98,
               "Title": "IdentityRevalidatingAuthenticationStateProvider.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityRevalidatingAuthenticationStateProvider.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityRevalidatingAuthenticationStateProvider.cs",
@@ -1706,7 +1684,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 100,
+              "DocumentIndex": 99,
               "Title": "IdentityComponentsEndpointRouteBuilderExtensions.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\IdentityComponentsEndpointRouteBuilderExtensions.cs",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\IdentityComponentsEndpointRouteBuilderExtensions.cs",
@@ -1718,7 +1696,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 101,
+              "DocumentIndex": 100,
               "Title": "TwoFactorAuthentication.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\TwoFactorAuthentication.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\TwoFactorAuthentication.razor",
@@ -1730,7 +1708,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 102,
+              "DocumentIndex": 101,
               "Title": "SetPassword.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\SetPassword.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\SetPassword.razor",
@@ -1742,7 +1720,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 103,
+              "DocumentIndex": 102,
               "Title": "ResetAuthenticator.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ResetAuthenticator.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ResetAuthenticator.razor",
@@ -1754,7 +1732,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 104,
+              "DocumentIndex": 103,
               "Title": "PersonalData.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\PersonalData.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\PersonalData.razor",
@@ -1766,7 +1744,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 105,
+              "DocumentIndex": 104,
               "Title": "GenerateRecoveryCodes.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\GenerateRecoveryCodes.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\GenerateRecoveryCodes.razor",
@@ -1778,7 +1756,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 106,
+              "DocumentIndex": 105,
               "Title": "ExternalLogins.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\ExternalLogins.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\ExternalLogins.razor",
@@ -1790,7 +1768,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 107,
+              "DocumentIndex": 106,
               "Title": "EnableAuthenticator.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\EnableAuthenticator.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\EnableAuthenticator.razor",
@@ -1802,7 +1780,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 108,
+              "DocumentIndex": 107,
               "Title": "Email.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Email.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Email.razor",
@@ -1814,7 +1792,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 109,
+              "DocumentIndex": 108,
               "Title": "Disable2fa.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\Manage\\Disable2fa.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\Manage\\Disable2fa.razor",
@@ -1826,7 +1804,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 110,
+              "DocumentIndex": 109,
               "Title": "InvalidUser.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\InvalidUser.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\InvalidUser.razor",
@@ -1838,7 +1816,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 111,
+              "DocumentIndex": 110,
               "Title": "InvalidPasswordReset.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\InvalidPasswordReset.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\InvalidPasswordReset.razor",
@@ -1850,7 +1828,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 112,
+              "DocumentIndex": 111,
               "Title": "ForgotPasswordConfirmation.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\ForgotPasswordConfirmation.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\ForgotPasswordConfirmation.razor",
@@ -1862,7 +1840,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 113,
+              "DocumentIndex": 112,
               "Title": "AccessDenied.razor",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\eBikesMangement\\Components\\Account\\Pages\\AccessDenied.razor",
               "RelativeDocumentMoniker": "eBikesMangement\\Components\\Account\\Pages\\AccessDenied.razor",
@@ -1874,7 +1852,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 114,
+              "DocumentIndex": 113,
               "Title": "UnorderedReturnItemView.cs",
               "DocumentMoniker": "C:\\Users\\abhin\\Projects\\Projects\\eBikesMangement\\ReceivingSystem\\ViewModels\\UnorderedReturnItemView.cs",
               "RelativeDocumentMoniker": "ReceivingSystem\\ViewModels\\UnorderedReturnItemView.cs",
