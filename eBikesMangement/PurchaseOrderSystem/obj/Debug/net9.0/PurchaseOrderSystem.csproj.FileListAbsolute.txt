@@ -1,0 +1,13 @@
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\bin\Debug\net9.0\PurchaseOrderSystem.deps.json
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\bin\Debug\net9.0\PurchaseOrderSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\bin\Debug\net9.0\PurchaseOrderSystem.pdb
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\PurchaseOrderSystem.csproj.AssemblyReference.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\PurchaseOrderSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\PurchaseOrderSystem.AssemblyInfoInputs.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\PurchaseOrderSystem.AssemblyInfo.cs
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\PurchaseOrderSystem.csproj.CoreCompileInputs.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\PurchaseOrderSystem.sourcelink.json
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\PurchaseOrderSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\refint\PurchaseOrderSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\PurchaseOrderSystem.pdb
+C:\Users\abhin\Projects\Projects\eBikesMangement\PurchaseOrderSystem\obj\Debug\net9.0\ref\PurchaseOrderSystem.dll

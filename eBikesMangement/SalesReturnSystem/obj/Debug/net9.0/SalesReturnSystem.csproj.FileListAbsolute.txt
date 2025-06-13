@@ -1,0 +1,13 @@
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\bin\Debug\net9.0\SalesReturnSystem.deps.json
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\bin\Debug\net9.0\SalesReturnSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\bin\Debug\net9.0\SalesReturnSystem.pdb
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\SalesReturnSystem.csproj.AssemblyReference.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\SalesReturnSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\SalesReturnSystem.AssemblyInfoInputs.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\SalesReturnSystem.AssemblyInfo.cs
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\SalesReturnSystem.csproj.CoreCompileInputs.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\SalesReturnSystem.sourcelink.json
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\SalesReturnSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\refint\SalesReturnSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\SalesReturnSystem.pdb
+C:\Users\abhin\Projects\Projects\eBikesMangement\SalesReturnSystem\obj\Debug\net9.0\ref\SalesReturnSystem.dll

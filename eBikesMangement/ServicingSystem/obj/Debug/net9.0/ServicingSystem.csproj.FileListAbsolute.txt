@@ -1,0 +1,13 @@
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\bin\Debug\net9.0\ServicingSystem.deps.json
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\bin\Debug\net9.0\ServicingSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\bin\Debug\net9.0\ServicingSystem.pdb
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ServicingSystem.csproj.AssemblyReference.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ServicingSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ServicingSystem.AssemblyInfoInputs.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ServicingSystem.AssemblyInfo.cs
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ServicingSystem.csproj.CoreCompileInputs.cache
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ServicingSystem.sourcelink.json
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ServicingSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\refint\ServicingSystem.dll
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ServicingSystem.pdb
+C:\Users\abhin\Projects\Projects\eBikesMangement\ServicingSystem\obj\Debug\net9.0\ref\ServicingSystem.dll
