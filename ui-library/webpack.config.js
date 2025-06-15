@@ -7,8 +7,12 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
-    publicPath: '/assets/'
+    static: {
+      directory: path.resolve(__dirname, 'dist')
+    },
+    devMiddleware: {
+      publicPath: '/assets/'
+    }
   },
   module: {
     rules: [{
