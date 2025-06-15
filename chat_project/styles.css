@@ -1,0 +1,50 @@
+body {
+    background-image: url(./images/bg.jpg);
+    background-size: cover;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: italic;
+
+}
+
+.container {
+    background: rgb(126, 196, 192);
+    max-width: 650px;
+}
+
+.btn {
+    background: lightyellow;
+    color: black;
+    outline: none !important;
+    box-shadow: none !important;
+    font: 1em sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 600;
+}
+
+h1 {
+    font-style: normal;
+    font-weight: 700;
+}
+
+.btn:focus {
+    outline: none !important;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.time {
+    font-weight: bold;
+    font-style: italic;
+    font-size: 0.8em;
+    color: gray;
+}
+
+.update-msg {
+    font-style: italic;
+    font-size: 1rem;
+    color: gray;
+    text-align: center;
+    margin: 20px auto;
+}
